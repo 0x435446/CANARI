@@ -34,6 +34,7 @@ while(1):
 	result = subprocess.check_output(cmd, shell=True).decode('utf-8').replace('\t','').split('\n')
 	print (result)
 	res = []
+	flag=result[0].split('[')[1].split(']')[0]
 	result[0]=result[1].split()
 	for val in result[0]: 
 		if val != None : 
@@ -60,8 +61,12 @@ while(1):
 					del bd[i]
 			except:
 				pass
-	print (bd[len(bd)-2])
+	print ("AICI e domeniul: ",bd[len(bd)-2])
 	ok=0
+	if flag == 'none':
+		if len(bd[len(bd)-2])>0:
+			print ("DIG EXFILTRATION",bd[len(bd)-2],"catre",res[2][:-4])
+			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ res[2][:-4]+"','"+bd[len(bd)-2]+"','"+str(datetime.now())+"')")
 	if len(bd)>2:
 		for i in range(len(database)):
 			if(database[i].check(bd[len(bd)-2])==1):
