@@ -1,0 +1,9 @@
+[2020-11-10 03:41:15.027] [sharedprocess] [info] main {"machineId":"4225a269343d35ae36c4ad1d83c8ad93587c2621f1bc5b9109735bd1a573505d","windowId":2}
+[2020-11-10 03:41:15.057] [sharedprocess] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/osboxes/Desktop/Aparare/IDS/Methods/osboxes/User/snippets'
+[2020-11-10 03:41:44.777] [sharedprocess] [info] Installing extension: ms-python.python
+[2020-11-10 03:41:49.706] [sharedprocess] [info] Downloaded extension: ms-python.python undefined
+[2020-11-10 03:41:54.518] [sharedprocess] [info] Extracted extension to /root/.vscode/extensions/.ms-python.python-2020.10.332292344: ms-python.python
+[2020-11-10 03:41:54.518] [sharedprocess] [info] Renamed to /root/.vscode/extensions/ms-python.python-2020.10.332292344
+[2020-11-10 03:41:54.523] [sharedprocess] [info] Installation completed. ms-python.python
+[2020-11-10 03:41:54.529] [sharedprocess] [info] Extensions installed successfully: ms-python.python
+[2020-11-10 03:41:55.041] [sharedprocess] [info] Starting to clean up unused language packs.
