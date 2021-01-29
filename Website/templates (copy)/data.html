@@ -1,0 +1,51 @@
+<html>
+    <head>
+    <title>BlockIT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    </head>
+
+    <body>
+
+        <div class="menu">
+
+            <div>
+                Data
+            </div>
+            <div>
+                Home
+            </div>
+
+        </div>
+
+        <div class="content">
+            <div class="submenu">
+                {%for i in menu%} 
+                    <div>{{i[0]}}</div> 
+                {%endfor%} 
+            </div>
+
+
+            <div class="datas">
+
+                <table>
+                        {%for i in range(len)%} 
+                        <tr>
+                            {%for j in data[i]%} 
+                                <td>{{j}}</td> 
+                            {%endfor%} 
+                        </tr>
+                        {%endfor%} 
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+    </body>
+
+
+
+</html>
