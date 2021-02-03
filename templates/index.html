@@ -1,0 +1,193 @@
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/body.css') }}">
+    
+</head>
+
+<body>
+	<div class="container">
+		<nav class="navbar navbar-expand-lg rounded" aria-label="Eleventh navbar example">
+		  <div class="container-fluid">
+			<a class="navbar-brand" href="#">Menu</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarsExample09">
+			  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item active">
+				  <a class="nav-link" aria-current="page" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/">Discover</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="#" tabindex="-1">Vizualize</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="#" tabindex="-1">Alerts</a>
+				</li>
+			  </ul>
+			</div>
+		  </div>
+		</nav>
+	</div>
+	
+	<div class="content">
+	
+		<div class="firstfloatbox" id="first">
+			<div class="progressbar2">
+			 0/100
+			 <span style="float: left">ICMP</span>
+			 <div class="progressbars">
+				<div class="progress" id="icmp_progress">
+				
+				</div>
+			 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">HTTP</span>
+				 <div class="progressbars">
+					<div class="progress" id="http_progress">
+					</div>
+				 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">HTTPS</span>
+				 <div class="progressbars">
+					<div class="progress" id="https_progress">
+					</div>
+				 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">DNS</span>
+				 <div class="progressbars">
+					<div class="progress" id="dns_progress">
+					</div>
+				 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">Connections</span>
+				 <div class="progressbars">
+					<div class="progress" id="conn_progress">
+					</div>
+				 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">Listeners</span>
+				 <div class="progressbars">
+					<div class="progress" id="listen_progress">
+					</div>
+				 </div>
+			</div>
+			
+			<div class="progressbar2">
+				 0/100
+				 <span style="float: left">Anomalies</span>
+				 <div class="progressbars">
+					<div class="progress" id="anomalies_progress">
+					</div>
+				 </div>
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		<div class="secondfloatbox" id="second">
+			Filter:<br>
+			<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"> ICMP
+			<input type="checkbox" id="HTTP" name="HTTP" value="HTTP"> HTTP
+			<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"> HTTPS
+			<input type="checkbox" id="DNS" name="DNS" value="DNS"> DNS
+			<input type="checkbox" id="Connections" name="Connections" value="Connections"> Connections
+			<input type="checkbox" id="Listeners" name="Listeners" value="Listeners"> Listeners
+			<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"> Anomalies<br><br>
+			Timestamp: <input type="date" id="start"> <input type="date" id="stop"><br><br>
+			<input type="button" id="search.b" name="search.b" value="Search">
+		</div>
+		
+
+		
+		<div class="thirdbox" id="third">
+			
+			<table>
+				<tr>
+					<td>
+							Index
+						</td>
+					<td>
+							Type
+					</td>
+					<td>
+							Message
+					</td>
+					<td>
+							Risk
+					</td>
+					<td>
+							Destination
+					</td>
+					<td>
+							Payload
+					</td>
+					<td>
+							Timestamp
+					</td>
+				</tr>
+                   {%for i in range(len)%} 
+                    <tr>
+                        {%for j in data[i]%} 
+                            <td>{{j}}</td> 
+                        {%endfor%} 
+                    </tr>
+                    {%endfor%} 
+			</table>
+			
+			
+			
+			
+			
+			
+		</div>
+	</div>
+
+
+
+</body>
+
+
+
+
+	<script>
+	document.getElementById("icmp_progress").style.width = "{{icmp}}";
+	document.getElementById("http_progress").style.width = "{{http}}";
+	document.getElementById("https_progress").style.width = "{{https}}";
+	document.getElementById("dns_progress").style.width = "{{dns}}";
+	document.getElementById("conn_progress").style.width = "{{connections}}";
+	document.getElementById("listen_progress").style.width = "{{listeners}}";
+	document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
+	document.getElementById("second").style.height = document.getElementById("first").clientHeight;
+	document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
+	</script>
+	
+    <script src="js/bootstrap.bundle.min.js"></script>
+</html>

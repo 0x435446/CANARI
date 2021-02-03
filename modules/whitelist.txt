@@ -1,0 +1,7 @@
+google
+ubuntu
+facebook
+mozilla
+firefox
+ocsp.digicert.com
+webraptor
