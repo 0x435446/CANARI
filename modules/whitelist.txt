@@ -5,3 +5,4 @@ mozilla
 firefox
 ocsp.digicert.com
 webraptor
+us.archive.ubuntu.com

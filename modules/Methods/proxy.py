@@ -8,13 +8,22 @@ import re
 
 
 def verify_content(content):
+
 	match = re.findall(r'[\w\.-]+@[\w\.-]+', content.decode('latin1'))
 	if len(match)>0:
 		print ("Fisier cu email-uri trimis !😍  --> ", ', '.join(match))
+
+
+	match = re.findall(r'(?=[-]*(?=[A-Z]*(?=[-])))(.*)(?=[-]*(?=[A-Z]*(?=[-])))', content.decode('latin1'))
+	if len(match)>0:
+		if ("RSA" in content.decode('latin1') ) or ("rsa" in content.decode('latin1')):
+			print ("Fisier cu chei RSA trimis!😍  -- >", ', ',content.decode('latin1'))
+
+			
 	if ("Pass" in content.decode('latin1')) or ("pass" in content.decode('latin1')) or ("PASS" in content.decode('latin1')):
 		print ("Fisier cu parole trimis!😍  -- >", ', ',content.decode('latin1'))
-	if ("RSA" in content.decode('latin1') ) or ("rsa" in content.decode('latin1')):
-		print ("Fisier cu chei RSA trimis!😍  -- >", ', ',content.decode('latin1'))
+
+	
 
 def check_whitelist(word):
 	x=open("../whitelist.txt","r").read().strip().split('\n')

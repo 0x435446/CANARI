@@ -1,7 +1,1 @@
---------------------------1180fd225066da26
-Content-Disposition: form-data; name="data"; filename="exfil.txt"
-Content-Type: text/plain
-
-RSA
-
---------------------------1180fd225066da26--
+cmd=-------RSA--------

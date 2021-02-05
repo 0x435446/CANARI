@@ -19,7 +19,8 @@ def icmp_start():
 	global start_icmp
 	start_icmp=1
 	while(start_icmp!=0):
-		cmd="sudo tcpdump -i ens33 -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply"
+		cmd="sudo tcpdump -i ens33 -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply 2>/dev/null"
+		print ("------------------------------------------------------------------------------------")
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8').replace('\t','').split('\n')
 		res=[]
 		ok=0

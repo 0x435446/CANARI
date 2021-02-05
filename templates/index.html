@@ -43,17 +43,16 @@
 	
 		<div class="firstfloatbox" id="first">
 			<div class="progressbar2">
-			 0/100
+			 {{numar[0]}}/{{numar[4]}}
 			 <span style="float: left">ICMP</span>
 			 <div class="progressbars">
 				<div class="progress" id="icmp_progress">
-				
 				</div>
 			 </div>
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 {{numar[2]}}/{{numar[4]}}
 				 <span style="float: left">HTTP</span>
 				 <div class="progressbars">
 					<div class="progress" id="http_progress">
@@ -62,7 +61,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 0/{{numar[4]}}
 				 <span style="float: left">HTTPS</span>
 				 <div class="progressbars">
 					<div class="progress" id="https_progress">
@@ -71,7 +70,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 {{numar[1]}}/{{numar[4]}}
 				 <span style="float: left">DNS</span>
 				 <div class="progressbars">
 					<div class="progress" id="dns_progress">
@@ -80,7 +79,16 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 {{numar[3]}}/{{numar[4]}}
+				 <span style="float: left">VirusTotal</span>
+				 <div class="progressbars">
+					<div class="progress" id="vt_progress">
+					</div>
+				 </div>
+			</div>
+
+			<div class="progressbar2">
+				 0/{{numar[4]}}
 				 <span style="float: left">Connections</span>
 				 <div class="progressbars">
 					<div class="progress" id="conn_progress">
@@ -89,7 +97,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 0/{{numar[4]}}
 				 <span style="float: left">Listeners</span>
 				 <div class="progressbars">
 					<div class="progress" id="listen_progress">
@@ -98,7 +106,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/100
+				 0/{{numar[4]}}
 				 <span style="float: left">Anomalies</span>
 				 <div class="progressbars">
 					<div class="progress" id="anomalies_progress">
@@ -185,6 +193,7 @@
 	document.getElementById("conn_progress").style.width = "{{connections}}";
 	document.getElementById("listen_progress").style.width = "{{listeners}}";
 	document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
+	document.getElementById("vt_progress").style.width = "{{vt}}";
 	document.getElementById("second").style.height = document.getElementById("first").clientHeight;
 	document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
 	</script>
