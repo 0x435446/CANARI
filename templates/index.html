@@ -43,7 +43,7 @@
 	
 		<div class="firstfloatbox" id="first">
 			<div class="progressbar2">
-			 {{numar[0]}}/{{numar[4]}}
+			 {{numar[0]}}/{{numar[-1]}}
 			 <span style="float: left">ICMP</span>
 			 <div class="progressbars">
 				<div class="progress" id="icmp_progress">
@@ -52,7 +52,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 {{numar[2]}}/{{numar[4]}}
+				 {{numar[2]}}/{{numar[-1]}}
 				 <span style="float: left">HTTP</span>
 				 <div class="progressbars">
 					<div class="progress" id="http_progress">
@@ -61,7 +61,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/{{numar[4]}}
+				 0/{{numar[-1]}}
 				 <span style="float: left">HTTPS</span>
 				 <div class="progressbars">
 					<div class="progress" id="https_progress">
@@ -70,7 +70,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 {{numar[1]}}/{{numar[4]}}
+				 {{numar[1]}}/{{numar[-1]}}
 				 <span style="float: left">DNS</span>
 				 <div class="progressbars">
 					<div class="progress" id="dns_progress">
@@ -79,7 +79,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 {{numar[3]}}/{{numar[4]}}
+				 {{numar[3]}}/{{numar[-1]}}
 				 <span style="float: left">VirusTotal</span>
 				 <div class="progressbars">
 					<div class="progress" id="vt_progress">
@@ -88,7 +88,7 @@
 			</div>
 
 			<div class="progressbar2">
-				 0/{{numar[4]}}
+				 0/{{numar[-1]}}
 				 <span style="float: left">Connections</span>
 				 <div class="progressbars">
 					<div class="progress" id="conn_progress">
@@ -97,7 +97,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/{{numar[4]}}
+				 {{numar[4]}}/{{numar[-1]}}
 				 <span style="float: left">Listeners</span>
 				 <div class="progressbars">
 					<div class="progress" id="listen_progress">
@@ -106,7 +106,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/{{numar[4]}}
+				 0/{{numar[-1]}}
 				 <span style="float: left">Anomalies</span>
 				 <div class="progressbars">
 					<div class="progress" id="anomalies_progress">

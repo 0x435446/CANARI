@@ -101,7 +101,7 @@ def http_start():
 				if GETS[i] == GET[0][1:]:
 					stop = 1
 			print ("GETS:",GETS)
-			print ("GET+++++",GET[0][0:])
+			print ("GET+++++",GET[0][1:])
 			if banana == 0:
 				GETS.append(GET[0][1:])
 				auxiliar_URL=URL.split('.')
