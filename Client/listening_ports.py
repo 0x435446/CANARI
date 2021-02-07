@@ -38,6 +38,7 @@ def connect(message):
 global word
 connect('Start')
 print ("PRIMUL CONNECT:",word)
+
 while(1):
 	cmd="netstat -tulpn 2>/dev/null"
 	result = subprocess.check_output(cmd, shell=True).decode('utf-8').split('\n')
@@ -79,6 +80,5 @@ while(1):
 		if open_ports[i].unchanged == 1:
 			for_send=hash(word)
 			print (for_send+"|PID --- "+open_ports[i].PID+" --- "+str(open_ports[i].ports)+" --- "+str(open_ports[i].time))
-			print ("PID --- "+open_ports[i].PID+" --- "+str(open_ports[i].ports)+" --- "+str(open_ports[i].time))
-			connect(for_send+"|"+open_ports[i].PID+"-"+str(' '.join(open_ports[i].ports))+"-"+str(' '.join(open_ports[i].time)))
+			connect(for_send+"|"+open_ports[i].PID+"-"+str(' '.join(open_ports[i].ports))+"-"+str(' '.join(open_ports[i].time))+"-LISTEN")
 			open_ports[i].unchanged = 0
