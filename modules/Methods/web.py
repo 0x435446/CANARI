@@ -3,8 +3,9 @@ import subprocess
 import time
 import os
 import MySQLdb 
-from Crypto.Util.number import long_to_bytes
+from Crypto.Util.number import long_to_bytes,bytes_to_long
 import base64
+import rules
 
 sys.path.append('./modules')
 from Utility import *
@@ -43,16 +44,19 @@ def http_start():
 		print ("------------------DADADADADADADA")
 		added=0
 		added_GET=0
-		cmd="sudo tcpdump -i ens33 -A -s 0 'tcp dst port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'  -c 1 2>/dev/null"
+		cmd="sudo tcpdump -i ens33 -xxv -A -s 0 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -c 1 2>/dev/null"
 		agent_found = 0
 		cookie_found = 0
 		host_found = 0
 		get_found = 0
 		founda = 0
-		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
-		if "192.168.1.5" not in result:
-			print ("REZULTAT NEALTERAT:",result)
-			result=result.split("\n")
+		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
+		if "192.168.1.5" not in cmdout:
+			print ("REZULTAT NEALTERAT:",cmdout)
+			rules.check_rules('HTTP',cmdout)
+			#print (hex(bytes_to_long(cmdout.encode())))
+			result=cmdout.split("\n\t\n\t")[0].split('\n')
+			print ("LEN DE RESULT:",len(result))
 			print (result)
 			for i in range(len(result)):
 				result[i]=result[i].split(': ')
