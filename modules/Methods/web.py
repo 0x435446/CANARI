@@ -28,7 +28,7 @@ def check_whitelist_user_agent(word):
 
 def http_start():
 	GETS=[]
-	print("AM AJUNS AICI")
+	#print("AM AJUNS AICI")
 	ip=get_ip_address('ens33')  
 	#ip='kali'
 	start_http=1
@@ -41,7 +41,7 @@ def http_start():
 	cursor = db.cursor()
 	last_res=''
 	while(start_http!=0):
-		print ("------------------DADADADADADADA")
+		#print ("------------------DADADADADADADA")
 		added=0
 		added_GET=0
 		cmd="sudo tcpdump -i ens33 -xxv -A -s 0 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -c 1 2>/dev/null"
@@ -52,23 +52,23 @@ def http_start():
 		founda = 0
 		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		if "192.168.1.5" not in cmdout:
-			print ("REZULTAT NEALTERAT:",cmdout)
+			#print ("REZULTAT NEALTERAT:",cmdout)
 			rules.check_rules('HTTP',cmdout)
 			#print (hex(bytes_to_long(cmdout.encode())))
 			result=cmdout.split("\n\t\n\t")[0].split('\n')
-			print ("LEN DE RESULT:",len(result))
-			print (result)
+			#print ("LEN DE RESULT:",len(result))
+			#print (result)
 			for i in range(len(result)):
 				result[i]=result[i].split(': ')
 				if 'Agent' in result[i][0]:
 					if agent_found == 0:
 						if check_whitelist_user_agent(result[i][1]) == 0:
 							agent_found = 1
-							print ("User-Agent ALERT!")
+							#print ("User-Agent ALERT!")
 							#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'User-Agent ALERT!','-','"+result[i][1]+"' )")
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM','-','"+result[i][1]+"','"+str(datetime.now())+"')")
 							db.commit()
-							print ("USER AGENT GASIT!")
+							#print ("USER AGENT GASIT!")
 				if cookie_found == 0:
 					if 'Cookie' in result[i][0]:
 						Cookie=result[i][1]
@@ -104,7 +104,7 @@ def http_start():
 			for i in range(len(GETS)):
 				if GETS[i] == GET[0][1:]:
 					stop = 1
-			print ("GETS:",GETS)
+			#print ("GETS:",GETS)
 			print ("GET+++++",GET[0][1:])
 			if banana == 0:
 				GETS.append(GET[0][1:])
@@ -113,7 +113,7 @@ def http_start():
 				for i in range(len(auxiliar_URL)-1):
 					if auxiliar_URL[i]!='www':
 						new_URL.append(auxiliar_URL[i])
-				print ("URL: ",'.'.join(new_URL))
+				#print ("URL: ",'.'.join(new_URL))
 				x=check_whitelist('.'.join(new_URL))
 				if x == 0:
 					if URL != '':
@@ -121,11 +121,11 @@ def http_start():
 							print (verify_encoding(GET[0][1:]))
 							if verify_encoding(GET[0][1:]) <= 10:
 								if stop == 0:
-									print ("ALERT! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
+									#print ("ALERT! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
 									#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
 									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'ALERT! UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
 									db.commit()
-									print ("AM AJUNS AICI!!!")
+									#print ("AM AJUNS AICI!!!")
 						if len(URLS) == 0:
 							x=WEB()
 							try:
@@ -137,7 +137,7 @@ def http_start():
 									if founda==0:
 										if long_to_bytes(signatures[count2] == base64.b64decode(GET[0])):
 											if stop == 0:
-												print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[0])
+												#print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[0])
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','"+URL+"','"+GET[0]+"' )")
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
 
@@ -149,7 +149,7 @@ def http_start():
 									if founda==0:
 										if signatures[count2] in GET[0]:
 											if stop == 0:
-												print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[0])
+												#print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[0])
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','"+URL+"','"+GET[0]+"' )")
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
 												
@@ -172,7 +172,7 @@ def http_start():
 											for count in range(len(GET)):
 												if len(GET[count])>15:
 													if stop == 0:
-														print ("ALERT! GET LEN: "+GET[count])
+														#print ("ALERT! GET LEN: "+GET[count])
 														#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET LENGTH!','"+URL+"','"+GET[count]+"' )")
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET LENGTH > 15','MEDIUM','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
 														
@@ -183,7 +183,7 @@ def http_start():
 														if founda==0:
 															if long_to_bytes(signatures[count2] == base64.b64decode(GET[count])):
 																if stop == 0:
-																	print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[count])
+																	#print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[count])
 																	#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','"+URL+"','"+GET[count]+"' )")
 																	cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
 																	db.commit()
@@ -193,13 +193,13 @@ def http_start():
 													if founda==0:
 														if signatures[count2] == GET[count]:
 															if stop == 0:
-																print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[count])
+																#print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[count])
 																#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','"+URL+"','"+GET[count]+"' )")
 																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")											
 																db.commit()
 																founda=1
-										print ("AM AJUNS LA COOKIES")
-										print (URLS[i].adds)
+										#print ("AM AJUNS LA COOKIES")
+										#print (URLS[i].adds)
 										for ii in range(len(URLS[i].Cookies)):
 											ok2=0
 											if URLS[i].Cookies[ii] == Cookie:
@@ -208,7 +208,7 @@ def http_start():
 											URLS[i].Cookies.append(Cookie)
 											URLS[i].adds+=1
 											if URLS[i].adds>2:
-												print ("ALERT! MULTIPLE COOKIES SENT TO "+ URLS[i].URL)
+												#print ("ALERT! MULTIPLE COOKIES SENT TO "+ URLS[i].URL)
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'MULTIPLE COOKIES SENT','"+URL+"','"+URLS[i].URL+"' )")
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'MULTIPLE COOKIES SENT','HIGH','"+URLS[i].URL+"','"+Cookie+"','"+str(datetime.now())+"')")											
 												db.commit()
@@ -223,7 +223,8 @@ def http_start():
 								URLS.append(x)
 
 					for i in range(len(URLS)):
-						print (URLS[i].URL,str(URLS[i].Cookies),str(URLS[i].GET),str(URLS[i].GET_time))
+						pass
+						#print (URLS[i].URL,str(URLS[i].Cookies),str(URLS[i].GET),str(URLS[i].GET_time))
 
 
 

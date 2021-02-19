@@ -9,6 +9,7 @@ from Utility import *
 from Methods import *
 from verify_encoding import *
 from VirusTotal import *
+import rules
 
 def check_chars(word):
 	for i in range(len(word)):
@@ -40,9 +41,16 @@ def dns_start():
 	global start_dns
 	start_dns=1
 	while(start_dns!=0):
-		cmd="sudo tcpdump -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
+		cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
 		puncte = 0
-		result = subprocess.check_output(cmd, shell=True).decode('utf-8').replace('\t','')
+		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+		#print ("-------------")
+		#print ("AICI E REZULTATUL",result.split('\n\t')[0])
+		#result=result.replace('\t','')
+		#print ("AICI E REZULTATUL 2",result)
+		#print ("-------------")
+		rules.check_rules('DNS',result)
+		result=result.split('\n\t')[0].replace('\t','')
 		try:
 			if '192.168.1.4' not in result:
 				print ("DA")
@@ -56,16 +64,19 @@ def dns_start():
 							url=res[j].split('.')
 						if res[j].count('.') == 2:
 							puncte = 1
-				print ("FLAG:",flag)
+				#print ("FLAG:",flag)
 				if flag == 'none':
 					try:
 						payload=result[1].split('?')[1].split(' ')[1]
 						print ("AICI E URL",url)
 						url ='.'.join(url)
-						if len(url[len(url)-2]) > 0:
-							print ("DIG EXFILTRATION",url[:-4])
-							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
-							db.commit()
+						if 'addr' not in payload:
+							if len(url[len(url)-2]) > 0:
+								#print ("AICI E FLAG:",flag)
+								#print ("AICI E cum arata:",result)
+								#print ("DIG EXFILTRATION",url[:-4])
+								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
+								db.commit()
 					except:
 						pass
 				else:
@@ -98,16 +109,16 @@ def dns_start():
 						var=check_whitelist(bd[len(bd)-2])
 						if var == 0:
 							vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
-							print (vt)
+							#print (vt)
 							for i in vt:
 								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','" + bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
 								db.commit()
 							stop = 0
-							print ("SUBDOMENII:",SUBD)
+							#print ("SUBDOMENII:",SUBD)
 							for i in range(len(SUBD)):
 								if SUBD[i] == bd[0]:
 									stop = 1
-							print ("AICI SUNT ASTEA:",SUBD)
+							#print ("AICI SUNT ASTEA:",SUBD)
 							if stop == 0:
 								SUBD.append(bd[0])
 								ok=0
