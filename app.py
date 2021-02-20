@@ -40,29 +40,22 @@ def select_graph():
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='ICMP'")
 	data2 = (cursor2.fetchall())
 	icmp_count=data2[0][0]
-
 	cursor2= db.cursor()
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='HTTP'")
 	data2 = (cursor2.fetchall())
 	http_count=data2[0][0]
-
-
 	cursor2= db.cursor()
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='DNS'")
 	data2 = (cursor2.fetchall())
 	dns_count=data2[0][0]
-
-
 	cursor2= db.cursor()
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='VirusTotal'")
 	data2 = (cursor2.fetchall())
 	vs_count=data2[0][0]
-
 	cursor2= db.cursor()
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='Listening'")
 	data2 = (cursor2.fetchall())
 	listen_count=data2[0][0]
-
 	cursor2= db.cursor()
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='Connections'")
 	data2 = (cursor2.fetchall())
@@ -132,28 +125,32 @@ def index():
 
 @app.route('/stop')
 def stop():
-	dns.stop_dns()
-	print ("DNS_STOPPED")
-	icmp.stop_icmp()
-	print ("ICMP_STOPPED")
-	web.stop_http()
-	print ("HTTP_STOPPED")
-	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
-	cursor = db.cursor()
-	cursor.execute("SELECT * FROM alerte")
-	data = list(cursor.fetchall())
-	db.close()
-	icmp_count,dns_count,http_count,vs_count,listen_count,connect_count=select_graph()
-	numar=[]
-	numar.append(str(icmp_count))
-	numar.append(str(dns_count))
-	numar.append(str(http_count))
-	numar.append(str(vs_count))
-	numar.append(str(listen_count))
-	numar.append(str(connect_count))
-	numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
-	return render_template('index.html',data=data,len=len(data),icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
-
+	try:
+		if session['loggedin'] == True:
+			dns.stop_dns()
+			print ("DNS_STOPPED")
+			icmp.stop_icmp()
+			print ("ICMP_STOPPED")
+			web.stop_http()
+			print ("HTTP_STOPPED")
+			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+			cursor = db.cursor()
+			cursor.execute("SELECT * FROM alerte")
+			data = list(cursor.fetchall())
+			db.close()
+			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count=select_graph()
+			numar=[]
+			numar.append(str(icmp_count))
+			numar.append(str(dns_count))
+			numar.append(str(http_count))
+			numar.append(str(vs_count))
+			numar.append(str(listen_count))
+			numar.append(str(connect_count))
+			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
+			return render_template('index.html',data=data,len=len(data),icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
+	except:
+		pass
+	return redirect("/login")
 
 @app.route('/login')
 def login():
