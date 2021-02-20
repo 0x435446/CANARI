@@ -14,11 +14,10 @@
 <body>
 	
 	<div class="box" id='box' onmouseover="hover()">
-		<form action='/process-login'  method="post" enctype="multipart/form-data">
+		<form action='/process-register'  method="post" enctype="multipart/form-data">
 			<input type='text' id='fname' name='username' placeholder='Username'><br>
 			<input type='password' id='lname' name='password' placeholder='Password'><br>
-			<input type='file' id='myFile' name='file'><br>
-			<h1 id='title'>Login</h1><br>
+			<h1 id='title'>Register</h1><br>
 			<input id='submit' type='submit' value='Submit'>
 		</form>
 
@@ -36,15 +35,12 @@
 		document.getElementById('box').style.paddingTop = '100';
 		document.getElementById('fname').style.visibility = 'visible';
 		document.getElementById('lname').style.visibility = 'visible';
-		document.getElementById('myFile').style.visibility = 'visible';
 		document.getElementById('submit').style.visibility = 'visible';
 		document.getElementById('fname').style.opacity = 0;
 		document.getElementById('lname').style.opacity = 0;
-		document.getElementById('myFile').style.opacity = 0;
 		document.getElementById('submit').style.opacity = 0;
 		var fade = document.getElementById("fname"); 
 		var fade2 = document.getElementById("lname"); 
-		var fade3 = document.getElementById("myFile"); 
 		var fade4 = document.getElementById("submit"); 
 		var opacity = 0; 
 		var intervalID = setInterval(function() { 
@@ -52,7 +48,6 @@
 				opacity = opacity + 0.1 
 				fade.style.opacity = opacity; 
 				fade2.style.opacity = opacity; 
-				fade3.style.opacity = opacity; 
 				fade4.style.opacity = opacity; 
 			} else { 
 				clearInterval(intervalID); 
