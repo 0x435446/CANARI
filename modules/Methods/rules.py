@@ -92,7 +92,10 @@ def check_rules(TIP,pachet):
 					del HOST[-1]
 					HOST='.'.join(HOST)
 					break
-			DESTINATION=search[-2]
+			for i in range(len(search)-1,0,-1):
+				if search[i].count('.')>1 and len(search[i])>2:
+					DESTINATION=search[i]
+					break;
 			print ("AM AJUNS LA DNS")
 			print ("AICI E HOST",HOST)
 			print ("AICI E DESTINATION",DESTINATION)
