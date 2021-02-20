@@ -49,7 +49,8 @@ def dns_start():
 		#result=result.replace('\t','')
 		#print ("AICI E REZULTATUL 2",result)
 		#print ("-------------")
-		rules.check_rules('DNS',result)
+		for_check=result
+		rules.check_rules('DNS',for_check)
 		result=result.split('\n\t')[0].replace('\t','')
 		try:
 			if '192.168.1.4' not in result:

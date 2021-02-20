@@ -122,15 +122,17 @@
 		
 		<div class="secondfloatbox" id="second">
 			Filter:<br>
-			<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"> ICMP
-			<input type="checkbox" id="HTTP" name="HTTP" value="HTTP"> HTTP
-			<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"> HTTPS
-			<input type="checkbox" id="DNS" name="DNS" value="DNS"> DNS
-			<input type="checkbox" id="Connections" name="Connections" value="Connections"> Connections
-			<input type="checkbox" id="Listeners" name="Listeners" value="Listeners"> Listeners
-			<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"> Anomalies<br><br>
-			Timestamp: <input type="date" id="start"> <input type="date" id="stop"><br><br>
-			<input type="button" id="search.b" name="search.b" value="Search">
+			<form action="/" method="POST">
+				<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"> ICMP
+				<input type="checkbox" id="HTTP" name="HTTP" value="HTTP"> HTTP
+				<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"> HTTPS
+				<input type="checkbox" id="DNS" name="DNS" value="DNS"> DNS
+				<input type="checkbox" id="Connections" name="Connections" value="Connections"> Connections
+				<input type="checkbox" id="Listeners" name="Listening" value="Listening"> Listeners
+				<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"> Anomalies<br><br>
+				Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
+				<input type="submit" value="Search">
+			</form>
 		</div>
 		
 

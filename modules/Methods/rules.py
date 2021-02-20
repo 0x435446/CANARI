@@ -75,7 +75,7 @@ def check_rules(TIP,pachet):
 						if content[int(rules[i][4]):][:len(rules[i][5].strip())] == rules[i][5].strip():
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
-							print ("COMMITED")
+							print ("COMMITED HTTP")
 
 
 		if TIP == "DNS":
@@ -85,7 +85,7 @@ def check_rules(TIP,pachet):
 			rules=read_rules()
 			pachet = pachet.split('\n\t')
 			search = pachet[0].replace('\t','').split(' ')
-			print (search)
+			#print (search)
 			for i in range(len(search)-1):
 				if search[i] == '>':
 					HOST = search[i-1].split('.')
@@ -96,22 +96,22 @@ def check_rules(TIP,pachet):
 				if search[i].count('.')>1 and len(search[i])>2:
 					DESTINATION=search[i]
 					break;
-			print ("AM AJUNS LA DNS")
-			print ("AICI E HOST",HOST)
-			print ("AICI E DESTINATION",DESTINATION)
+			#print ("AM AJUNS LA DNS")
+			#print ("AICI E HOST",HOST)
+			#print ("AICI E DESTINATION",DESTINATION)
 			del pachet[0]
-			print (search)
+			#print (search)
 			for i in range(len(pachet)):
 				pachet[i]=pachet[i].split(':  ')
 				new_pachet.append(pachet[i][1].replace('\n','').replace(' ',''))
-			print ('AICI E',''.join(new_pachet))
+			#print ('AICI E',''.join(new_pachet))
 			for i in range(len(rules)):
-				print (rules[i])
+				#print (rules[i])
 				ok_host = 0
 				ok_destination = 0
 				ok_user_agent = 0
 				if rules[i][0] == 'DNS':
-					print ("DAAA")
+					#print ("DAAA")
 					if rules[i][1] == '*':
 						ok_host = 1
 					elif rules[i][1] == HOST:
@@ -120,14 +120,14 @@ def check_rules(TIP,pachet):
 						ok_destination = 1
 					elif rules[i][2] == DESTINATION:
 						ok_destination = 1
-					print ("DAAA2")
+					#print ("DAAA2")
 					if (ok_destination == 1) and (ok_host == 1):
-						print ("DAAA3")
-						print ("CONTENT:",''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())])
+						#print ("DAAA3")
+						#print ("CONTENT:",''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())])
 						if ''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())] == rules[i][5].strip():
-							print ("DAAA4")
+							#print ("DAAA4")
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
-							print ("COMMITED")
+							print ("COMMITED DNS")
 	except:
 		pass
