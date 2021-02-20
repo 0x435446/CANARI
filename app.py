@@ -140,5 +140,14 @@ def stop():
 	return render_template('index.html',data=data,len=len(data),icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
 
 
+@app.route('/login')
+def login():
+	return render_template('login.html')
+
+@app.route('/process-login',methods=['GET', 'POST'])
+def process_login():
+	return render_template('login.html')
+
+
 if __name__ == '__main__':
 	app.run(debug=True)
