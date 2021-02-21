@@ -33,6 +33,16 @@ mysql = MySQL(app)
 
 #FlagFlag123.
 
+
+def search_risk(risk):
+	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+	cursor = db.cursor()
+	cursor.execute("SELECT Count(Risk) FROM alerte WHERE Risk='"+risk+"'")
+	data = (cursor.fetchall())
+	db.close()
+	return data
+
+
 def select_graph():
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 
@@ -124,7 +134,7 @@ def index():
 			numar.append(str(connect_count))
 			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
 			
-			return render_template('index.html',data=datas,len=len(datas),icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
+			return render_template('index.html',data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
 		else:
 			return redirect("/login")
 	except:

@@ -124,9 +124,9 @@ div.alert_box{
 	height: 100px;
 	font-size:20px;
 	text-align: center;
-	background-color: black;
+	background-color: white;
 	float:left;
-	color:white;
+	color:black;
 	margin-left: 40px;
 	margin-top: 10px;
 }
