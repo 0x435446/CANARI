@@ -30,6 +30,7 @@ def check_whitelist(word):
 
 def dns_start():
 	#print ("DAaaa")
+	dns_time=[]
 	times=[]
 	SUBD=[]
 	puncte = 0
@@ -98,25 +99,43 @@ def dns_start():
 							nope = 1
 					else:
 						nope = 1
+
+
+					for i in range(len(url)):
+						if url[i]==None:
+							del url[i]
+					bd=url
+					domain=[]
+					for i in range(len(tld)):
+						tld[i]=tld[i].lower()
+					for i in range(len(url)):
+						for j in range(len(tld)):
+							try:
+								if url[i]==tld[j]:
+									domain.append(url[i])
+									del url[i]
+								if url[i]=="www":
+									del url[i]
+									del bd[i]
+							except:
+								pass
+
+
+
 					if nope == 0 :
-						for i in range(len(url)):
-							if url[i]==None:
-								del url[i]
-						bd=url
-						domain=[]
-						for i in range(len(tld)):
-							tld[i]=tld[i].lower()
-						for i in range(len(url)):
-							for j in range(len(tld)):
-								try:
-									if url[i]==tld[j]:
-										domain.append(url[i])
-										del url[i]
-									if url[i]=="www":
-										del url[i]
-										del bd[i]
-								except:
-									pass
+
+						z=DNS_time(bd[len(bd)-2])
+						dns_ok=0
+						if len(dns_time)>0:
+							for k in range(len(dns_time)):
+								if dns_time[k].domain == bd[len(bd)-2]:
+									dns_ok = 1
+									dns_time[k].add()
+							if dns_ok == 0:
+								dns_time.append(z)
+						else:
+							dns_time.append(z)
+
 						var=check_whitelist(bd[len(bd)-2])
 						if var == 0:
 							vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
@@ -195,11 +214,25 @@ def dns_start():
 						print ("ALERT! DNS EXFILTRATION, MULTIPLE DOTS")
 						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url))
 						if len(match) == 0:
+
+							z=DNS_time(bd[len(bd)-2])
+							dns_ok=0
+							if len(dns_time)>0:
+								for k in range(len(dns_time)):
+									if dns_time[k].domain == bd[len(bd)-2]:
+										dns_ok = 1
+										dns_time[k].add()
+								if dns_ok == 0:
+									dns_time.append(z)
+							else:
+								dns_time.append(z)
+							
 							for i in range(len(url)):
 								tld_ver=0
 								if verify_encoding(url[i]) != None:
 									if verify_encoding(url[i]) <= 10:
 										if url[i] not in tld:
+											print ("AICI E i",i)
 											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
 											db.commit()
 											print (verify_encoding(url[i]),url[i])

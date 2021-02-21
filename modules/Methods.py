@@ -2,6 +2,7 @@ from Utility import *
 import time as timp
 import MySQLdb 
 from datetime import datetime
+import time
 class ICMP(METHODS):
   time=[]
   def __init__(self, time,ip):
@@ -54,6 +55,30 @@ class DNS(METHODS):
       if self.d[i]==domain:
         return 1
     return 0
+
+
+class DNS_time():
+	def __init__(self,name):
+		self.number=1
+		self.domain=name
+		self.time=str(int(time.time()))
+	def add(self):
+		print ("SCADEREA:",int(time.time())-int(self.time))
+		if int(time.time())-int(self.time) > 3600:
+			print ("COCOSEL",self.number)
+			if self.number > 400:
+				print ("COMMITED")
+				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+				cursor = db.cursor()
+				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / HOUR','HIGH','"+self.domain+"','-','"+str(datetime.now())+"')")
+				db.commit()
+				self.time = str(int(time.time()))
+				self.number = 0
+			else:
+				self.number+=1
+		else:
+			self.number+=1
+
 
 
 
