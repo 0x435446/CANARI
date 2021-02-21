@@ -87,6 +87,9 @@ def dns_start():
 									url = payload.split('.')
 					except:
 						pass
+				for i in range(len(url)):
+					if url[i]=="www":
+						del url[i]
 				if passed == 0:
 					print ("URL: ",url)
 					nope=0
