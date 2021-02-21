@@ -4,6 +4,7 @@ import time
 from Crypto.Util.number import long_to_bytes
 from urllib.parse import urlparse
 import MySQLdb 
+import re
 sys.path.append('./modules')
 from Utility import *
 from Methods import *
@@ -187,6 +188,15 @@ def dns_start():
 													db.commit()
 										except:
 											pass
+					else:
+						print ("ALERT! DNS EXFILTRATION, MULTIPLE DOTS")
+						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url))
+						if len(match) == 0:
+							for i in range(len(url)):
+								if verify_encoding(url[i]) != None:
+									if verify_encoding(url[i]) <= 10:
+										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
+										db.commit()
 		except:
 			print ("PACHET MALFORMAT",result)
 			pass
