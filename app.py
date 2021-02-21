@@ -79,7 +79,7 @@ def select_graph():
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	try:
-		if session['loggedin'] == True:
+		if session['loggedin'] == True: 
 			_thread.start_new_thread(dns.dns_start,())
 			print ("DNS_STARTED")
 			_thread.start_new_thread(icmp.icmp_start,())
