@@ -4,7 +4,7 @@ body{
 }
 
 .content{
-	padding-top:100px;
+	padding-top:10px;
 	color:red;
 	background-color: rgb(0,0,0,0);
 }
@@ -33,18 +33,15 @@ body{
 
 
 .thirdbox{
-	padding-left:10%;
-	padding-right:10%;
-	width:100%;
+	width:50%;
 	background-color: rgb(255,255,255,0.5);
 }
 
 .forthbox{
-	color:black;
-	padding-left:15%;
-	padding-right:15%;
-	height:100px;
-	height:30px;
+	padding-left:10px;
+	padding-right:10px;
+	float:right;
+	width:50%;
 }
 
 input[type=text], select {
@@ -64,6 +61,12 @@ input[type=button], select {
 	
 }
 
+.alerte{
+	margin-bottom: 10px;
+	margin-top: -10px;
+	width:150px;
+}
+
 table {
 	table-layout: fixed ;
 	width: 100% ;
@@ -73,7 +76,7 @@ table {
 
 td {
 	border: 1px solid black;
-	background-color: rgb(0,0,0,0.2);
+	background-color: white;
 	overflow: hidden;
 }
 
@@ -110,6 +113,23 @@ div.progress {
 }
 	
 	
+
+div.alert_box{
+	border-radius: 10px;
+	padding-top: 20px;
+	padding-bottom:10px;
+	padding-left:10px;
+	padding-right:10px;
+	width:200px;
+	height: 100px;
+	font-size:20px;
+	text-align: center;
+	background-color: black;
+	float:left;
+	color:white;
+	margin-left: 40px;
+	margin-top: 10px;
+}
 	
 	
 	

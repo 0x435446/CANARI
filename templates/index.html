@@ -131,11 +131,26 @@
 				<input type="checkbox" id="Listeners" name="Listening" value="Listening"> Listeners
 				<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"> Anomalies<br><br>
 				Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
+				<input class='alerte' type='text' id='numar_alerte' name='numar_alerte' placeholder='Numar alerte'><br>
 				<input type="submit" value="Search">
 			</form>
 		</div>
 		
 
+		<div class="forthbox" id="forth">
+			<div class="alert_box">
+				Risc scazut:
+			</div>
+			<div class="alert_box">
+				Risc mediu:
+			</div>
+			<div class="alert_box">
+				Risc ridicat:
+			</div>
+			<div class="alert_box">
+				Alerte astazi:
+			</div>
+		</div>
 		
 		<div class="thirdbox" id="third">
 			
@@ -172,12 +187,10 @@
                     {%endfor%} 
 			</table>
 			
-			
-			
-			
-			
-			
 		</div>
+
+
+
 	</div>
 
 

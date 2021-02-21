@@ -83,7 +83,13 @@ def index():
 				Data = request.form
 				print ("AICI E DATA",Data)
 				conditie = list(Data)
+				del conditie[-1]
 				print (len(conditie))
+				try:
+					numar_alerte = int(Data['numar_alerte'])
+				except:
+					numar_alerte = 10
+				print (numar_alerte)
 				if len(conditie)>2:
 					timestart = Data['timestart']
 					timestop = Data['timestop']
@@ -92,15 +98,16 @@ def index():
 						conditie[i]="'"+conditie[i]+"'"
 						print (type(conditie[i]))
 					if len(timestart)>0 and len(timestop)>0:
-						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'")
+						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
 					else:
-						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+")")
+						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
 					datas = list(cursor.fetchall())
 				else:
-					cursor.execute("SELECT * FROM alerte")
+					cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
+					print ("AM AJUNS AICI!")
 					datas = list(cursor.fetchall())
 			else:
-				cursor.execute("SELECT * FROM alerte")
+				cursor.execute("SELECT * FROM alerte limit 0,10")
 				datas = list(cursor.fetchall())
 			
 			cursor.execute("SELECT * FROM alerte")
@@ -209,7 +216,13 @@ def process_login():
 		username = MySQLdb.escape_string(request.form['username']).decode()
 		password = MySQLdb.escape_string(request.form['password']).decode()
 		private_key = request.files['file']
-		print(private_key.filename )
+		print(private_key.filename)
+		dirName="/tmp/uploads/"
+		try:
+			os.makedirs(dirName)    
+			print("Directory " , dirName ,  " Created ")
+		except FileExistsError:
+			pass  
 		if(len(private_key.filename)>0):
 			private_key.save('/tmp/uploads/'+private_key.filename)
 		else:
