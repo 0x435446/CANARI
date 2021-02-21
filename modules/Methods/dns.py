@@ -196,12 +196,13 @@ def dns_start():
 						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url))
 						if len(match) == 0:
 							for i in range(len(url)):
+								tld_ver=0
 								if verify_encoding(url[i]) != None:
 									if verify_encoding(url[i]) <= 10:
-										for j in range(len(tld)):
-											if tld[j].lower() != url[i]:
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
-												db.commit()
+										if url[i] not in tld:
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
+											db.commit()
+											print (verify_encoding(url[i]),url[i])
 		except:
 			print ("PACHET MALFORMAT",result)
 			pass
