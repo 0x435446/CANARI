@@ -54,7 +54,6 @@ def dns_start():
 		result=result.split('\n\t')[0].replace('\t','')
 		try:
 			if '192.168.1.4' not in result:
-				print ("DA")
 				result=result.split('\n')
 				#print (result)
 				flag=result[0].split('[')[1].split(']')[0]
@@ -66,22 +65,29 @@ def dns_start():
 						if res[j].count('.') == 2:
 							puncte = 1
 				#print ("FLAG:",flag)
+				passed = 0
 				if flag == 'none':
 					try:
+						for i in range(len(result)):
+							scan_url=result[i].replace('\t','').split(' ')
+							for j in range(len(scan_url)-1):
+								if scan_url[j] == '>':
+									url = scan_url[j+1]
 						payload=result[1].split('?')[1].split(' ')[1]
 						print ("AICI E URL",url)
-						url ='.'.join(url)
 						if 'addr' not in payload:
 							if len(url[len(url)-2]) > 0:
-								#print ("AICI E FLAG:",flag)
-								#print ("AICI E cum arata:",result)
-								#print ("DIG EXFILTRATION",url[:-4])
-								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
-								db.commit()
+								if payload.count('.') < 2:
+									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
+									db.commit()
+									passed = 1
+								else:
+									print ("PASSED")
+									url = payload.split('.')
 					except:
 						pass
-				else:
-					#print ("URL: ",url)
+				if passed == 0:
+					print ("URL: ",url)
 					nope=0
 					if puncte == 0:
 						if len(url)>4:

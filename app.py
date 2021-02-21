@@ -164,7 +164,7 @@ def stop():
 			numar.append(str(listen_count))
 			numar.append(str(connect_count))
 			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
-			return render_template('index.html',data=data,len=len(data),icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
+			return render_template('index.html',data=data,len=len(data) ,low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,  icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
 	except:
 		pass
 	return redirect("/login")
