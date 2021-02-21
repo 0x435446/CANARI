@@ -90,11 +90,16 @@ def index():
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
 			if request.method == 'POST':
+				descendent = 0
 				Data = request.form
 				print ("AICI E DATA",Data)
 				conditie = list(Data)
 				del conditie[-1]
+				if 'descendent' in Data:
+					del conditie[-1]
+					descendent = 1
 				print (len(conditie))
+				print (conditie)
 				try:
 					numar_alerte = int(Data['numar_alerte'])
 				except:
@@ -108,12 +113,21 @@ def index():
 						conditie[i]="'"+conditie[i]+"'"
 						print (type(conditie[i]))
 					if len(timestart)>0 and len(timestop)>0:
-						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+						if descendent == 1:
+							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+						else:
+							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
 					else:
-						cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
+						if descendent == 1:
+							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+						else:
+							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
 					datas = list(cursor.fetchall())
 				else:
-					cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
+					if descendent == 1:
+						cursor.execute("SELECT * FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
+					else:
+						cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
 					print ("AM AJUNS AICI!")
 					datas = list(cursor.fetchall())
 			else:
@@ -189,7 +203,7 @@ def logout():
 	except:
 		print ("NU ESTI LOGAT!")
 		pass
-	return render_template('login.html')
+	return redirect("/login")
 
 
 @app.route('/register')
@@ -207,16 +221,22 @@ def register():
 
 @app.route('/process-register',methods=['POST'])
 def process_register():
-	if request.method == 'POST':
-		username = MySQLdb.escape_string(request.form['username']).decode()
-		password = MySQLdb.escape_string(request.form['password']).decode()
-		generate_rsa.generate_pair(username)
-		db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
-		cursor = db.cursor()
-		cursor.execute("INSERT INTO users (username,password) VALUES('"+ username +"','"+ sha256(password.encode()).hexdigest() +"')")
-		db.commit()
-		db.close()
-	return redirect("/register")
+	try:
+		if session['loggedin'] == True:
+			if request.method == 'POST':
+				username = MySQLdb.escape_string(request.form['username']).decode()
+				password = MySQLdb.escape_string(request.form['password']).decode()
+				generate_rsa.generate_pair(username)
+				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+				cursor = db.cursor()
+				cursor.execute("INSERT INTO users (username,password) VALUES('"+ username +"','"+ sha256(password.encode()).hexdigest() +"')")
+				db.commit()
+				db.close()
+			return redirect("/register")
+		else:
+			redirect("/login")
+	except:
+		redirect("/login")
 
 
 @app.route('/process-login',methods=['POST'])
@@ -261,6 +281,42 @@ def process_login():
 		except:
 			pass
 	return redirect("/login")
+
+
+
+
+@app.route('/addRules')
+def addRules():
+	try:
+		if session['loggedin'] == True:
+			return render_template('add_rules.html')
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
+@app.route('/process-rule',methods=['POST'])
+def processRules():
+	try:
+		if session['loggedin'] == True:
+			if request.method == 'POST':
+				string = request.form['protocol']+":"+request.form['host']+":"+request.form['destination']+":"+request.form['others']+":"+request.form['offset']+":"+request.form['bytes']+":"+request.form['risk']+":"+request.form['message']
+				print (string)
+				if "::" not in string:
+					print ("AM AJUNS AICI!")
+					if string.count(':') != 7:
+						pass
+					else:
+						f=open("./modules/Rules/rules.txt", "a+")
+						f.write(string)
+						f.close()
+				return redirect('/addRules')
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
 
 
 if __name__ == '__main__':

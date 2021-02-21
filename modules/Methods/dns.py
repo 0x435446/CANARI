@@ -198,8 +198,10 @@ def dns_start():
 							for i in range(len(url)):
 								if verify_encoding(url[i]) != None:
 									if verify_encoding(url[i]) <= 10:
-										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
-										db.commit()
+										for j in range(len(tld)):
+											if tld[j].lower() != url[i]:
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
+												db.commit()
 		except:
 			print ("PACHET MALFORMAT",result)
 			pass

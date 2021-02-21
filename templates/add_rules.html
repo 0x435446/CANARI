@@ -7,13 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/body.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_rules.css') }}">
     
 </head>
 
 <body>
-
 	<div class="container">
 		<nav class="navbar navbar-expand-lg rounded" aria-label="Eleventh navbar example">
 		  <div class="container-fluid">
@@ -41,13 +40,16 @@
 		  </div>
 		</nav>
 	</div>
-
-
-	<div class="box" id='box' onmouseover="hover()">
-		<form action='/process-register'  method="post" enctype="multipart/form-data">
-			<input type='text' id='fname' name='username' placeholder='Username'><br>
-			<input type='password' id='lname' name='password' placeholder='Password'><br>
-			<h1 id='title'>Register</h1><br>
+	<div class="box" id='box'>
+		<form action='/process-rule'  method="post" enctype="multipart/form-data">
+			<input type='text' id='protocol' name='protocol' placeholder='Protocol'><br>
+			<input type='text' id='host' name='host' placeholder='HOST'><br>
+			<input type='text' id='destination' name='destination' placeholder='DESTINATION'><br>
+			<input type='text' id='others' name='others' placeholder='OTHERS'><br>
+			<input type='text' id='offset' name='offset' placeholder='OFFSET'><br>
+			<input type='text' id='bytes' name='bytes' placeholder='BYTES'><br>
+			<input type='text' id='risk' name='risk' placeholder='RISK'><br>
+			<input type='text' id='message' name='message' placeholder='MESSAGE'><br>
 			<input id='submit' type='submit' value='Submit'>
 		</form>
 
@@ -58,35 +60,6 @@
 
 </body>
 
-<script>
-	ok=0;
-	function hover() {
-		if (ok == 0){
-		document.getElementById('box').style.paddingTop = '100';
-		document.getElementById('fname').style.visibility = 'visible';
-		document.getElementById('lname').style.visibility = 'visible';
-		document.getElementById('submit').style.visibility = 'visible';
-		document.getElementById('fname').style.opacity = 0;
-		document.getElementById('lname').style.opacity = 0;
-		document.getElementById('submit').style.opacity = 0;
-		var fade = document.getElementById("fname"); 
-		var fade2 = document.getElementById("lname"); 
-		var fade4 = document.getElementById("submit"); 
-		var opacity = 0; 
-		var intervalID = setInterval(function() { 
-			if (opacity < 1) { 
-				opacity = opacity + 0.1 
-				fade.style.opacity = opacity; 
-				fade2.style.opacity = opacity; 
-				fade4.style.opacity = opacity; 
-			} else { 
-				clearInterval(intervalID); 
-			} 
-        }, 100); 
-		document.getElementById('title').style.display = 'none';
-		ok=1;
-		}
-	}
-</script>
+
 
 </html>

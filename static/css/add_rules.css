@@ -1,0 +1,44 @@
+body{
+	background-image: url("../images/background.png");
+	font-family: "OCR A Std", monospace;
+}
+
+.content{
+	padding-top:100px;
+	color:red;
+	background-color: rgb(0,0,0,0);
+}
+
+
+div.box{
+	margin: auto;
+	margin-top: 10%;
+	background-color: white;
+	width:40%;
+	text-align: center;
+	height: 60%;
+	padding-top: 30px;
+}
+.box:hover{
+	background-color: white;
+	box-shadow: 0 25px 60px rgba(0,0,0,.8);
+	transition: 2s;
+}
+input[type=text], select {
+	height:20px;
+	width: 80%;
+	margin-bottom: 22px;
+	text-align: center;
+}
+
+
+
+
+input[type=submit], select {
+}
+	
+	
+h1 { 
+	font-size: 100px; 
+}
+
