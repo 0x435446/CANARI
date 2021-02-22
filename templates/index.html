@@ -61,7 +61,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/{{numar[-1]}}
+				 {{numar[6]}}/{{numar[-1]}}
 				 <span style="float: left">HTTPS</span>
 				 <div class="progressbars">
 					<div class="progress" id="https_progress">
@@ -207,6 +207,7 @@
 	document.getElementById("listen_progress").style.width = "{{listeners}}";
 	document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
 	document.getElementById("vt_progress").style.width = "{{vt}}";
+	document.getElementById("https_progress").style.width = "{{hsc}}";
 	document.getElementById("second").style.height = document.getElementById("first").clientHeight;
 	document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
 	</script>

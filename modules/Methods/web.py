@@ -131,7 +131,7 @@ def http_start():
 											ok_http = 1
 											print ("ALERT HTTP! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
 											#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
-											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'ALERT! UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
 											db.commit()
 											#print ("AM AJUNS AICI!!!")
 							except:
@@ -145,7 +145,7 @@ def http_start():
 							for count2 in range(len(signatures)):
 								try:
 									if founda==0:
-										if long_to_bytes(signatures[count2] == base64.b64decode(GET[0])):
+										if long_to_bytes(signatures[count2]) == base64.b64decode(GET[0]):
 											if stop == 0:
 												#print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[0])
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','"+URL+"','"+GET[0]+"' )")

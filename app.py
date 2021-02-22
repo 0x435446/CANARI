@@ -11,6 +11,7 @@ from hashlib import sha256
 sys.path.append('./modules/Methods')
 import dns
 import web
+import https
 import icmp
 
 sys.path.append('./modules/')
@@ -70,10 +71,12 @@ def select_graph():
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='Connections'")
 	data2 = (cursor2.fetchall())
 	connect_count=data2[0][0]
-
-
+	cursor2= db.cursor()
+	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='HTTPS'")
+	data2 = (cursor2.fetchall())
+	https_count=data2[0][0]
 	db.close()
-	return icmp_count,dns_count,http_count,vs_count,listen_count,connect_count
+	return icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -86,6 +89,9 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
+			_thread.start_new_thread(https.start,())
+			print ("HTTPS_STARTED")
+
 
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
@@ -137,7 +143,7 @@ def index():
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 
-			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count=select_graph()
+			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count=select_graph()
 			
 			numar=[]
 			numar.append(str(icmp_count))
@@ -146,9 +152,10 @@ def index():
 			numar.append(str(vs_count))
 			numar.append(str(listen_count))
 			numar.append(str(connect_count))
-			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
+			numar.append(str(https_count))
+			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count))
 			
-			return render_template('index.html',data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
+			return render_template('index.html',data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
 		else:
 			return redirect("/login")
 	except:
@@ -169,7 +176,8 @@ def stop():
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 			db.close()
-			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count=select_graph()
+			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count=select_graph()
+			
 			numar=[]
 			numar.append(str(icmp_count))
 			numar.append(str(dns_count))
@@ -177,8 +185,10 @@ def stop():
 			numar.append(str(vs_count))
 			numar.append(str(listen_count))
 			numar.append(str(connect_count))
-			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count))
-			return render_template('index.html',data=data,len=len(data) ,low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,  icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),numar=numar)
+			numar.append(str(https_count))
+			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count))
+			
+			return render_template('index.html',data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
 	except:
 		pass
 	return redirect("/login")
