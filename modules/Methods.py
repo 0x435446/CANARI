@@ -70,7 +70,7 @@ class DNS_time():
 				print ("COMMITED")
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
-				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / HOUR','HIGH','"+self.domain+"','-','"+str(datetime.now())+"')")
+				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / HOUR','HIGH','"+self.domain+"','"+str(self.number)+"','"+str(datetime.now())+"')")
 				db.commit()
 				self.time = str(int(time.time()))
 				self.number = 0
@@ -78,6 +78,8 @@ class DNS_time():
 				self.number+=1
 		else:
 			self.number+=1
+
+		
 
 
 

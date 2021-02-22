@@ -92,7 +92,7 @@ def dns_start():
 					if url[i]=="www":
 						del url[i]
 				if passed == 0:
-					print ("URL: ",url)
+					#print ("URL: ",url)
 					nope=0
 					if puncte == 0:
 						if len(url)>4:
@@ -135,7 +135,7 @@ def dns_start():
 								dns_time.append(z)
 						else:
 							dns_time.append(z)
-
+						
 						var=check_whitelist(bd[len(bd)-2])
 						if var == 0:
 							vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
@@ -197,21 +197,26 @@ def dns_start():
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 												db.commit()
 										database.append(kappa)
-
+								ok_signature = 0
+								print ("AICI E OK_SIGNATURE:",ok_signature)
 								for i in range(len(database)):
+									if ok_signature == 0:
 									#print (database[i].d,database[i].sd)
-									for j in range(len(database[i].sd)):
-										try:
-											for k in signatures:
-												if k in database[i].sd[j]:
-													print ("ALERT! DNS EXFILTRATION - " + str(k))
-													#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'SIGNATURE FOUND','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'SIGNATURE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
-													db.commit()
-										except:
-											pass
+										for j in range(len(database[i].sd)):
+											try:
+												for k in signatures:
+													if ok_signature == 0:
+														if k in database[i].sd[j]:
+															if ok_signature == 0:
+																print ("ALERT! DNS EXFILTRATION - " + str(k))
+																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'SIGNATURE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+																db.commit()
+																db.close()
+																ok_signature = 1
+											except:
+												pass
 					else:
-						print ("ALERT! DNS EXFILTRATION, MULTIPLE DOTS")
+						#print ("ALERT! DNS EXFILTRATION, MULTIPLE DOTS")
 						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url))
 						if len(match) == 0:
 
@@ -232,7 +237,7 @@ def dns_start():
 								if verify_encoding(url[i]) != None:
 									if verify_encoding(url[i]) <= 10:
 										if url[i] not in tld:
-											print ("AICI E i",i)
+											#print ("AICI E i",i)
 											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH','"+'.'.join(url)+"','"+url[i]+"','"+str(datetime.now())+"')")
 											db.commit()
 											print (verify_encoding(url[i]),url[i])
