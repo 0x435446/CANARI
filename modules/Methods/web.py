@@ -120,16 +120,22 @@ def http_start():
 				#print ("URL: ",'.'.join(new_URL))
 				x=check_whitelist('.'.join(new_URL))
 				if x == 0:
+					ok_http = 0
 					if URL != '':
 						if len(GET[0][1:]) > 0:
-							print (verify_encoding(GET[0][1:]))
-							if verify_encoding(GET[0][1:]) <= 10:
-								if stop == 0:
-									#print ("ALERT! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
-									#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
-									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'ALERT! UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
-									db.commit()
-									#print ("AM AJUNS AICI!!!")
+							try:
+								print (verify_encoding(GET[0][1:]))
+								if verify_encoding(GET[0][1:]) <= 10:
+									if stop == 0:
+										if ok_http == 0:
+											ok_http = 1
+											print ("ALERT HTTP! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
+											#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'ALERT! UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
+											db.commit()
+											#print ("AM AJUNS AICI!!!")
+							except:
+								pass
 						if len(URLS) == 0:
 							x=WEB()
 							try:
@@ -204,6 +210,7 @@ def http_start():
 																founda=1
 										#print ("AM AJUNS LA COOKIES")
 										#print (URLS[i].adds)
+										print ("AICI E COOKIE:",Cookie)
 										for ii in range(len(URLS[i].Cookies)):
 											ok2=0
 											if URLS[i].Cookies[ii] == Cookie:
@@ -216,6 +223,7 @@ def http_start():
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'MULTIPLE COOKIES SENT','"+URL+"','"+URLS[i].URL+"' )")
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'MULTIPLE COOKIES SENT','HIGH','"+URLS[i].URL+"','"+Cookie+"','"+str(datetime.now())+"')")											
 												db.commit()
+												print ("COOKIE COMMITED")
 										ok=1
 
 							if ok==0:
