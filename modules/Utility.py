@@ -1,8 +1,7 @@
-
-
 import socket
 import fcntl
 import struct
+import MySQLdb 
 
 
 class METHODS:
@@ -22,7 +21,6 @@ class METHODS:
    	       pass
    	   if nr==2:
    	      print ("ALERT: IP HEADER CHANGED")
-
 
     
 def get_ip_address(ifname):
