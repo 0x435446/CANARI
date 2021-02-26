@@ -53,7 +53,8 @@ def http_start():
 		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		if "192.168.1.5" not in cmdout:
 			#print ("REZULTAT NEALTERAT:",cmdout)
-			rules.check_rules('HTTP',cmdout)
+			HOST = rules.check_rules('HTTP',cmdout)
+			print ("HOST-ul de la HTTP:",HOST)
 			#print (hex(bytes_to_long(cmdout.encode())))
 			result=cmdout.split("\n\t\n\t")[0].split('\n')
 			#print ("LEN DE RESULT:",len(result))

@@ -47,7 +47,8 @@ def dns_start():
 		puncte = 0
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		for_check=result
-		rules.check_rules('DNS',for_check)
+		HOST = rules.check_rules('DNS',for_check)
+		print ("HOST-ul de la DNS:",HOST)
 		result=result.split('\n\t')[0].replace('\t','')
 		try:
 			if '192.168.1.4' not in result:
@@ -212,8 +213,7 @@ def dns_start():
 											except:
 												pass
 					else:
-						#print ("ALERT! DNS EXFILTRATION, MULTIPLE DOTS")
-						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url))
+						match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url)) #match url
 						if len(match) == 0:
 							if( check_whitelist(bd[len(bd)-2]) == 0):
 								z=DNS_time(bd[len(bd)-2])

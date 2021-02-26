@@ -42,7 +42,10 @@ def check_rules(TIP,pachet):
 			visible[1]=visible[1].split(' ')
 			for i in range(len(visible[1])):
 				if visible[1][i] == '>':
-					HOST = visible[1][i-1]
+					HOST = visible[1][i-1].split('.')
+					del HOST[-1]
+					HOST='.'.join(HOST)
+					break
 			for i in range(2,len(visible)):
 				if visible[i].split(': ')[0] == 'User-Agent':
 					USER_AGENT = visible[i].split(': ')[1]
@@ -76,7 +79,7 @@ def check_rules(TIP,pachet):
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED HTTP")
-
+			return HOST
 
 		if TIP == "DNS":
 			new_pachet=[]
@@ -85,7 +88,6 @@ def check_rules(TIP,pachet):
 			rules=read_rules()
 			pachet = pachet.split('\n\t')
 			search = pachet[0].replace('\t','').split(' ')
-			#print (search)
 			for i in range(len(search)-1):
 				if search[i] == '>':
 					HOST = search[i-1].split('.')
@@ -96,22 +98,15 @@ def check_rules(TIP,pachet):
 				if search[i].count('.')>1 and len(search[i])>2:
 					DESTINATION=search[i]
 					break;
-			#print ("AM AJUNS LA DNS")
-			#print ("AICI E HOST",HOST)
-			#print ("AICI E DESTINATION",DESTINATION)
 			del pachet[0]
-			#print (search)
 			for i in range(len(pachet)):
 				pachet[i]=pachet[i].split(':  ')
 				new_pachet.append(pachet[i][1].replace('\n','').replace(' ',''))
-			#print ('AICI E',''.join(new_pachet))
 			for i in range(len(rules)):
-				#print (rules[i])
 				ok_host = 0
 				ok_destination = 0
 				ok_user_agent = 0
 				if rules[i][0] == 'DNS':
-					#print ("DAAA")
 					if rules[i][1] == '*':
 						ok_host = 1
 					elif rules[i][1] == HOST:
@@ -120,14 +115,11 @@ def check_rules(TIP,pachet):
 						ok_destination = 1
 					elif rules[i][2] == DESTINATION:
 						ok_destination = 1
-					#print ("DAAA2")
 					if (ok_destination == 1) and (ok_host == 1):
-						#print ("DAAA3")
-						#print ("CONTENT:",''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())])
 						if ''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())] == rules[i][5].strip():
-							#print ("DAAA4")
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED DNS")
+			return HOST
 	except:
 		pass
