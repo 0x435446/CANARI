@@ -1,14 +1,5 @@
 google
-ubuntu
-facebook
-mozilla
-firefox
-ocsp.digicert.com
-webraptor
-us.archive.ubuntu.com
-osboxes.localdomain.
-ghs-svc-https-c46.ghs-ssl.googlehosted.com
-googlehosted
-px.ads.linkedin.com
-detectportal
+firefox-settings-attachments.cdn.mozilla.
+content-signature-2.cdn.mozilla.
 googleapis
+ubuntu

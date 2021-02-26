@@ -23,7 +23,7 @@ def check_chars(word):
 def check_whitelist(word):
 	x=open("./modules/whitelist.txt","r").read().strip().split('\n')
 	for i in x:
-		if i==word:
+		if i in word.split('.'):
 			return 1;
 	return 0;
 

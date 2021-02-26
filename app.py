@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template,jsonify
 from flask_mysqldb import MySQL
 import MySQLdb 
 import os
@@ -89,8 +89,8 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
-			_thread.start_new_thread(https.start,())
-			print ("HTTPS_STARTED")
+			#_thread.start_new_thread(https.start,())
+			#print ("HTTPS_STARTED")
 
 
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -326,6 +326,127 @@ def processRules():
 		print ("NU ESTI LOGAT!")
 		pass
 	return redirect("/login")
+
+
+
+@app.route('/update_edit',methods=['POST'])
+def processUpdate():
+	try:
+		print ("AM AJUNS AICI LA UPDATE")
+		if session['loggedin'] == True:
+			if request.method == 'POST':
+				print ("AICI E ID",request.form['button_id'])
+
+				id_alert = MySQLdb.escape_string(request.form['button_id']).decode()
+				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+				cursor = db.cursor()
+				cursor.execute("SELECT * FROM alerte WHERE ID='"+id_alert+"'")
+				data = list(cursor.fetchall())
+				db.close()
+				dictionar={}
+				dictionar['ID']=data[0][0]
+				dictionar['Type']=data[0][1]
+				dictionar['Message']=data[0][2]
+				dictionar['Risk']=data[0][3]
+				dictionar['Destination']=data[0][4]
+				dictionar['Payload']=data[0][5]
+				dictionar['Timestamp']=data[0][6]
+				Text= ''
+				try:
+					Text="<div class = 'edit_left_text'>ID: "+str(dictionar['ID'])+"</div><br>"+ "<div class = 'edit_left_text'>Type: "+str(dictionar['Type'])+"</div><br>"+ "<div class = 'edit_left_text'>Mesaj: "+str(dictionar['Message'])+"</div><br>"+ "<div class = 'edit_left_text'>Risc: "+str(dictionar['Risk'])+"</div><br>"+ "<div class = 'edit_left_text'>Destinatie: "+str(dictionar['Destination'])+"</div><br>"+ "<div class = 'edit_left_text'>Payload: "+str(dictionar['Payload'])+"</div><br>"+ "<div class = 'edit_left_text'>Timestamp: "+str(dictionar['Timestamp'])+"</div><br>"
+					Text+="|"
+					Text+="<button class='edit_right_buttons' onclick=post_edit_details_destination('"+str(dictionar['Destination'])+"')> Block/Unblock destination </button>"
+					if dictionar['Type'] == "HTTP" or dictionar['Type'] == "HTTPS":
+						if "User" in dictionar['Message']:
+							Text+="<button class='edit_right_buttons'onclick=post_edit_details_payload('"+str(dictionar['Payload']).replace(' ','*')+"')> Block/Unblock Payload </button>"
+				except:
+					print ("Noti noti")
+					pass
+				print ("AM AJUNS AICI,DA")
+				#return jsonify(dictionar)
+				return Text
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
+def add_delete_destination(destination):
+	file=open("./modules/whitelist.txt","r")
+	content = file.read().strip().split()
+	file.close()
+	if destination in content:
+		content.remove(destination)
+		modify = open("./modules/whitelist.txt","w")
+		modify.write('\n'.join(content))
+		modify.close()
+		return 0
+	content.append(destination)
+	modify = open("./modules/whitelist.txt","w")
+	modify.write('\n'.join(content))
+	modify.close()
+	return 1
+
+
+@app.route('/edit_destionation',methods=['POST'])
+def edit_destionation():
+	try:
+		if session['loggedin'] == True:
+			if request.method == 'POST':
+				print ("AICI E ID",request.form['button_id'])
+				destinatie = MySQLdb.escape_string(request.form['button_id']).decode()
+				if (destinatie!="-"):
+					print ("dada")
+					print ("AICI VEDEM DACA E SAU NU",add_delete_destination(destinatie))
+				else:
+					print ("Nunu")
+				return destinatie
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
+def add_delete_payload(payload):
+	payload=payload.replace('*',' ')
+	print ("PAYLOAD",payload)
+	file=open("./modules/whitelist_user_agent.txt","r")
+	content = file.read().strip().split('\n')
+	file.close()
+	if payload in content:
+		content.remove(payload)
+		modify = open("./modules/whitelist_user_agent.txt","w")
+		modify.write('\n'.join(content))
+		modify.close()
+		return 0
+	content.append(payload)
+	modify = open("./modules/whitelist_user_agent.txt","w")
+	modify.write('\n'.join(content))
+	modify.close()
+	return 1
+
+
+
+@app.route('/edit_payload',methods=['POST'])
+def edit_payload():
+	try:
+		if session['loggedin'] == True:
+			if request.method == 'POST':
+				payload = MySQLdb.escape_string(request.form['button_id']).decode()
+				if (payload!="-"):
+					print ("dada")
+					print ("AICI VEDEM DACA E SAU NU",add_delete_payload(payload))
+				else:
+					print ("Nunu")
+				return payload
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
 
 
 

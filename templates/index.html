@@ -136,7 +136,6 @@
 				<input type="submit" value="Search">
 			</form>
 		</div>
-		
 
 		<div class="forthbox" id="forth">
 			<div class="alert_box">
@@ -149,7 +148,7 @@
 				Risc ridicat:<br>{{high_risk}}
 			</div>
 		</div>
-		
+
 		<div class="thirdbox" id="third">
 			
 			<table>
@@ -176,7 +175,7 @@
 							Timestamp
 					</td>
 					<td>
-							Block
+							Edit
 					</td>
 				</tr>
                    {%for i in range(len)%} 
@@ -186,10 +185,8 @@
                         {%endfor%} 
                   		  <td>
 
-							<form action="" method="post">
 							    <button style="background: url(static/images/x.png); 
-							    width:50px; height: 50px;background-size: cover;" name="foo" value="" ></button>
-							</form>
+							    width:50px; height: 50px;background-size: cover;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
                   		  </td>
                     </tr>
                     {%endfor%} 
@@ -198,7 +195,20 @@
 		</div>
 
 
+		<div class="edit" id="edit">
+			<div class="edit_top" id="edit_top">
+				<button  onclick="hide()" class='edit_top_button'>X</button>
+			</div>
+			<div class="edit_left" id="edit_left">
 
+			</div>
+			<div class="edit_right" id="edit_right">
+
+			</div>
+		</div>
+
+		
+		
 	</div>
 
 
@@ -209,18 +219,104 @@
 
 
 	<script>
-	document.getElementById("icmp_progress").style.width = "{{icmp}}";
-	document.getElementById("http_progress").style.width = "{{http}}";
-	document.getElementById("https_progress").style.width = "{{https}}";
-	document.getElementById("dns_progress").style.width = "{{dns}}";
-	document.getElementById("conn_progress").style.width = "{{connections}}";
-	document.getElementById("listen_progress").style.width = "{{listeners}}";
-	document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
-	document.getElementById("vt_progress").style.width = "{{vt}}";
-	document.getElementById("https_progress").style.width = "{{hsc}}";
-	document.getElementById("second").style.height = document.getElementById("first").clientHeight;
-	document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
+		document.getElementById("icmp_progress").style.width = "{{icmp}}";
+		document.getElementById("http_progress").style.width = "{{http}}";
+		document.getElementById("https_progress").style.width = "{{https}}";
+		document.getElementById("dns_progress").style.width = "{{dns}}";
+		document.getElementById("conn_progress").style.width = "{{connections}}";
+		document.getElementById("listen_progress").style.width = "{{listeners}}";
+		document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
+		document.getElementById("vt_progress").style.width = "{{vt}}";
+		document.getElementById("https_progress").style.width = "{{hsc}}";
+		document.getElementById("second").style.height = document.getElementById("first").clientHeight;
+		document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
 	</script>
 	
+	<script>
+		var ok = 0;
+		function reveal(id){
+			if (ok == 1){
+				document.getElementById("edit").style.visibility = "hidden";
+				ok = 0
+			}
+			else if (ok == 0){
+				get_edit_details(id);
+				document.getElementById("edit").style.visibility = "visible";
+				ok = 1
+			}
+		}
+	</script>
+
+
+	<script>
+		function hide(){
+			document.getElementById("edit").style.visibility = "hidden";
+			ok = 0;
+		}
+	</script>
+
+
+
+	<script>
+	function get_edit_details(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				document.getElementById("edit_left").innerHTML = response.split("|")[0];
+				document.getElementById("edit_right").innerHTML = response.split("|")[1];
+			}
+		};
+		xhttp.open("POST", "/update_edit", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
+
+
+	<script>
+	function post_edit_details_destination(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				alert(response);
+			}
+		};
+		xhttp.open("POST", "/edit_destionation", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
+
+	<script>
+	function post_edit_details_payload(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				alert(response);
+			}
+		};
+		xhttp.open("POST", "/edit_payload", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
     <script src="js/bootstrap.bundle.min.js"></script>
 </html>
