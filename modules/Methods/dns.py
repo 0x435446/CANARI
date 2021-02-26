@@ -46,11 +46,6 @@ def dns_start():
 		cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
 		puncte = 0
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
-		#print ("-------------")
-		#print ("AICI E REZULTATUL",result.split('\n\t')[0])
-		#result=result.replace('\t','')
-		#print ("AICI E REZULTATUL 2",result)
-		#print ("-------------")
 		for_check=result
 		rules.check_rules('DNS',for_check)
 		result=result.split('\n\t')[0].replace('\t','')
@@ -92,7 +87,6 @@ def dns_start():
 					if url[i]=="www":
 						del url[i]
 				if passed == 0:
-					#print ("URL: ",url)
 					nope=0
 					if puncte == 0:
 						if len(url)>4:
@@ -121,7 +115,6 @@ def dns_start():
 								pass
 
 
-
 					if nope == 0 :
 
 						z=DNS_time(bd[len(bd)-2])
@@ -138,11 +131,14 @@ def dns_start():
 						
 						var=check_whitelist(bd[len(bd)-2])
 						if var == 0:
-							vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
-							#print (vt)
-							for i in vt:
-								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','" + bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
-								db.commit()
+							try:
+								vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
+								#print (vt)
+								for i in vt:
+									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','" + bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
+									db.commit()
+							except:
+								pass
 							stop = 0
 							#print ("SUBDOMENII:",SUBD)
 							for i in range(len(SUBD)):
