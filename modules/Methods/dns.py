@@ -48,7 +48,6 @@ def dns_start():
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		for_check=result
 		HOST = rules.check_rules('DNS',for_check)
-		print ("HOST-ul de la DNS:",HOST)
 		result=result.split('\n\t')[0].replace('\t','')
 		try:
 			if '192.168.1.4' not in result:
@@ -76,7 +75,7 @@ def dns_start():
 						if 'addr' not in payload:
 							if len(url[len(url)-2]) > 0:
 								if payload.count('.') < 2:
-									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+ url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
+									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 									db.commit()
 									passed = 1
 								else:
@@ -118,7 +117,7 @@ def dns_start():
 
 					if nope == 0 :
 
-						z=DNS_time(bd[len(bd)-2])
+						z=DNS_time(bd[len(bd)-2],HOST)
 						dns_ok=0
 						if len(dns_time)>0:
 							for k in range(len(dns_time)):
@@ -136,7 +135,7 @@ def dns_start():
 								vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
 								#print (vt)
 								for i in vt:
-									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','" + bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
+									cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','"+HOST+"','"+ bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
 									db.commit()
 							except:
 								pass
@@ -155,20 +154,20 @@ def dns_start():
 											for j in range(len(bd)-2):
 												if len(str(bd[j])) > 10:
 													#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION LENGTH','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 													db.commit()
 													print ("ALERT! DNS EXFILTRATION LEN - "+ str(len(str(bd[j]))) +" "+bd[j])
 													
 												if check_chars(bd[j]) == 1:
 													print ("ALERT! DNS EXFILTRATION NONASCII CHARS - " + bd[j])
 													#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION NONASCII CHARS','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION NONASCII CHARS','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION NONASCII CHARS','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 													db.commit()
 												#print verify_encoding(bd[j])
 												if verify_encoding(bd[j])<=10:
 													print ("ALERT! UNKNOWN BASE FOUND!!! --> "+bd[j])
 													#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'UNKNOWN BASE FOUND','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 													db.commit()
 												kappa.add(bd[j],int(time.time()))
 											ok=1
@@ -180,18 +179,18 @@ def dns_start():
 											kappa.add(bd[j],int(time.time()))
 											if len(str(bd[j])) > 10:
 												print ("ALERT! DNS EXFILTRATION LEN - "+ str(len(str(bd[j]))))
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 												#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION LENGTH','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
 												db.commit()
 											if check_chars(bd[j]) == 1:
 												print ("ALERT! DNS EXFILTRATION NONASCII CHARS" + bd[j])
 												#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION NONASCII CHARS','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION NONASCII CHARS','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION NONASCII CHARS','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 												db.commit()
 											if verify_encoding(bd[j])<=10:
 												print ("ALERT! UNKNOWN BASE FOUND!!! --> "+bd[j])
 												#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'UNKNOWN BASE FOUND','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 												db.commit()
 										database.append(kappa)
 								ok_signature = 0
@@ -206,7 +205,7 @@ def dns_start():
 														if k in database[i].sd[j]:
 															if ok_signature == 0:
 																print ("ALERT! DNS EXFILTRATION - " + str(k))
-																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'SIGNATURE FOUND','HIGH','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'SIGNATURE FOUND','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 																db.commit()
 																db.close()
 																ok_signature = 1
@@ -234,7 +233,7 @@ def dns_start():
 										if verify_encoding(url[i]) <= 10:
 											if url[i] not in tld:
 												#print ("AICI E i",i)
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH,'"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
 												db.commit()
 												print (verify_encoding(url[i]),url[i])
 		except:

@@ -1,5 +1,6 @@
 firefox-settings-attachments.cdn.mozilla.
 content-signature-2.cdn.mozilla.
 googleapis
-ubuntu
 google
+http://detectportal.firefox.com/success.txt?ipv4
+firefox

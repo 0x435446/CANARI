@@ -5,12 +5,13 @@ from datetime import datetime
 import time
 class ICMP(METHODS):
   time=[]
-  def __init__(self, time,ip):
+  def __init__(self, time,ip,source):
     self.header=[]
     self.htime=[]
     self.time.append(time)
     self.htime.append(time)
     self.ip=ip
+    self.source=source
 
   def add(self,time):
     self.time.append(time)
@@ -26,7 +27,7 @@ class ICMP(METHODS):
       if(self.time[len(self.time)-1]-self.time[len(self.time)-3]<256):
         print ("ALERTA: ICMP FREQUENCY")
         #cursor.execute("INSERT INTO icmp (ID_event,Name,Alert_Type,IP) VALUES('1', 'ICMP', 'ICMP FREQUENCY','"+str(self.ip)+"' )")
-        cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('ICMP', 'HIGH FREQUENCY','MEDIUM','"+str(self.ip)+"','-','"+str(datetime.now())+"')")
+        cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'HIGH FREQUENCY','MEDIUM','"+str(self.source)+"','"+str(self.ip)+"','-','"+str(datetime.now())+"')")
         db.commit()
         for i in range(len(self.htime)):
           if self.htime[i]>int(timp.time())-3600:
@@ -34,7 +35,7 @@ class ICMP(METHODS):
         if count > 20 :
           print ("ALERT: ICMP / HOUR")
           #cursor.execute("INSERT INTO icmp (ID_event,Name,Alert_Type,IP) VALUES('1', 'ICMP', 'ICMP / HOUR','"+str(self.ip)+"' )")
-          cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('ICMP', 'HIGH FREQUENCY / HOUR','MEDIUM','"+str(self.ip)+"','-','"+str(datetime.now())+"')")
+          cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'HIGH FREQUENCY / HOUR','MEDIUM','"+str(self.source)+"','"+str(self.ip)+"','-','"+str(datetime.now())+"')")
           db.commit()
 
 
@@ -58,26 +59,28 @@ class DNS(METHODS):
 
 
 class DNS_time():
-	def __init__(self,name):
-		self.number=1
-		self.domain=name
-		self.time=str(int(time.time()))
-	def add(self):
-		print ("SCADEREA:",int(time.time())-int(self.time))
-		if int(time.time())-int(self.time) > 3600:
-			print ("COCOSEL",self.number)
-			if self.number > 400:
-				print ("COMMITED")
-				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
-				cursor = db.cursor()
-				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / HOUR','HIGH','"+self.domain+"','"+str(self.number)+"','"+str(datetime.now())+"')")
-				db.commit()
-				self.time = str(int(time.time()))
-				self.number = 0
-			else:
-				self.number+=1
-		else:
-			self.number+=1
+  def __init__(self,name,source):
+    self.number=1
+    self.domain=name
+    self.source=source
+    self.time=str(int(time.time()))
+
+  def add(self):
+    print ("SCADEREA:",int(time.time())-int(self.time))
+    if int(time.time())-int(self.time) > 3600:
+      print ("COCOSEL",self.number)
+      if self.number > 400:
+        print ("COMMITED")
+        db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / HOUR','HIGH','"+self.source+"','"+self.domain+"','"+str(self.number)+"','"+str(datetime.now())+"')")
+        db.commit()
+        self.time = str(int(time.time()))
+        self.number = 0
+      else:
+        self.number+=1
+    else:
+      self.number+=1
 
 		
 

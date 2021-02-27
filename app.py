@@ -89,8 +89,8 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
-			#_thread.start_new_thread(https.start,())
-			#print ("HTTPS_STARTED")
+			_thread.start_new_thread(https.start,())
+			print ("HTTPS_STARTED")
 
 
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -348,12 +348,13 @@ def processUpdate():
 				dictionar['Type']=data[0][1]
 				dictionar['Message']=data[0][2]
 				dictionar['Risk']=data[0][3]
-				dictionar['Destination']=data[0][4]
-				dictionar['Payload']=data[0][5]
-				dictionar['Timestamp']=data[0][6]
+				dictionar['Source']=data[0][4]
+				dictionar['Destination']=data[0][5]
+				dictionar['Payload']=data[0][6]
+				dictionar['Timestamp']=data[0][7]
 				Text= ''
 				try:
-					Text="<div class = 'edit_left_text'>ID: "+str(dictionar['ID'])+"</div><br>"+ "<div class = 'edit_left_text'>Type: "+str(dictionar['Type'])+"</div><br>"+ "<div class = 'edit_left_text'>Mesaj: "+str(dictionar['Message'])+"</div><br>"+ "<div class = 'edit_left_text'>Risc: "+str(dictionar['Risk'])+"</div><br>"+ "<div class = 'edit_left_text'>Destinatie: "+str(dictionar['Destination'])+"</div><br>"+ "<div class = 'edit_left_text'>Payload: "+str(dictionar['Payload'])+"</div><br>"+ "<div class = 'edit_left_text'>Timestamp: "+str(dictionar['Timestamp'])+"</div><br>"
+					Text="<div class = 'edit_left_text'>ID: "+str(dictionar['ID'])+"</div><br>"+ "<div class = 'edit_left_text'>Type: "+str(dictionar['Type'])+"</div><br>"+ "<div class = 'edit_left_text'>Mesaj: "+str(dictionar['Message'])+"</div><br>"+ "<div class = 'edit_left_text'>Risc: "+str(dictionar['Risk'])+"</div><br>"+ "<div class = 'edit_left_text'>Sursa: "+str(dictionar['Source'])+"</div><br>"+ "<div class = 'edit_left_text'>Destinatie: "+str(dictionar['Destination'])+"</div><br>"+ "<div class = 'edit_left_text'>Payload: "+str(dictionar['Payload'])+"</div><br>"+ "<div class = 'edit_left_text'>Timestamp: "+str(dictionar['Timestamp'])+"</div><br>"
 					Text+="|"
 					Text+="<button class='edit_right_buttons' onclick=post_edit_details_destination('"+str(dictionar['Destination'])+"')> Block/Unblock destination </button>"
 					if dictionar['Type'] == "HTTP" or dictionar['Type'] == "HTTPS":

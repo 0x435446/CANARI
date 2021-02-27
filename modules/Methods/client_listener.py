@@ -60,11 +60,11 @@ def l1():
 										print ("TYPE",data[2].split(b"-")[3])
 										if data[2].split(b"-")[3] == b'LISTEN':
 											print ("LISTEN ADAUGAT")
-											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('Listening', '"+ data[2].split(b'-')[0].decode()+" "+data[2].split(b'-')[2].decode()+"','MEDIUM','"+ data[2].split(b'-')[1].decode()+"','-','"+str(datetime.now())+"')")
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Listening', '"+ data[2].split(b'-')[0].decode()+" "+data[2].split(b'-')[2].decode()+"','MEDIUM','"+ client_address[0]+"','"+data[2].split(b'-')[1].decode()+"','-','"+str(datetime.now())+"')")
 											db.commit()
 										if data[2].split(b"-")[3] == b'SOCKET':
 											print ("SOCKET ADAUGAT")
-											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('Connections', '"+ data[2].split(b'-')[0].decode()+" "+(data[2].split(b'-')[2].decode()).replace(' ','')+"','MEDIUM','"+ data[2].split(b'-')[1].decode()+"','-','"+str(datetime.now())+"')")
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Connections', '"+ data[2].split(b'-')[0].decode()+" "+(data[2].split(b'-')[2].decode()).replace(' ','')+"','MEDIUM','"+ client_address[0]+"','"+data[2].split(b'-')[1].decode()+"','-','"+str(datetime.now())+"')")
 											db.commit()
 										print ("AM AJUNS")
 										connection.sendall(random_bytes.encode())
@@ -89,12 +89,6 @@ def l1():
 								connection.sendall(b"MUIE MA de la PACHET")
 								connection.close()
 								break;
-							'''
-							except:
-								connection.sendall(b"MUIE MA de la MINE")
-								connection.close()
-								pass
-							'''
 						else:
 							if ok == 0:
 								print ("Sal")

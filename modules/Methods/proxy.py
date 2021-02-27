@@ -13,13 +13,13 @@ from Utility import *
 from Methods import *
 from verify_encoding import *
 
-def verify_content(content,url):
+def verify_content(content,url,Source):
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
 	match = re.findall(r'[\w\.-]+@[\w\.-]+', content.decode('latin1'))
 	if len(match)>0:
 		print ("Fisier cu email-uri trimis !😍  --> ", ', '.join(match))
-		cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'EMAIL EXFILTRATION','MEDIUM','"+url+"','"+', '.join(match)+"','"+str(datetime.now())+"')")
+		cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'EMAIL EXFILTRATION','MEDIUM','"+Source+"','"+url+"','"+', '.join(match)+"','"+str(datetime.now())+"')")
 		db.commit()
 		print ("HTTPS EMAIL COMMITED")
 
@@ -27,13 +27,13 @@ def verify_content(content,url):
 	if len(match)>0:
 		if ("RSA" in content.decode('latin1') ) or ("rsa" in content.decode('latin1')):
 			print ("Fisier cu chei RSA trimis!😍  -- >", ', ',content.decode('latin1'))
-			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'RSA KEY EXFILTRATION','HIGH','"+url+"','"+content.decode('latin1')+"','"+str(datetime.now())+"')")
+			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'RSA KEY EXFILTRATION','HIGH','"+Source+"','"+url+"','"+content.decode('latin1')+"','"+str(datetime.now())+"')")
 			db.commit()
 			print ("HTTPS RSA COMMITED")
 			
 	if ("Pass" in content.decode('latin1')) or ("pass" in content.decode('latin1')) or ("PASS" in content.decode('latin1')):
 		print ("Fisier cu parole trimis!😍  -- >", ', ',content.decode('latin1'))
-		cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'PASSWORDS EXFILTRATION','LOW','"+url+"','"+content.decode('latin1')+"','"+str(datetime.now())+"')")
+		cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'PASSWORDS EXFILTRATION','LOW','"+Source+"','"+url+"','"+content.decode('latin1')+"','"+str(datetime.now())+"')")
 		db.commit()
 		print ("HTTPS PASSWORDS COMMITED")
 
@@ -56,7 +56,7 @@ def check_whitelist_ua(word):
 	return 0;
 
 
-def check_get(GET,url):
+def check_get(GET,url,Source):
 	global signatures
 	path=GET.split("/")
 	print (path)
@@ -66,23 +66,28 @@ def check_get(GET,url):
 		cursor = db.cursor()
 		if verify_encoding(i) <10:
 			print ("ALERTA HTTPS! UNKNOWN BASE FOUND!")
-			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'UNKNOWN BASE FOUND!','MEDIUM','"+url+"','"+i+"','"+str(datetime.now())+"')")
+			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'UNKNOWN BASE FOUND!','MEDIUM','"+Source+"','"+url+"','"+i+"','"+str(datetime.now())+"')")
 			db.commit()
 			print ("HTTPS BASE COMMITED")
 		if len(i) > 15:
 			print ("ALERTA HTTPS! LENGTH!")
-			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'GET LENGTH > 15','MEDIUM','"+url+"','"+i+"','"+str(datetime.now())+"')")
+			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'GET LENGTH > 15','MEDIUM','"+Source+"','"+url+"','"+i+"','"+str(datetime.now())+"')")
 			db.commit()
 			print ("HTTPS LEN COMMITED")
 		for k in signatures:
 			if k in i:
 				print ("ALERTA HTTPS! HEX SIGNATURE FOUND!")
-				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'HEX SIGNATURE FOUND!','MEDIUM','"+url+"','"+i+"','"+str(datetime.now())+"')")
+				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'HEX SIGNATURE FOUND!','MEDIUM','"+Source+"','"+url+"','"+i+"','"+str(datetime.now())+"')")
 				db.commit()
 				print ("HTTPS SIGNATURE COMMITED")
 		db.close()
 
 def request(flow: http.HTTPFlow):
+	Source =''
+	for i in list(filter(None,flow.client_conn.address[0].split(":"))):
+		if i.count(".")>2:
+			Source = i
+	print ("Source:",Source)
 	print("URL",flow.request.pretty_url)
 	x=check_whitelist(flow.request.pretty_url)
 	if x==0:
@@ -90,7 +95,7 @@ def request(flow: http.HTTPFlow):
 			print ("ALERTA HTTPS! User-Agent!")
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
-			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM','-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
+			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM', '"+Source+"' '-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
 			db.commit()
 			db.close()
 			print ("HTTPS UserAgent COMMITED")
@@ -98,7 +103,7 @@ def request(flow: http.HTTPFlow):
 		GET=flow.request.path
 		global signatures
 		signatures=read_file('signatures')
-		check_get(GET,flow.request.pretty_url)
+		check_get(GET,flow.request.pretty_url,Source)
 		try:
 			cookies = flow.request.headers['Cookies']
 		except:
@@ -108,7 +113,7 @@ def request(flow: http.HTTPFlow):
 			flow.intercept()
 			f = open("/tmp/buffer", "wb")
 			content=flow.request.content
-			verify_content(content,flow.request.pretty_url)
+			verify_content(content,flow.request.pretty_url,Source)
 			f.write(content)
 			f.close()
 			for module in binwalk.scan("/tmp/buffer",signature=True,quiet=True,extract=False):

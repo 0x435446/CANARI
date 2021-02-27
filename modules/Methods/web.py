@@ -67,7 +67,7 @@ def http_start():
 							agent_found = 1
 							#print ("User-Agent ALERT!")
 							#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'User-Agent ALERT!','-','"+result[i][1]+"' )")
-							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM','-','"+result[i][1]+"','"+str(datetime.now())+"')")
+							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM'"+HOST+",'-','"+result[i][1]+"','"+str(datetime.now())+"')")
 							db.commit()
 							#print ("USER AGENT GASIT!")
 				if cookie_found == 0:
@@ -132,7 +132,7 @@ def http_start():
 											ok_http = 1
 											print ("ALERT HTTP! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
 											#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
-											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'UNKNOWN BASE FOUND!','MEDIUM','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'UNKNOWN BASE FOUND!','MEDIUM','"+HOST+"','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
 											db.commit()
 											#print ("AM AJUNS AICI!!!")
 							except:
@@ -150,7 +150,7 @@ def http_start():
 											if stop == 0:
 												#print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[0])
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','"+URL+"','"+GET[0]+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+HOST+"','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
 
 												db.commit()
 												founda=1
@@ -162,7 +162,7 @@ def http_start():
 											if stop == 0:
 												#print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[0])
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','"+URL+"','"+GET[0]+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+HOST+"','"+URL+"','"+GET[0]+"','"+str(datetime.now())+"')")
 												
 												db.commit()
 												founda=1
@@ -185,7 +185,7 @@ def http_start():
 													if stop == 0:
 														#print ("ALERT! GET LEN: "+GET[count])
 														#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET LENGTH!','"+URL+"','"+GET[count]+"' )")
-														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET LENGTH > 15','MEDIUM','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
+														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'GET LENGTH > 15','MEDIUM','"+HOST+"','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
 														
 														db.commit()
 														break
@@ -196,7 +196,7 @@ def http_start():
 																if stop == 0:
 																	#print ("ALERT! GET FILE SIGNATURE FOUND AS BASE64! :"+GET[count])
 																	#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','"+URL+"','"+GET[count]+"' )")
-																	cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
+																	cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS BASE64!','HIGH','"+HOST+"','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")
 																	db.commit()
 																	founda=1
 													except:
@@ -206,7 +206,7 @@ def http_start():
 															if stop == 0:
 																#print ("ALERT! GET FILE SIGNATURE FOUND AS HEX! :"+GET[count])
 																#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','"+URL+"','"+GET[count]+"' )")
-																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")											
+																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'GET FILE SIGNATURE FOUND AS HEX!','HIGH','"+HOST+"','"+URL+"','"+GET[count]+"','"+str(datetime.now())+"')")											
 																db.commit()
 																founda=1
 										#print ("AM AJUNS LA COOKIES")
@@ -222,7 +222,7 @@ def http_start():
 											if URLS[i].adds>2:
 												#print ("ALERT! MULTIPLE COOKIES SENT TO "+ URLS[i].URL)
 												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'MULTIPLE COOKIES SENT','"+URL+"','"+URLS[i].URL+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', 'MULTIPLE COOKIES SENT','HIGH','"+URLS[i].URL+"','"+Cookie+"','"+str(datetime.now())+"')")											
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'MULTIPLE COOKIES SENT','HIGH','"+HOST+"','"+URLS[i].URL+"','"+Cookie+"','"+str(datetime.now())+"')")											
 												db.commit()
 												print ("COOKIE COMMITED")
 										ok=1

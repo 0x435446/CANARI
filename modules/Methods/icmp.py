@@ -21,7 +21,16 @@ def icmp_start():
 	while(start_icmp!=0):
 		cmd="sudo tcpdump -i ens33 -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply 2>/dev/null"
 		print ("------------------------------------------------------------------------------------")
-		result = subprocess.check_output(cmd, shell=True).decode('utf-8').replace('\t','').split('\n')
+		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+		search= result.split(' ')
+		host=''
+		for i in range(len(search)-2):
+			if search[i] == '>':
+				print ("SURSA",search)
+				host = search[i-1]
+				print ("HOST ICMP:",host)
+				break;
+		result = result.replace('\t','').split('\n')
 		res=[]
 		ok=0
 		print (result[1])
@@ -34,7 +43,7 @@ def icmp_start():
 		response=get_stranger_ip(result[1])
 		if ok==0 :
 			z=0
-			x=ICMP(int(timp.time()),response)
+			x=ICMP(int(timp.time()),response,host)
 			if for_test==0:
 				cursor.execute("SELECT Destination FROM alerte WHERE Message='NEW IP ADDED'")
 				data = list(cursor.fetchall())
@@ -45,7 +54,7 @@ def icmp_start():
 				print ("UNUL NOU")
 				print (result[1])
 				if for_test==0:
-					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('ICMP', 'NEW IP ADDED','LOW','"+str(response)+"','-','"+str(datetime.now())+"')")
+					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'NEW IP ADDED','LOW','"+host+"','"+str(response)+"','-','"+str(datetime.now())+"')")
 					db.commit()
 			times.append(x)
 		time=result[0].split(' ')[0]
@@ -66,7 +75,7 @@ def icmp_start():
 			if ckeck(values,97) ==  0:
 				print ('ICMP: PADDING FAILED')
 				if for_test==0:
-					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('ICMP', 'PADDING FAILED','HIGH','"+str(response)+"','"+str(''.join(values))+"','"+str(datetime.now())+"')")
+					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'PADDING FAILED','HIGH','"+host+"','"+str(response)+"','"+str(''.join(values))+"','"+str(datetime.now())+"')")
 				#cursor.execute("INSERT INTO icmp (ID_event,Name,Alert_Type,IP) VALUES('1', 'ICMP', 'PADDING FAILED','"+response+"' )")
 					db.commit()
 		print (len(times))
