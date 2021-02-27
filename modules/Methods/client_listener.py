@@ -72,7 +72,7 @@ def l1():
 										break;
 									else:
 										print ("ZEROURI")
-										connection.sendall(b"MUIE MA de la ZEROURI")
+										connection.sendall(b"PASS de la ZEROURI")
 										connection.close()
 										break;
 								else:
@@ -80,13 +80,13 @@ def l1():
 									print ("DATA[1]:",data[1])
 									print ("Sha data[1]:",hashlib.sha256(data[1]).hexdigest())
 									print ("Sha primit:",data[0])
-									connection.sendall(b"MUIE MA de la HASH")
+									connection.sendall(b"PASS de la HASH")
 									connection.close()
 									ok = 1
 									break;
 							else:
 								print ("NU SE AFLA IN PACHET")
-								connection.sendall(b"MUIE MA de la PACHET")
+								connection.sendall(b"PASS de la PACHET")
 								connection.close()
 								break;
 						else:

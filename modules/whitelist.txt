@@ -4,3 +4,4 @@ googleapis
 google
 http://detectportal.firefox.com/success.txt?ipv4
 firefox
+ubuntu

@@ -25,6 +25,15 @@ def hash(for_sha):
 		i += 1
 	return sha+"|"+cuvant.decode()+str(i-1)
 
+def check_pipe():
+	f=open("pipe.txt","r")
+	text=f.read().strip()
+	f.close()
+	if len(text)>1:
+		return text
+	else:
+		return "Nope"
+		
 def connect(message):
 	global word
 	sock = socket.create_connection(('localhost', 1234))
@@ -32,11 +41,18 @@ def connect(message):
 	data = sock.recv(1000)
 	print (data)
 	word = data.decode()
+	f=open("pipe.txt","w")
+	f.write(data.decode())
+	f.close()
 	sock.close()
 
 global word
-connect('Start')
-print ("PRIMUL CONNECT:",word)
+content = check_pipe()
+if content == "Nope":
+	connect('Socket')
+	print ("PRIMUL CONNECT:",word)
+else:
+	word = content
 
 while(1):
 	cmd="ss -4 -p"
