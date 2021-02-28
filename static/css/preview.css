@@ -22,13 +22,26 @@ tr{
 	background-color: rgb(255, 255, 255) !important;
 }
 td{
-	border-color: rgb(0, 0, 0,0.3) !important;
+	font-size: 15px;
+	border-color: rgb(0, 0, 0,0.2) !important;
 	border-right: none !important;
 	border-left: none !important;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+
 }
+
+td:hover{
+	font-size: 16px;
+}
+
 
 th{
 	background-color: white;
+	font-size: 20px;
+	padding-bottom: 5px;
 }
 
 
