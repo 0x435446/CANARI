@@ -45,6 +45,7 @@ def http_start():
 		added=0
 		added_GET=0
 		cmd="sudo tcpdump -i ens33 -xxv -A -s 0 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -c 1 2>/dev/null"
+		print ("HTTP REQUEST SENT")
 		agent_found = 0
 		cookie_found = 0
 		host_found = 0
@@ -52,24 +53,16 @@ def http_start():
 		founda = 0
 		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		if "192.168.1.5" not in cmdout:
-			#print ("REZULTAT NEALTERAT:",cmdout)
 			HOST = rules.check_rules('HTTP',cmdout)
-			print ("HOST-ul de la HTTP:",HOST)
-			#print (hex(bytes_to_long(cmdout.encode())))
 			result=cmdout.split("\n\t\n\t")[0].split('\n')
-			#print ("LEN DE RESULT:",len(result))
-			#print (result)
 			for i in range(len(result)):
 				result[i]=result[i].split(': ')
 				if 'Agent' in result[i][0]:
 					if agent_found == 0:
 						if check_whitelist_user_agent(result[i][1]) == 0:
 							agent_found = 1
-							#print ("User-Agent ALERT!")
-							#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'User-Agent ALERT!','-','"+result[i][1]+"' )")
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM'"+HOST+",'-','"+result[i][1]+"','"+str(datetime.now())+"')")
 							db.commit()
-							#print ("USER AGENT GASIT!")
 				if cookie_found == 0:
 					if 'Cookie' in result[i][0]:
 						Cookie=result[i][1]
@@ -106,8 +99,6 @@ def http_start():
 				for i in range(len(GETS)):
 					if GETS[i] == GET[0][1:]:
 						stop = 1
-				#print ("GETS:",GETS)
-				print ("GET+++++",GET[0][1:])
 			except:
 				banana = 1
 				pass
@@ -118,7 +109,6 @@ def http_start():
 				for i in range(len(auxiliar_URL)-1):
 					if auxiliar_URL[i]!='www':
 						new_URL.append(auxiliar_URL[i])
-				#print ("URL: ",'.'.join(new_URL))
 				x=check_whitelist('.'.join(new_URL))
 				if x == 0:
 					ok_http = 0

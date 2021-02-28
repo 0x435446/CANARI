@@ -295,15 +295,6 @@ def process_login():
 
 
 
-@app.route('/addRules')
-def addRules():
-	try:
-		if session['loggedin'] == True:
-			return render_template('add_rules.html')
-	except:
-		print ("NU ESTI LOGAT!")
-		pass
-	return redirect("/login")
 
 
 @app.route('/process-rule',methods=['POST'])
@@ -319,9 +310,9 @@ def processRules():
 						pass
 					else:
 						f=open("./modules/Rules/rules.txt", "a+")
-						f.write(string)
+						f.write(string+"\n")
 						f.close()
-				return redirect('/addRules')
+				return redirect('/previewRules')
 	except:
 		print ("NU ESTI LOGAT!")
 		pass
@@ -456,6 +447,7 @@ def read_whitelist(path):
 	x.close()
 	return content
 
+
 @app.route('/preview_whitelist',methods=['GET'])
 def preview_whitelist():
 	try:
@@ -491,6 +483,24 @@ def update_whitelist():
 		print ("NU ESTI LOGAT!")
 		pass
 	return redirect("/login")
+
+
+
+
+@app.route('/previewRules',methods=['GET'])
+def preview_rules():
+	try:
+		if session['loggedin'] == True:
+			rules = read_whitelist('./modules/Rules/rules.txt')
+			update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
+			print (update_rules)
+			return render_template('add_rules.html',rules=update_rules,len=len(update_rules))
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
 
 
 

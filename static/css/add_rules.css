@@ -12,17 +12,18 @@ body{
 
 div.box{
 	margin: auto;
-	margin-top: 10%;
 	background-color: white;
-	width:40%;
+	width:45%;
 	text-align: center;
-	height: 60%;
+	height: 70%;
 	padding-top: 30px;
+	visibility: hidden;
+	overflow: scroll;
+	float:right;
 }
 .box:hover{
 	background-color: white;
 	box-shadow: 0 25px 60px rgba(0,0,0,.8);
-	transition: 2s;
 }
 input[type=text], select {
 	height:20px;
@@ -42,3 +43,43 @@ h1 {
 	font-size: 100px; 
 }
 
+
+div.content{
+	color:red;
+	width: 100% - 20px;
+	height: 100%;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: white;
+	padding-top: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
+	overflow: scroll;
+}
+
+.tabel{
+	margin-top: 50px;
+	color:black;
+	margin-bottom: 50px;
+	width:50%;
+	float:left;
+}
+
+.tabel:hover{
+	background-color: white;
+	box-shadow: 0 25px 60px rgba(0,0,0,.8);
+}
+tr{
+	background-color: rgb(255, 255, 255) !important;
+}
+td{
+	border-color: rgb(0, 0, 0,0.3) !important;
+	border-right: none !important;
+	border-left: none !important;
+}
+
+th{
+	background-color: white;
+}
