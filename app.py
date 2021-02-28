@@ -111,9 +111,9 @@ def index():
 				except:
 					numar_alerte = 10
 				print (numar_alerte)
+				timestart = Data['timestart']
+				timestop = Data['timestop']
 				if len(conditie)>2:
-					timestart = Data['timestart']
-					timestop = Data['timestop']
 					for i in range(len(conditie)):
 						conditie[i]=MySQLdb.escape_string(conditie[i]).decode()
 						conditie[i]="'"+conditie[i]+"'"
