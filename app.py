@@ -89,8 +89,8 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
-			_thread.start_new_thread(https.start,())
-			print ("HTTPS_STARTED")
+			#_thread.start_new_thread(https.start,())
+			#print ("HTTPS_STARTED")
 
 
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -448,6 +448,49 @@ def edit_payload():
 		pass
 	return redirect("/login")
 
+
+
+def read_whitelist(path):
+	x=open(path,'r')
+	content = x.read().strip().split('\n')
+	x.close()
+	return content
+
+@app.route('/preview_whitelist',methods=['GET'])
+def preview_whitelist():
+	try:
+		if session['loggedin'] == True:
+			content_whitelist = read_whitelist('./modules/whitelist.txt')
+			content_whitelist_user_agent = read_whitelist('./modules/whitelist_user_agent.txt')
+			return render_template('preview.html',content_whitelist=content_whitelist,len_whitelist=len(content_whitelist),content_whitelist_user_agent=content_whitelist_user_agent,len_content_whitelist_user_agent=len(content_whitelist_user_agent))
+		else:
+			return redirect("/login")
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
+
+
+
+
+@app.route('/update_whitelist',methods=['POST'])
+def update_whitelist():
+	try:
+		if session['loggedin'] == True:
+			print (request.form)
+			if request.form['type'] == '1':
+				add_delete_destination(request.form['data'])
+			if request.form['type'] == '2':
+				add_delete_payload(request.form['data'])
+			return "Done!"
+		else:
+			return redirect("/login")
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
 
 
 

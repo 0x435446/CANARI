@@ -1,0 +1,55 @@
+div.continut{
+	color:red;
+	width: 100% - 20px;
+	height: 100%;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: white;
+	padding-top: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
+	overflow: scroll;
+}
+
+
+.tabel{
+	color:black;
+	margin-bottom: 50px;
+}
+tr{
+	background-color: rgb(255, 255, 255) !important;
+}
+td{
+	border-color: rgb(0, 0, 0,0.3) !important;
+	border-right: none !important;
+	border-left: none !important;
+}
+
+th{
+	background-color: white;
+}
+
+
+.plus{
+	float:right;
+	display: flex;
+	text-align: right;
+	color:red;
+	background-color: white;
+	border:none;
+}
+
+
+input[type=text], select {
+ 	color:black;
+ 	display: inline !important;
+	border-top: none;
+	border-left: none;
+}
+
+button{
+	margin-left: 5px;
+	margin-top: 5px;
+}

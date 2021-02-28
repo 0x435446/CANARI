@@ -6,3 +6,4 @@ http://detectportal.firefox.com/success.txt?ipv4
 firefox
 ubuntu
 fwupd
+mozilla
