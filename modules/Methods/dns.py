@@ -61,6 +61,7 @@ def dns_start():
 	start_dns=1
 	while(start_dns!=0):
 		cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
+		ok_txt = 0
 		puncte = 0
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		for_check=result
@@ -69,11 +70,12 @@ def dns_start():
 		try:
 			if '192.168.1.4' not in result:
 				result=result.split('\n')
-				#print (result)
 				flag=result[0].split('[')[1].split(']')[0]
 				for i in range(len(result)):
 					res=result[i].split(' ')
 					for j in range(len(res)):
+						if res[j].replace('?','') == 'TXT':
+							ok_txt = 1
 						if res[j].count('.')>2:
 							url=res[j].split('.')
 						if res[j].count('.') == 2:
@@ -133,7 +135,9 @@ def dns_start():
 										del bd[i]
 								except:
 									pass
-
+						if ok_txt == 1:
+							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'TXT RECORDS','MEDIUM','"+HOST+"','"+bd[len(bd)-2]+"','-','"+str(datetime.now())+"')")
+							db.commit()
 						if nope == 0 :
 							z=DNS_time(bd[len(bd)-2],HOST)
 							dns_ok=0
