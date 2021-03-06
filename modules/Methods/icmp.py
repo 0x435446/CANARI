@@ -8,6 +8,15 @@ from datetime import datetime
 
 
 
+def check_whitelist(word,path):
+	x=open(path,"r").read().strip().split('\n')
+	if path == "./modules/whitelist_sources.txt":
+		for i in x:
+			if i in word:
+				return 1
+	return 0;
+
+
 def icmp_start():
 	for_test=0
 	times=[]
@@ -30,55 +39,56 @@ def icmp_start():
 				host = search[i-1]
 				print ("HOST ICMP:",host)
 				break;
-		result = result.replace('\t','').split('\n')
-		res=[]
-		ok=0
-		print (result[1])
-		if (" >" in result[1]) :
-			print ("N-AM AJUNS INCA AICI")
-			for k in range(len(times)):
-				if(times[k].ip==get_stranger_ip(result[1])):
-					times[k].add(int(timp.time()))
-				ok=1
-		response=get_stranger_ip(result[1])
-		if ok==0 :
-			z=0
-			x=ICMP(int(timp.time()),response,host)
-			if for_test==0:
-				cursor.execute("SELECT Destination FROM alerte WHERE Message='NEW IP ADDED'")
-				data = list(cursor.fetchall())
-			for iii in data:
-				if str(iii[0]) == str(response):
-					z=1
-			if z==0:
-				print ("UNUL NOU")
-				print (result[1])
+		if check_whitelist(host,"./modules/whitelist_sources.txt") == 0:
+			result = result.replace('\t','').split('\n')
+			res=[]
+			ok=0
+			print (result[1])
+			if (" >" in result[1]) :
+				print ("N-AM AJUNS INCA AICI")
+				for k in range(len(times)):
+					if(times[k].ip==get_stranger_ip(result[1])):
+						times[k].add(int(timp.time()))
+					ok=1
+			response=get_stranger_ip(result[1])
+			if ok==0 :
+				z=0
+				x=ICMP(int(timp.time()),response,host)
 				if for_test==0:
-					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'NEW IP ADDED','LOW','"+host+"','"+str(response)+"','-','"+str(datetime.now())+"')")
-					db.commit()
-			times.append(x)
-		time=result[0].split(' ')[0]
-		del result[0] 	
-		del result[0] 	
-		for i in range(len(result)):
-			try:
-				res.append(result[i].split('  ')[1])
-			except:
-				pass            	
-		values = ' '.join(str(v) for v in res)
-		values=values.split(' ')
-		times[len(times)-1].header.append(values[7:][:10])
-		ICMP.check_header(times[len(times)-1])
-		print ("DA")
-		get_header_ip(values)
-		if ckeck(values,16) ==  0:
-			if ckeck(values,97) ==  0:
-				print ('ICMP: PADDING FAILED')
-				if for_test==0:
-					cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'PADDING FAILED','HIGH','"+host+"','"+str(response)+"','"+str(''.join(values))+"','"+str(datetime.now())+"')")
-				#cursor.execute("INSERT INTO icmp (ID_event,Name,Alert_Type,IP) VALUES('1', 'ICMP', 'PADDING FAILED','"+response+"' )")
-					db.commit()
-		print (len(times))
+					cursor.execute("SELECT Destination FROM alerte WHERE Message='NEW IP ADDED'")
+					data = list(cursor.fetchall())
+				for iii in data:
+					if str(iii[0]) == str(response):
+						z=1
+				if z==0:
+					print ("UNUL NOU")
+					print (result[1])
+					if for_test==0:
+						cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'NEW IP ADDED','LOW','"+host+"','"+str(response)+"','-','"+str(datetime.now())+"')")
+						db.commit()
+				times.append(x)
+			time=result[0].split(' ')[0]
+			del result[0] 	
+			del result[0] 	
+			for i in range(len(result)):
+				try:
+					res.append(result[i].split('  ')[1])
+				except:
+					pass            	
+			values = ' '.join(str(v) for v in res)
+			values=values.split(' ')
+			times[len(times)-1].header.append(values[7:][:10])
+			ICMP.check_header(times[len(times)-1])
+			print ("DA")
+			get_header_ip(values)
+			if ckeck(values,16) ==  0:
+				if ckeck(values,97) ==  0:
+					print ('ICMP: PADDING FAILED')
+					if for_test==0:
+						cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'PADDING FAILED','HIGH','"+host+"','"+str(response)+"','"+str(''.join(values))+"','"+str(datetime.now())+"')")
+					#cursor.execute("INSERT INTO icmp (ID_event,Name,Alert_Type,IP) VALUES('1', 'ICMP', 'PADDING FAILED','"+response+"' )")
+						db.commit()
+			print (len(times))
 	
 	
 	

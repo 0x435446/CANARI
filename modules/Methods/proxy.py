@@ -55,6 +55,14 @@ def check_whitelist_ua(word):
 			return 1;
 	return 0;
 
+def check_whitelist(word,path):
+	x=open(path,"r").read().strip().split('\n')
+	if path == "./modules/whitelist_sources.txt":
+		for i in x:
+			if i in word:
+				return 1
+	return 0;
+
 
 def check_get(GET,url,Source):
 	global signatures
@@ -88,46 +96,47 @@ def request(flow: http.HTTPFlow):
 		if i.count(".")>2:
 			Source = i
 	print ("Source:",Source)
-	print("URL",flow.request.pretty_url)
-	x=check_whitelist(flow.request.pretty_url)
-	if x==0:
-		if check_whitelist_ua(flow.request.headers['User-Agent']) == 0:
-			print ("ALERTA HTTPS! User-Agent!")
-			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
-			cursor = db.cursor()
-			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM', '"+Source+"' '-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
-			db.commit()
-			db.close()
-			print ("HTTPS UserAgent COMMITED")
-		print ("PATH:",flow.request.path)
-		GET=flow.request.path
-		global signatures
-		signatures=read_file('signatures')
-		check_get(GET,flow.request.pretty_url,Source)
-		try:
-			cookies = flow.request.headers['Cookies']
-		except:
-			pass
-		if flow.request.method == "POST" or flow.request.method == "PUT":
-			ctx.log.info("Sensitive pattern found")
-			flow.intercept()
-			f = open("/tmp/buffer", "wb")
-			content=flow.request.content
-			verify_content(content,flow.request.pretty_url,Source)
-			f.write(content)
-			f.close()
-			for module in binwalk.scan("/tmp/buffer",signature=True,quiet=True,extract=False):
+	if check_whitelist(Source,"./modules/whitelist_sources.txt") == 0:
+		print("URL",flow.request.pretty_url)
+		x=check_whitelist(flow.request.pretty_url)
+		if x==0:
+			if check_whitelist_ua(flow.request.headers['User-Agent']) == 0:
+				print ("ALERTA HTTPS! User-Agent!")
+				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+				cursor = db.cursor()
+				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM', '"+Source+"' '-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
+				db.commit()
+				db.close()
+				print ("HTTPS UserAgent COMMITED")
+			print ("PATH:",flow.request.path)
+			GET=flow.request.path
+			global signatures
+			signatures=read_file('signatures')
+			check_get(GET,flow.request.pretty_url,Source)
+			try:
+				cookies = flow.request.headers['Cookies']
+			except:
 				pass
-			ok=0
-			for result in module.results:
-				if "LZMA" not in result.description and "Zlib" not in result.description:
-					print (result.description.split(',')[0])
-					ok=1
-			if ok==0:
-				print (flow.request.text)
-			print (flow.request.host_header)
-			flow.resume()
-			ctx.log.info("Trafic blocat")
+			if flow.request.method == "POST" or flow.request.method == "PUT":
+				ctx.log.info("Sensitive pattern found")
+				flow.intercept()
+				f = open("/tmp/buffer", "wb")
+				content=flow.request.content
+				verify_content(content,flow.request.pretty_url,Source)
+				f.write(content)
+				f.close()
+				for module in binwalk.scan("/tmp/buffer",signature=True,quiet=True,extract=False):
+					pass
+				ok=0
+				for result in module.results:
+					if "LZMA" not in result.description and "Zlib" not in result.description:
+						print (result.description.split(',')[0])
+						ok=1
+				if ok==0:
+					print (flow.request.text)
+				print (flow.request.host_header)
+				flow.resume()
+				ctx.log.info("Trafic blocat")
 
 
 

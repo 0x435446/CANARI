@@ -78,6 +78,24 @@
 						</td>
 	                </tr>
 			</table>
+
+			<table class='tabel'>
+                <tr>
+                    <th>Sources whitelist</th> 
+                </tr>
+				{%for i in range(len_content_whitelist_sources)%} 
+                    <tr>
+                        <td>{{content_whitelist_sources[i]}}</td> 
+                    </tr>
+                    {%endfor%}
+	                <tr>
+	                	<td class='plus'>
+								<input type="text" id="swtext" name="swtext" value="Source"><br><br>
+		                         <button style="background: url(static/images/plus.png); 
+								    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('3')"></button>
+						</td>
+	                </tr>
+			</table>
 		</div>
 
 	</div>
@@ -94,6 +112,7 @@
 
 	<script>
 	function add_whitelist(type) {
+
 		var nume="data=";
 		if (type == '1'){
 			nume+=document.getElementById('wtext').value;
@@ -103,6 +122,11 @@
 		if (type == '2'){
 			nume+=document.getElementById('uawtext').value;
 			nume+="&type=2"
+		}
+
+		if (type == '3'){
+			nume+=document.getElementById('swtext').value;
+			nume+="&type=3"
 		}
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {

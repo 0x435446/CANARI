@@ -381,6 +381,24 @@ def add_delete_destination(destination):
 	return 1
 
 
+def add_delete_soruces(sources):
+	file=open("./modules/whitelist_sources.txt","r")
+	content = file.read().strip().split()
+	file.close()
+	if sources in content:
+		content.remove(sources)
+		modify = open("./modules/whitelist_sources.txt","w")
+		modify.write('\n'.join(content))
+		modify.close()
+		return 0
+	content.append(sources)
+	modify = open("./modules/whitelist_sources.txt","w")
+	modify.write('\n'.join(content))
+	modify.close()
+	return 1
+
+
+
 @app.route('/edit_destionation',methods=['POST'])
 def edit_destionation():
 	try:
@@ -454,7 +472,8 @@ def preview_whitelist():
 		if session['loggedin'] == True:
 			content_whitelist = read_whitelist('./modules/whitelist.txt')
 			content_whitelist_user_agent = read_whitelist('./modules/whitelist_user_agent.txt')
-			return render_template('preview.html',content_whitelist=content_whitelist,len_whitelist=len(content_whitelist),content_whitelist_user_agent=content_whitelist_user_agent,len_content_whitelist_user_agent=len(content_whitelist_user_agent))
+			content_whitelist_sources = read_whitelist('./modules/whitelist_sources.txt')
+			return render_template('preview.html',content_whitelist=content_whitelist,len_whitelist=len(content_whitelist),content_whitelist_user_agent=content_whitelist_user_agent,len_content_whitelist_user_agent=len(content_whitelist_user_agent),content_whitelist_sources=content_whitelist_sources,len_content_whitelist_sources=len(content_whitelist_sources))
 		else:
 			return redirect("/login")
 	except:
@@ -469,6 +488,7 @@ def preview_whitelist():
 
 @app.route('/update_whitelist',methods=['POST'])
 def update_whitelist():
+	print ("AM AJUNS AICI BAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	try:
 		if session['loggedin'] == True:
 			print (request.form)
@@ -476,6 +496,8 @@ def update_whitelist():
 				add_delete_destination(request.form['data'])
 			if request.form['type'] == '2':
 				add_delete_payload(request.form['data'])
+			if request.form['type'] == '3':
+				add_delete_soruces(request.form['data'])
 			return "Done!"
 		else:
 			return redirect("/login")

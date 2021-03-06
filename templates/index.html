@@ -138,13 +138,13 @@
 		</div>
 
 		<div class="forthbox" id="forth">
-			<div class="alert_box">
+			<div class="alert_box" id='alert1'>
 				Risc scazut:<br>{{low_risk}}
 			</div>
-			<div class="alert_box">
+			<div class="alert_box" id='alert2'>
 				Risc mediu:<br>{{medium_risk}}
 			</div>
-			<div class="alert_box">
+			<div class="alert_box" id='alert3'>
 				Risc ridicat:<br>{{high_risk}}
 			</div>
 		</div>
@@ -218,6 +218,23 @@
 </body>
 
 
+	<script>
+		var c = '#';
+		while (c.length < 7) {
+			c += (Math.random()).toString(16).substr(-6).substr(-1);
+		}
+		document.getElementById("alert1").style.backgroundColor=c;
+		var c = '#';
+		while (c.length < 7) {
+			c += (Math.random()).toString(16).substr(-6).substr(-1);
+		}
+		document.getElementById("alert2").style.backgroundColor=c;
+		var c = '#';
+		while (c.length < 7) {
+			c += (Math.random()).toString(16).substr(-6).substr(-1);
+		}
+		document.getElementById("alert3").style.backgroundColor=c;
+	</script>
 
 
 	<script>
