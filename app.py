@@ -34,6 +34,13 @@ mysql = MySQL(app)
 
 #FlagFlag123.
 
+def load_blacklist():
+	file=open("./modules/blacklist.txt","r")
+	content = file.read().strip().split()
+	file.close()
+	for destination in content:
+		os.system('sudo iptables -A OUTPUT -p all -d '+destination+' -j DROP')
+
 
 def search_risk(risk):
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -89,9 +96,9 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
+			load_blacklist()
 			#_thread.start_new_thread(https.start,())
 			#print ("HTTPS_STARTED")
-
 
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
@@ -380,6 +387,25 @@ def add_delete_destination(destination):
 	modify.close()
 	return 1
 
+def add_delete_domain_blacklist(destination):
+	file=open("./modules/blacklist.txt","r")
+	content = file.read().strip().split()
+	file.close()
+	if destination in content:
+		content.remove(destination)
+		os.system('sudo iptables -D OUTPUT -p all -d '+destination+' -j DROP')
+		modify = open("./modules/blacklist.txt","w")
+		modify.write('\n'.join(content))
+		modify.close()
+		return 0
+	content.append(destination)
+	os.system('sudo iptables -A OUTPUT -p all -d '+destination+' -j DROP')
+	modify = open("./modules/blacklist.txt","w")
+	modify.write('\n'.join(content))
+	modify.close()
+	return 1
+
+
 
 def add_delete_soruces(sources):
 	file=open("./modules/whitelist_sources.txt","r")
@@ -488,7 +514,6 @@ def preview_whitelist():
 
 @app.route('/update_whitelist',methods=['POST'])
 def update_whitelist():
-	print ("AM AJUNS AICI BAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	try:
 		if session['loggedin'] == True:
 			print (request.form)
@@ -523,6 +548,37 @@ def preview_rules():
 		pass
 	return redirect("/login")
 
+
+
+
+@app.route('/previewBlacklist',methods=['GET'])
+def preview_blacklist():
+	try:
+		if session['loggedin'] == True:
+			blacklist = read_whitelist('./modules/blacklist.txt')
+			return render_template('preview_blacklist.html',blacklist=blacklist,len=len(blacklist))
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
+
+@app.route('/update_blacklist',methods=['POST'])
+def update_blacklist():
+	try:
+		if session['loggedin'] == True:
+			print (request.form)
+			if request.form['type'] == '1':
+				add_delete_domain_blacklist(request.form['data'])
+			return "Done!"
+		else:
+			return redirect("/login")
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
 
 
 

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/preview.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/body.css') }}">
     
 </head>
@@ -31,9 +31,9 @@
 				  <a class="nav-link" href="/preview_whitelist">Whitelist</a>
 				</li>
 				<li class="nav-item">
+				<li class="nav-item">
 				  <a class="nav-link" href="/previewBlacklist">Blacklist</a>
 				</li>
-				<li class="nav-item">
 				  <a class="nav-link" href="/previewRules" tabindex="-1">Rules</a>
 				</li>
 				<li class="nav-item">
@@ -43,53 +43,61 @@
 			</div>
 		  </div>
 		</nav>
+
+		<div class='continut'>
+
+
+			<table class='tabel'>
+                <tr>
+                        <th>Domains blacklist</th> 
+                </tr>
+				{%for i in range(len)%} 
+                    <tr>
+                            <td>{{blacklist[i]}}</td> 
+                    </tr>
+                    {%endfor%}
+                <tr>
+                	<td class='plus'>
+							<input type="text" id="dtext" name="dtext" value="Domain/IP"><br><br>
+	                         <button style="background: url(static/images/plus.png); 
+							    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_blacklist('1')"></button>
+					</td>
+                </tr>
+			</table>
+
+			
+		</div>
 	</div>
 
 
-	<div class="box" id='box' onmouseover="hover()">
-		<form action='/process-register'  method="post" enctype="multipart/form-data">
-			<input type='text' id='fname' name='username' placeholder='Username'><br>
-			<input type='password' id='lname' name='password' placeholder='Password'><br>
-			<h1 id='title'>Register</h1><br>
-			<input id='submit' type='submit' value='Submit'>
-		</form>
-
-	</div>
+	
 
 			
 
 
 </body>
 
-<script>
-	ok=0;
-	function hover() {
-		if (ok == 0){
-		document.getElementById('box').style.paddingTop = '100';
-		document.getElementById('fname').style.visibility = 'visible';
-		document.getElementById('lname').style.visibility = 'visible';
-		document.getElementById('submit').style.visibility = 'visible';
-		document.getElementById('fname').style.opacity = 0;
-		document.getElementById('lname').style.opacity = 0;
-		document.getElementById('submit').style.opacity = 0;
-		var fade = document.getElementById("fname"); 
-		var fade2 = document.getElementById("lname"); 
-		var fade4 = document.getElementById("submit"); 
-		var opacity = 0; 
-		var intervalID = setInterval(function() { 
-			if (opacity < 1) { 
-				opacity = opacity + 0.1 
-				fade.style.opacity = opacity; 
-				fade2.style.opacity = opacity; 
-				fade4.style.opacity = opacity; 
-			} else { 
-				clearInterval(intervalID); 
-			} 
-        }, 100); 
-		document.getElementById('title').style.display = 'none';
-		ok=1;
+
+
+	<script>
+	function add_blacklist(type) {
+		var nume="data=";
+		if (type == '1'){
+			nume+=document.getElementById('dtext').value;
+			nume+="&type=1"
 		}
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				alert(response);
+			}
+		};
+		xhttp.open("POST", "/update_blacklist", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
 	}
-</script>
+	</script>
+
 
 </html>
