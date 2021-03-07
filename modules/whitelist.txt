@@ -7,3 +7,4 @@ ubuntu
 fwupd
 mozilla
 http://detectportal.firefox.com/success.txt?ipv4
+localdomain

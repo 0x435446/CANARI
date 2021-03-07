@@ -90,6 +90,14 @@ def check_get(GET,url,Source):
 				print ("HTTPS SIGNATURE COMMITED")
 		db.close()
 
+
+def check_paste(content,Source,url):
+	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+	cursor = db.cursor()
+	cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Paste', 'Paste sent!','MEDIUM','"+Source+"','"+url+"','"+content+"','"+str(datetime.now())+"')")
+	db.commit()
+	db.close()
+	
 def request(flow: http.HTTPFlow):
 	Source =''
 	for i in list(filter(None,flow.client_conn.address[0].split(":"))):
@@ -118,10 +126,12 @@ def request(flow: http.HTTPFlow):
 			except:
 				pass
 			if flow.request.method == "POST" or flow.request.method == "PUT":
+				content=flow.request.content
+				if 'paste' in flow.request.pretty_url:
+					check_paste(content,Source,flow.request.pretty_url)
 				ctx.log.info("Sensitive pattern found")
 				flow.intercept()
 				f = open("/tmp/buffer", "wb")
-				content=flow.request.content
 				verify_content(content,flow.request.pretty_url,Source)
 				f.write(content)
 				f.close()

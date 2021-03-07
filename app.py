@@ -96,7 +96,7 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
-			load_blacklist()
+			#load_blacklist()
 			#_thread.start_new_thread(https.start,())
 			#print ("HTTPS_STARTED")
 
