@@ -86,6 +86,18 @@ def select_graph():
 	return icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count
 
 
+@app.route('/load_blacklist')
+def load():
+	try:
+		if session['loggedin'] == True:
+			load_blacklist()
+			return redirect("/")
+	except:
+		pass
+	return redirect("/login")
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	try:

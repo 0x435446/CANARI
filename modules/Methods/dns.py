@@ -243,7 +243,7 @@ def dns_start():
 							else:
 								match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url)) #match url
 								if len(match) == 0:
-									if( check_whitelist(bd[len(bd)-2]) == 0):
+									if( check_whitelist(bd[len(bd)-2],"./modules/whitelist.txt") == 0):
 										z=DNS_time(bd[len(bd)-2],HOST)
 										dns_ok=0
 										if len(dns_time)>0:
@@ -265,7 +265,7 @@ def dns_start():
 														db.commit()
 														print (verify_encoding(url[i]),url[i])
 			except:
-				print ("PACHET MALFORMAT",result)
+				print ("PACHET MALFORMAT - DNS",result)
 				pass
 
 def stop_dns():

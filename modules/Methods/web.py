@@ -103,13 +103,19 @@ def http_start():
 				banana=0
 				try:
 					for i in range(len(GETS)):
-						if GETS[i] == GET[0][1:]:
-							stop = 1
+						try:
+							if GETS[i] == GET[0][1:]:
+								stop = 1
+						except:
+							banana = 0
 				except:
 					banana = 1
 					pass
 				if banana == 0:
-					GETS.append(GET[0][1:])
+					try:
+						GETS.append(GET[0][1:])
+					except:
+						pass
 					auxiliar_URL=URL.split('.')
 					new_URL=[]
 					for i in range(len(auxiliar_URL)-1):
