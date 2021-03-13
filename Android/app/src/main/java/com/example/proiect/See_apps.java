@@ -62,7 +62,7 @@ public class See_apps extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Check_apps();
-                Toast.makeText(getApplicationContext(),getApplicationContext().getApplicationInfo().dataDir,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),getApplicationContext().getApplicationInfo().dataDir,Toast.LENGTH_LONG).show();
             }
         });
     }

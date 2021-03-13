@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void check_metasploit(){
+    private void check_metasploit() {
         Pipe x = Pipe.getInstance();
         Toast.makeText(getApplicationContext(),x.getMetasploit(),Toast.LENGTH_LONG).show();
     }
@@ -125,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 check_metasploit();
-
             }
 
         });

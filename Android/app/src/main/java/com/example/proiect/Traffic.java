@@ -1,5 +1,6 @@
 package com.example.proiect;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
 
@@ -18,7 +19,9 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -57,7 +60,6 @@ public class Traffic implements Runnable{
         }
     }
 
-
     public String getTLD() throws IOException {
         URL url = new URL("http://www.hack-it.ro:8000/IANA.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -73,18 +75,58 @@ public class Traffic implements Runnable{
         finally {
             urlConnection.disconnect();
         }
+    }
 
-
+    public Map getProbabilitati() throws IOException {
+        URL url = new URL("http://www.hack-it.ro:8000/probabilitati.txt");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            String text = null;
+            try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
+                text = scanner.useDelimiter("\\A").next();
+            }
+            System.out.println(text);
+            Map<String, Integer> map = new HashMap<>();
+            List <String> p = Arrays.asList(text.split("\n"));
+            for (int i=0; i < p.size(); i++) {
+                if(p.get(i).contains(":")) {
+                    map.put(p.get(i).split(":")[0], Integer.parseInt(p.get(i).split(":")[1]));
+                }
+            }
+            return map;
+        }
+        finally {
+            urlConnection.disconnect();
+        }
     }
 
 
-    
+    public int checkEncoding(Map p, String Payload){
+        float Sum = 0;
+        int nr = 0;
+        for(int i=0 ;i<Payload.length()-1;i++){
+            nr+= 1;
+            StringBuilder sb = new StringBuilder();
+            sb.append(Payload.charAt(i));
+            sb.append(Payload.charAt(i+1));
+            if (p.get(sb.toString())==null) {
+                Sum+=0;
+            }
+            else{
+                Sum+=Float.parseFloat(p.get(sb.toString()).toString());
+            }
+        }
+        float medie = Sum/nr;
+        if (medie < 10)
+            return 0;
+        return 1;
+    }
 
 
 
 
-
-    private String getPayload(String Text,List<String> TLD) throws IOException {
+    private List<String> getPayload(String Text,List<String> TLD) throws IOException {
         List<String> splited = new ArrayList<String>();
         splited = Arrays.asList(Text.split("\\."));
         List<String> forReturn = new ArrayList<String>();
@@ -97,11 +139,22 @@ public class Traffic implements Runnable{
                 }
             }
         }
+
+    /*
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             forReturn.remove(forReturn.size() - 1);
            return String.join(".", forReturn);
         }
-        return "Nope";
+
+     */
+        return forReturn;
+    }
+
+
+    private boolean checkPayload(String payload, Map probabilitati){
+        if (checkEncoding(probabilitati,payload) == 0)
+            return true;
+        return false;
     }
 
 
@@ -122,7 +175,6 @@ public class Traffic implements Runnable{
             while(1==1) {
                 Process process = null;
                 process = Runtime.getRuntime().exec(new String[]{"su", "-c", "tcpdump -c1 -l -v -n -t port 53 2>/dev/null"});
-                //process = Runtime.getRuntime().exec(new String[]{"su", "-c", "pwd"});
                 BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 int read;
                 char[] buffer = new char[8192];
@@ -131,11 +183,19 @@ public class Traffic implements Runnable{
                     output.append(buffer, 0, read);
                 }
                 Pipe x = Pipe.getInstance();
-                x.setTraffic(get_Source(output.toString()));
                 String URL = get_URL(output.toString());
-                x.setTraffic(URL);
-                x.setTraffic(getPayload(URL,TLD));
-                x.setTraffic(output.toString());
+                Map Probabilitati = getProbabilitati();
+                List <String> Payload = getPayload(URL,TLD);
+                for(int i=0; i<Payload.size();i++){
+                    if(checkPayload(Payload.get(i), Probabilitati)){
+                        x.setTraffic(get_Source(output.toString()));
+                        x.setTraffic(URL);
+                        x.setTraffic(output.toString());
+                    }
+                }
+                //x.setTraffic(URL);
+                //x.setTraffic(getPayload(URL,TLD));
+                //x.setTraffic(output.toString());
             }
         }
         catch (Exception e) {
