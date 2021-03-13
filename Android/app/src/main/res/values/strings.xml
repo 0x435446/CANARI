@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Proiect</string>
+    <string name="Start_button">Show connections</string>
+    <string name="Check_metasploit">Metasploit</string>
+    <string name="Check_apps">Check applications</string>
+    <string name="Print_apps">Print apps</string>
+    <string name="Print_traffic">Print traffic</string>
+    <string name="Traffic">Traffic</string>
+</resources>
