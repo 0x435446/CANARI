@@ -5,5 +5,6 @@
     <string name="Check_apps">Check applications</string>
     <string name="Print_apps">Print apps</string>
     <string name="Print_traffic">Print traffic</string>
+    <string name="Conn">Connections</string>
     <string name="Traffic">Traffic</string>
 </resources>
