@@ -1,43 +1,13 @@
 package com.example.proiect;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.Telephony;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.proiect.CheckApps;
-import com.example.proiect.Connections;
-import com.example.proiect.Metasploit;
-import com.example.proiect.Pipe;
-import com.example.proiect.R;
-import com.example.proiect.See_apps;
-import com.example.proiect.Traffic;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -76,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         object3.start();
 
         Thread object4
-                = new Thread(new Traffic());
+                = new Thread(new TrafficDNS());
         object4.start();
 
 

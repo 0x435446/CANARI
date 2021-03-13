@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Traffic implements Runnable{
+public class TrafficDNS implements Runnable{
 
     private String get_Source(String Text){
         List<String> splited = new ArrayList<String>();
@@ -156,12 +156,23 @@ public class Traffic implements Runnable{
     }
 
 
-    private boolean checkPayload(String payload, Map probabilitati){
+    private boolean checkPayloadEncoding(String payload, Map probabilitati){
         if (checkEncoding(probabilitati,payload) == 0)
             return true;
         return false;
     }
 
+    private boolean checkPayloadLength(String payload){
+        if (payload.length() > 10)
+            return true;
+        return false;
+    }
+
+    private boolean checkPayloadNumberOfSubdomains(List<String> payload){
+        if (payload.size() > 3)
+            return true;
+        return false;
+    }
 
     public void run()
     {
@@ -199,7 +210,7 @@ public class Traffic implements Runnable{
                 Map Probabilitati = getProbabilitati();
                 List <String> Payload = getPayload(URL,TLD);
                 for(int i=0; i<Payload.size();i++){
-                    if(checkPayload(Payload.get(i), Probabilitati)){
+                    if(checkPayloadEncoding(Payload.get(i), Probabilitati)){
                         x.setTraffic("DNS");
                         x.setTraffic("UNKNOWN BASE FOUND!");
                         x.setTraffic("HIGH");
@@ -215,6 +226,35 @@ public class Traffic implements Runnable{
                         System.out.println(formatter.format(calendar.getTime()));
                         x.setTraffic(formatter.format(calendar.getTime()).toString());
                     }
+                    if(checkPayloadLength(Payload.get(i))){
+                        x.setTraffic("DNS");
+                        x.setTraffic("DNS EXFILTRATION LENGTH");
+                        x.setTraffic("HIGH");
+                        x.setTraffic(get_Source(output.toString()));
+                        x.setTraffic(URL);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            x.setTraffic(String.join(".", Payload));
+                        }
+                        Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        System.out.println(formatter.format(calendar.getTime()));
+                        x.setTraffic(formatter.format(calendar.getTime()).toString());
+                    }
+                }
+                if(checkPayloadNumberOfSubdomains(Payload)){
+                    x.setTraffic("DNS");
+                    x.setTraffic("DNS EXFILTRATION MULTIPLE SUBDOMAINS");
+                    x.setTraffic("HIGH");
+                    x.setTraffic(get_Source(output.toString()));
+                    x.setTraffic(URL);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        x.setTraffic(String.join(".", Payload));
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    System.out.println(formatter.format(calendar.getTime()));
+                    x.setTraffic(formatter.format(calendar.getTime()).toString());
+
                 }
                 //x.setTraffic(URL);
                 //x.setTraffic(getPayload(URL,TLD));
