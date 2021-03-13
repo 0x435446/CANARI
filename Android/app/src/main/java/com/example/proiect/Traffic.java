@@ -17,8 +17,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +144,7 @@ public class Traffic implements Runnable{
                 }
             }
         }
-
+        forReturn.remove(forReturn.size() - 1);
     /*
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             forReturn.remove(forReturn.size() - 1);
@@ -171,6 +176,14 @@ public class Traffic implements Runnable{
         }
          */
         try {
+            Pipe x = Pipe.getInstance();
+            x.setTraffic("Type");
+            x.setTraffic("Message");
+            x.setTraffic("Risk");
+            x.setTraffic("Sursa");
+            x.setTraffic("Destinatie");
+            x.setTraffic("Payload");
+            x.setTraffic("Timestamp");
             List<String> TLD = Arrays.asList(getTLD().split("\n"));
             while(1==1) {
                 Process process = null;
@@ -182,15 +195,25 @@ public class Traffic implements Runnable{
                 while ((read = in.read(buffer)) > 0) {
                     output.append(buffer, 0, read);
                 }
-                Pipe x = Pipe.getInstance();
                 String URL = get_URL(output.toString());
                 Map Probabilitati = getProbabilitati();
                 List <String> Payload = getPayload(URL,TLD);
                 for(int i=0; i<Payload.size();i++){
                     if(checkPayload(Payload.get(i), Probabilitati)){
+                        x.setTraffic("DNS");
+                        x.setTraffic("UNKNOWN BASE FOUND!");
+                        x.setTraffic("HIGH");
                         x.setTraffic(get_Source(output.toString()));
                         x.setTraffic(URL);
-                        x.setTraffic(output.toString());
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            x.setTraffic(String.join(".", Payload));
+                        }
+
+                        Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        System.out.println(formatter.format(calendar.getTime()));
+                        x.setTraffic(formatter.format(calendar.getTime()).toString());
                     }
                 }
                 //x.setTraffic(URL);
