@@ -39,13 +39,14 @@ public class TrafficICMP implements Runnable{
         return true;
     }
 
-    private boolean checkFreq(ArrayList<ICMP> pachete){
+    private boolean checkFreq(ArrayList<ICMP> pachete,String Destination){
         for(int i=0;i<pachete.size();i++){
-            if(pachete.get(i).getDate().size()>3){
-                if (pachete.get(i).getDate().get(pachete.get(i).getDate().size()-1) - pachete.get(i).getDate().get(pachete.get(i).getDate().size()-4) < 60){
-                    return true;
+            if(pachete.get(i).getIP().equals(Destination)) {
+                if (pachete.get(i).getDate().size() > 3) {
+                    if (pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 1) - pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 4) < 60) {
+                        return true;
+                    }
                 }
-
             }
         }
         return false;
@@ -110,7 +111,7 @@ public class TrafficICMP implements Runnable{
                 if(checkPayload(Payload))
                     addTraffic("ICMP","PADDING FAILED", "HIGH", Source, Destination, Payload);
 
-                if(checkFreq(pachete)){
+                if(checkFreq(pachete,Destination)){
                     addTraffic("ICMP","HIGH FREQUENCY", "HIGH", Source, Destination, Payload);
                 }
 
