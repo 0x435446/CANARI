@@ -201,16 +201,6 @@ public class TrafficDNS implements Runnable{
     }
     public void run()
     {
-        /*
-        try {
-            Process process = null;
-            process = Runtime.getRuntime().exec(new String[]{"su", "-c", "mkdir /data/user/0/com.example.proiect/files"});
-            process.waitFor();
-            process = Runtime.getRuntime().exec(new String[]{"su", "-c", "wget http://hack-it.ro:8000/tcpdump -O /data/user/0/com.example.proiect/files/tcpdump"});
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-         */
         try {
             Pipe x = Pipe.getInstance();
             x.setTraffic("Type");
@@ -237,7 +227,7 @@ public class TrafficDNS implements Runnable{
                 for(int i=0; i<Payload.size();i++){
                     if(checkPayloadEncoding(Payload.get(i), Probabilitati)){
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "UNKNOWN BASE FOUND!", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            addTraffic("DNS", "UNKNOWN BASE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
 
                     }

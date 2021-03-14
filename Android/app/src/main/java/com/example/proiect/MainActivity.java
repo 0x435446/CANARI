@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 = new Thread(new TrafficDNS());
         object4.start();
 
+        Thread object5
+                = new Thread(new TrafficICMP());
+        object5.start();
+
 
         Button Conn = findViewById(R.id.startBtn);
         Conn.setOnClickListener(new View.OnClickListener() {
