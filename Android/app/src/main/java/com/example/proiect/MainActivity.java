@@ -13,8 +13,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
 
-
-
     private void check_metasploit() {
         Pipe x = Pipe.getInstance();
         Toast.makeText(getApplicationContext(),x.getMetasploit(),Toast.LENGTH_LONG).show();
@@ -80,22 +78,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void open_see_apps(View view) {
         Intent it = new Intent(getApplicationContext(), See_apps.class);
         startActivityForResult(it,1);
     }
 
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1){
-            if (resultCode == RESULT_OK){
-
-            }
-        }
-    }
-     */
 }
 

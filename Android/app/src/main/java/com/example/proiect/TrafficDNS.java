@@ -171,7 +171,6 @@ public class TrafficDNS implements Runnable{
     public boolean checkPayloadNonAscii(String payload){
         for (int i=0;i<payload.length();i++){
             if (payload.charAt(i)<0x21 || payload.charAt(i) >127){
-                System.out.println("Teapa");
                 if(payload.charAt(i) != 0x0d || payload.charAt(i) != 0x0a)
                     return true;
             }
@@ -179,6 +178,11 @@ public class TrafficDNS implements Runnable{
         return false;
     }
 
+    private boolean checkForTXTRecord(String payload){
+        if (payload.contains("TXT"))
+            return true;
+        return false;
+    }
 
 
     void addTraffic(String TYPE,String MESSAGE, String RISK, String SURSA, String DESTINATIE, String PAYLOAD){
@@ -249,12 +253,14 @@ public class TrafficDNS implements Runnable{
                     }
                 }
                 if(checkPayloadNumberOfSubdomains(Payload)){
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         addTraffic("DNS", "MULTIPLE SUBDOMAINS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                     }
-
-
+                }
+                if (checkForTXTRecord(output.toString())){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        addTraffic("DNS", "TXT RECORD", "MEDIUM", get_Source(output.toString()), URL, String.join(".", Payload));
+                    }
                 }
             }
         }
