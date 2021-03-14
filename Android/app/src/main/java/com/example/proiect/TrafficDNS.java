@@ -199,9 +199,25 @@ public class TrafficDNS implements Runnable{
         System.out.println(formatter.format(calendar.getTime()));
         x.setTraffic(formatter.format(calendar.getTime()).toString());
     }
+
+    private boolean checkFreq(ArrayList<DNS> pachete,String URL){
+        for(int i=0;i<pachete.size();i++){
+            if(pachete.get(i).getIP().equals(URL)){
+                if(pachete.get(i).getFreq()>399) {
+                    if (pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 1) - pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 400) < 3600) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void run()
     {
         try {
+            ArrayList <DNS> pachete = new ArrayList<>();
+
             Pipe x = Pipe.getInstance();
             x.setTraffic("Type");
             x.setTraffic("Message");
@@ -225,6 +241,13 @@ public class TrafficDNS implements Runnable{
                 Map Probabilitati = getProbabilitati();
                 List <String> Payload = getPayload(URL,TLD);
                 for(int i=0; i<Payload.size();i++){
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        URL=URL.replaceFirst(String.join(".", Payload),"");
+                        if(URL.charAt(0) == '.')
+                            URL=URL.replaceFirst("\\.","");
+                    }
+
                     if(checkPayloadEncoding(Payload.get(i), Probabilitati)){
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             addTraffic("DNS", "UNKNOWN BASE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
@@ -252,6 +275,31 @@ public class TrafficDNS implements Runnable{
                         addTraffic("DNS", "TXT RECORD", "MEDIUM", get_Source(output.toString()), URL, String.join(".", Payload));
                     }
                 }
+                boolean ok = true;
+                for (int i=0;i<pachete.size();i++){
+                    if(pachete.get(i).getIP().equals(URL)){
+                        pachete.get(i).setFreq(pachete.get(i).getFreq()+1);
+                        Long currentTimestamp = System.currentTimeMillis()/1000;
+                        pachete.get(i).setDate(currentTimestamp);
+                        ok = false;
+                        break;
+                    }
+                }
+
+                if (ok){
+                    DNS z = new DNS();
+                    z.setIP(URL);
+                    z.setFreq(1);
+                    Long currentTimestamp = System.currentTimeMillis()/1000;
+                    z.setDate(currentTimestamp);
+                    pachete.add(z);
+                }
+                if(checkFreq(pachete,URL)){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        addTraffic("DNS", "HIGH FREQUENCY", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                    }
+                }
+
             }
         }
         catch (Exception e) {

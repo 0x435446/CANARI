@@ -88,9 +88,6 @@ public class TrafficICMP implements Runnable{
                 Payload=Payload.replace("\n","");
                 Payload=Payload.substring(88,Payload.length());
 
-                if(checkPayload(Payload))
-                    addTraffic("ICMP","PADDING FAILED", "HIGH", Source, Destination, Payload);
-
                 boolean ok = true;
                 for (int i=0;i<pachete.size();i++){
                     if(pachete.get(i).getIP().equals(Destination)){
@@ -108,6 +105,10 @@ public class TrafficICMP implements Runnable{
                     x.setDate(currentTimestamp);
                     pachete.add(x);
                 }
+
+
+                if(checkPayload(Payload))
+                    addTraffic("ICMP","PADDING FAILED", "HIGH", Source, Destination, Payload);
 
                 if(checkFreq(pachete)){
                     addTraffic("ICMP","HIGH FREQUENCY", "HIGH", Source, Destination, Payload);
