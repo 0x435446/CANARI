@@ -145,13 +145,6 @@ public class TrafficDNS implements Runnable{
             }
         }
         forReturn.remove(forReturn.size() - 1);
-    /*
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            forReturn.remove(forReturn.size() - 1);
-           return String.join(".", forReturn);
-        }
-
-     */
         return forReturn;
     }
 
@@ -174,6 +167,34 @@ public class TrafficDNS implements Runnable{
         return false;
     }
 
+
+    public boolean checkPayloadNonAscii(String payload){
+        for (int i=0;i<payload.length();i++){
+            if (payload.charAt(i)<0x21 || payload.charAt(i) >127){
+                System.out.println("Teapa");
+                if(payload.charAt(i) != 0x0d || payload.charAt(i) != 0x0a)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    void addTraffic(String TYPE,String MESSAGE, String RISK, String SURSA, String DESTINATIE, String PAYLOAD){
+        Pipe x = Pipe.getInstance();
+        x.setTraffic(TYPE);
+        x.setTraffic(MESSAGE);
+        x.setTraffic(RISK);
+        x.setTraffic(SURSA);
+        x.setTraffic(DESTINATIE);
+        x.setTraffic(PAYLOAD);
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        System.out.println(formatter.format(calendar.getTime()));
+        x.setTraffic(formatter.format(calendar.getTime()).toString());
+    }
     public void run()
     {
         /*
@@ -211,54 +232,30 @@ public class TrafficDNS implements Runnable{
                 List <String> Payload = getPayload(URL,TLD);
                 for(int i=0; i<Payload.size();i++){
                     if(checkPayloadEncoding(Payload.get(i), Probabilitati)){
-                        x.setTraffic("DNS");
-                        x.setTraffic("UNKNOWN BASE FOUND!");
-                        x.setTraffic("HIGH");
-                        x.setTraffic(get_Source(output.toString()));
-                        x.setTraffic(URL);
-
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            x.setTraffic(String.join(".", Payload));
+                            addTraffic("DNS", "UNKNOWN BASE FOUND!", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
 
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        System.out.println(formatter.format(calendar.getTime()));
-                        x.setTraffic(formatter.format(calendar.getTime()).toString());
                     }
                     if(checkPayloadLength(Payload.get(i))){
-                        x.setTraffic("DNS");
-                        x.setTraffic("DNS EXFILTRATION LENGTH");
-                        x.setTraffic("HIGH");
-                        x.setTraffic(get_Source(output.toString()));
-                        x.setTraffic(URL);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            x.setTraffic(String.join(".", Payload));
+                            addTraffic("DNS", "SUBDOMAIN EXFILTRATION LENGTH", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        System.out.println(formatter.format(calendar.getTime()));
-                        x.setTraffic(formatter.format(calendar.getTime()).toString());
+                    }
+                    if (checkPayloadNonAscii(Payload.get(i))){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("DNS", "NONASCII CHARS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                        }
                     }
                 }
                 if(checkPayloadNumberOfSubdomains(Payload)){
-                    x.setTraffic("DNS");
-                    x.setTraffic("DNS EXFILTRATION MULTIPLE SUBDOMAINS");
-                    x.setTraffic("HIGH");
-                    x.setTraffic(get_Source(output.toString()));
-                    x.setTraffic(URL);
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        x.setTraffic(String.join(".", Payload));
+                        addTraffic("DNS", "MULTIPLE SUBDOMAINS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                     }
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    System.out.println(formatter.format(calendar.getTime()));
-                    x.setTraffic(formatter.format(calendar.getTime()).toString());
+
 
                 }
-                //x.setTraffic(URL);
-                //x.setTraffic(getPayload(URL,TLD));
-                //x.setTraffic(output.toString());
             }
         }
         catch (Exception e) {
