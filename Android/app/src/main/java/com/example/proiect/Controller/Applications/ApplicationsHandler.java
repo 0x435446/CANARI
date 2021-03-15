@@ -2,12 +2,34 @@ package com.example.proiect.Controller.Applications;
 
 import com.example.proiect.Model.Pipe;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class ApplicationsHandler {
     public ApplicationsHandler() {
+    }
+
+    public void sendAPK(String forGET) throws IOException {
+        URL url = new URL("http://192.168.43.29:5000/checkAndroid?sha="+forGET);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            String text = null;
+            try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
+                text = scanner.useDelimiter("\\A").next();
+            }
+        }
+        finally {
+            urlConnection.disconnect();
+        }
     }
 
     public  ArrayList<ArrayList<String>> Check_apps() {

