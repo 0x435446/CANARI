@@ -67,7 +67,8 @@ def http_start():
 						if agent_found == 0:
 							if check_whitelist_user_agent(result[i][1]) == 0:
 								agent_found = 1
-								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM'"+HOST+",'-','"+result[i][1]+"','"+str(datetime.now())+"')")
+								cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM','"+HOST+"','-','"+result[i][1]+"','"+str(datetime.now())+"')")
+								#cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'User-Agent!','MEDIUM'"+HOST+"','-','"+"CIOCI"+"','"+str(datetime.now())+"')")
 								db.commit()
 					if cookie_found == 0:
 						if 'Cookie' in result[i][0]:

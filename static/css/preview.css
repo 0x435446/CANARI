@@ -66,3 +66,16 @@ button{
 	margin-left: 5px;
 	margin-top: 5px;
 }
+
+
+.search{
+	font-size: 15px;
+	float:right;
+	margin-left: -200px;
+	visibility: hidden;
+}
+.search_btn{
+	margin-left: -200px;
+	font-size: 15px;
+	float:right;
+}

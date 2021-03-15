@@ -8,15 +8,17 @@ import _thread
 from flask import request,redirect,session
 from hashlib import sha256
 
+sys.path.append('./modules/')
+import VirusTotal
+import check_key
+import generate_rsa
+
 sys.path.append('./modules/Methods')
 import dns
 import web
 import https
 import icmp
 
-sys.path.append('./modules/')
-import check_key
-import generate_rsa
 
 
 app = Flask(__name__)
@@ -594,5 +596,12 @@ def update_blacklist():
 
 
 
+@app.route('/checkAndroid',methods=['GET'])
+def checkAndroid():
+	_thread.start_new_thread(VirusTotal.search_sha,(request.args.get('sha'),''))
+	return redirect("/")
+
+
+
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True,host= '0.0.0.0')
