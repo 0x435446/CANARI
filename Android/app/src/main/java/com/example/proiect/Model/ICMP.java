@@ -2,7 +2,7 @@ package com.example.proiect.Model;
 
 import java.util.ArrayList;
 
-public class ICMP {
+public class ICMP implements  Protocols{
     private String IP;
     private int pings;
     private ArrayList<Long> date;
@@ -15,11 +15,11 @@ public class ICMP {
         this.date.add(date);
     }
 
-    public int getPings() {
+    public int getFreq() {
         return pings;
     }
 
-    public void setPings(int pings) {
+    public void setFreq(int pings) {
         this.pings = pings;
     }
 

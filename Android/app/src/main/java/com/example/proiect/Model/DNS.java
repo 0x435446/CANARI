@@ -2,7 +2,7 @@ package com.example.proiect.Model;
 
 import java.util.ArrayList;
 
-public class DNS {
+public class DNS implements  Protocols{
     private String IP;
     private int freq;
     private ArrayList<Long> date;

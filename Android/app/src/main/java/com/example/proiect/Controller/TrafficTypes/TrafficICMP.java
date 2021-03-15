@@ -92,7 +92,7 @@ public class TrafficICMP implements Runnable{
                 boolean ok = true;
                 for (int i=0;i<pachete.size();i++){
                     if(pachete.get(i).getIP().equals(Destination)){
-                        pachete.get(i).setPings(pachete.get(i).getPings()+1);
+                        pachete.get(i).setFreq(pachete.get(i).getFreq()+1);
                         Long currentTimestamp = System.currentTimeMillis()/1000;
                         pachete.get(i).setDate(currentTimestamp);
                         ok=false;
@@ -101,7 +101,7 @@ public class TrafficICMP implements Runnable{
                 if (ok){
                     ICMP x = new ICMP();
                     x.setIP(Destination);
-                    x.setPings(0);
+                    x.setFreq(0);
                     Long currentTimestamp = System.currentTimeMillis()/1000;
                     x.setDate(currentTimestamp);
                     pachete.add(x);
