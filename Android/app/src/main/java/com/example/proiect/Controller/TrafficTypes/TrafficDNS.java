@@ -24,6 +24,34 @@ import java.util.Scanner;
 
 public class TrafficDNS implements Runnable{
 
+
+    public List<String> loadSignatures() throws IOException {
+        URL url = new URL("http://hack-it.ro:8000/signatures.txt");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            String text = null;
+            try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
+                text = scanner.useDelimiter("\\A").next();
+            }
+            List <String> signatures = Arrays.asList(text.split("\n"));
+            return signatures;
+        }
+        finally {
+            urlConnection.disconnect();
+        }
+    }
+
+    public boolean checkSignature(String Payload,List<String> signatures) throws IOException {
+        for(int i=0; i<signatures.size(); i++) {
+            if (Payload.contains(signatures.get(i).substring(0, signatures.get(i).length() - 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private String get_Source(String Text){
         List<String> splited = new ArrayList<String>();
         splited = Arrays.asList(Text.split("\n")[1].split(" "));
@@ -209,16 +237,8 @@ public class TrafficDNS implements Runnable{
     {
         try {
             ArrayList <DNS> pachete = new ArrayList<>();
-
-            Pipe x = Pipe.getInstance();
-            x.setTraffic("Type");
-            x.setTraffic("Message");
-            x.setTraffic("Risk");
-            x.setTraffic("Sursa");
-            x.setTraffic("Destinatie");
-            x.setTraffic("Payload");
-            x.setTraffic("Timestamp");
             List<String> TLD = Arrays.asList(getTLD().split("\n"));
+            List<String> Signatures = loadSignatures();
             while(1==1) {
                 Process process = null;
                 process = Runtime.getRuntime().exec(new String[]{"su", "-c", "tcpdump -c1 -l -v -n -t port 53 2>/dev/null"});
@@ -254,6 +274,11 @@ public class TrafficDNS implements Runnable{
                     if (checkPayloadNonAscii(Payload.get(i))){
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             addTraffic("DNS", "NONASCII CHARS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                        }
+                    }
+                    if(checkSignature(Payload.get(i),Signatures)){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("DNS", "SIGNATURE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
                     }
                 }

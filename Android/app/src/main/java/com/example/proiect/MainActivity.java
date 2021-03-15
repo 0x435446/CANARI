@@ -19,6 +19,9 @@ import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
 
+import java.io.IOException;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        Pipe x = Pipe.getInstance();
+        x.setTraffic("Type");
+        x.setTraffic("Message");
+        x.setTraffic("Risk");
+        x.setTraffic("Sursa");
+        x.setTraffic("Destinatie");
+        x.setTraffic("Payload");
+        x.setTraffic("Timestamp");
+
         if (android.os.Build.VERSION.SDK_INT > 9)
         {
             StrictMode.ThreadPolicy policy = new
