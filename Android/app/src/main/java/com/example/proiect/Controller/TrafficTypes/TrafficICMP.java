@@ -1,17 +1,17 @@
-package com.example.proiect;
+package com.example.proiect.Controller.TrafficTypes;
 
 import android.os.Build;
-import android.widget.Toast;
+
+import com.example.proiect.Model.Pipe;
+import com.example.proiect.Model.ICMP;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 public class TrafficICMP implements Runnable{
 
@@ -39,7 +39,7 @@ public class TrafficICMP implements Runnable{
         return true;
     }
 
-    private boolean checkFreq(ArrayList<ICMP> pachete,String Destination){
+    private boolean checkFreq(ArrayList<ICMP> pachete, String Destination){
         for(int i=0;i<pachete.size();i++){
             if(pachete.get(i).getIP().equals(Destination)) {
                 if (pachete.get(i).getDate().size() > 3) {

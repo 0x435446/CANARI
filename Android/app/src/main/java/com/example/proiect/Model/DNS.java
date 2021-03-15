@@ -1,10 +1,10 @@
-package com.example.proiect;
+package com.example.proiect.Model;
 
 import java.util.ArrayList;
 
-public class ICMP {
+public class DNS {
     private String IP;
-    private int pings;
+    private int freq;
     private ArrayList<Long> date;
 
     public ArrayList<Long> getDate() {
@@ -15,12 +15,12 @@ public class ICMP {
         this.date.add(date);
     }
 
-    public int getPings() {
-        return pings;
+    public int getFreq() {
+        return freq;
     }
 
-    public void setPings(int pings) {
-        this.pings = pings;
+    public void setFreq(int pings) {
+        this.freq = pings;
     }
 
     public String getIP() {
@@ -31,9 +31,9 @@ public class ICMP {
         this.IP = IP;
     }
 
-    public ICMP() {
-        this.IP="";
+    public DNS() {
+        this.IP = "";
         this.date = new ArrayList<>();
-        this.pings = 0;
+        this.freq = 0;
     }
 }

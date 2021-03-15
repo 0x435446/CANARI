@@ -1,11 +1,11 @@
-package com.example.proiect;
+package com.example.proiect.Controller.Metasploit;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.example.proiect.Model.Pipe;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,34 +1,26 @@
-package com.example.proiect;
+package com.example.proiect.Controller.TrafficTypes;
 
-import android.content.Intent;
 import android.os.Build;
-import android.os.StrictMode;
 
-import androidx.annotation.RequiresApi;
+import com.example.proiect.Model.Pipe;
+import com.example.proiect.Model.DNS;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class TrafficDNS implements Runnable{
 
@@ -200,7 +192,7 @@ public class TrafficDNS implements Runnable{
         x.setTraffic(formatter.format(calendar.getTime()).toString());
     }
 
-    private boolean checkFreq(ArrayList<DNS> pachete,String URL){
+    private boolean checkFreq(ArrayList<DNS> pachete, String URL){
         for(int i=0;i<pachete.size();i++){
             if(pachete.get(i).getIP().equals(URL)){
                 if(pachete.get(i).getFreq()>399) {

@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.FullScreen"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".Preview_Connections"></activity>
+        <activity android:name=".View.Preview_Connections"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Preview_traffic" />
+        <activity android:name=".View.Preview_traffic" />
         <activity
-            android:name=".See_apps"
+            android:name=".View.See_apps"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
     </application>

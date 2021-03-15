@@ -9,6 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.proiect.Controller.Applications.CheckApps;
+import com.example.proiect.Controller.Connections.Connections;
+import com.example.proiect.Controller.Metasploit.Metasploit;
+import com.example.proiect.Model.Pipe;
+import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
+import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
+import com.example.proiect.View.Preview_Connections;
+import com.example.proiect.View.Preview_traffic;
+import com.example.proiect.View.See_apps;
+
 
 public class MainActivity extends AppCompatActivity {
 

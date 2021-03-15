@@ -1,7 +1,6 @@
-package com.example.proiect;
+package com.example.proiect.Model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Pipe {
 
