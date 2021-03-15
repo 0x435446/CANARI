@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,41 @@ import java.util.Scanner;
 
 public class TrafficDNS implements Runnable{
 
+    public String hexToAscii(String hexStr) {
+        StringBuilder output = new StringBuilder("");
+
+        for (int i = 0; i < hexStr.length(); i += 2) {
+            String str = hexStr.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+        }
+
+        return output.toString();
+    }
+
+    public String AsciiToBase64(String Text){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            return Base64.getEncoder().encodeToString(Text.getBytes());
+        }
+        return "";
+    }
+
+    public boolean checkBase64(List<String> signatures,String Text){
+        try {
+            for(int i=0; i<signatures.size(); i++) {
+                String Raw = hexToAscii(signatures.get(i).substring(0, signatures.get(i).length() - 1));
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    String encodedString = Base64.getEncoder().encodeToString(Raw.getBytes());
+                    if (Text.equals(encodedString)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        catch (Exception ignored){
+
+        }
+        return false;
+    }
 
     public List<String> loadSignatures() throws IOException {
         URL url = new URL("http://hack-it.ro:8000/signatures.txt");
@@ -278,7 +314,12 @@ public class TrafficDNS implements Runnable{
                     }
                     if(checkSignature(Payload.get(i),Signatures)){
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "SIGNATURE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            addTraffic("DNS", "SIGNATURE FOUND - HEX", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                        }
+                    }
+                    if (checkBase64(Signatures,Payload.get(i))){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("DNS", "SIGNATURE FOUND - Base64", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
                     }
                 }

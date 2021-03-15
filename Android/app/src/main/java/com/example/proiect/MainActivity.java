@@ -20,6 +20,7 @@ import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -90,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 check_metasploit();
+
+                /*
+                TrafficDNS x = new TrafficDNS();
+                try {
+                    List<String> ceva = x.loadSignatures();
+                    System.out.println("AICI E   "+x.checkBase64(ceva,"IyE="));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                 */
             }
 
         });
