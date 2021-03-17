@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.proiect.Controller.Applications.CheckApps;
 import com.example.proiect.Controller.Connections.Connections;
 import com.example.proiect.Controller.Metasploit.Metasploit;
+import com.example.proiect.Controller.TrafficTypes.TrafficHTTP;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
 import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         Thread object5
                 = new Thread(new TrafficICMP());
         object5.start();
+
+        Thread object6
+                = new Thread(new TrafficHTTP());
+        object6.start();
 
 
         Button Conn = findViewById(R.id.startBtn);
