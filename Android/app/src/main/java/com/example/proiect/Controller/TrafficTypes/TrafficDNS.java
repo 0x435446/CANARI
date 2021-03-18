@@ -62,7 +62,8 @@ public class TrafficDNS implements Runnable{
     }
 
     public List<String> loadSignatures() throws IOException {
-        URL url = new URL("http://hack-it.ro:8000/signatures.txt");
+        //URL url = new URL("http://hack-it.ro:8000/signatures.txt");
+        URL url = new URL("http://172.16.29.43:8080/Android/signatures.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -122,7 +123,7 @@ public class TrafficDNS implements Runnable{
     }
 
     public String getTLD() throws IOException {
-        URL url = new URL("http://www.hack-it.ro:8000/IANA.txt");
+        URL url = new URL("http://172.16.29.43:8080/Android/IANA.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -139,7 +140,7 @@ public class TrafficDNS implements Runnable{
     }
 
     public Map getProbabilitati() throws IOException {
-        URL url = new URL("http://www.hack-it.ro:8000/probabilitati.txt");
+        URL url = new URL("http://172.16.29.43:8080/Android/probabilitati.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());

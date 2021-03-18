@@ -1,13 +1,15 @@
 package com.example.proiect.Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HTTP implements Protocols{
 
     private String IP;
     private int freq;
     private ArrayList<Long> date;
-
+    private List<String> Cookies;
+    private int CookiesNumber;
     public ArrayList<Long> getDate() {
         return date;
     }
@@ -36,6 +38,8 @@ public class HTTP implements Protocols{
         this.IP="";
         this.date = new ArrayList<>();
         this.freq = 0;
+        this.Cookies=new ArrayList<String>();
+        this.CookiesNumber=0;
     }
 
 }
