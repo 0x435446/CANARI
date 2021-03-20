@@ -110,21 +110,26 @@ public class TrafficHTTP implements Runnable {
         return false;
     }
 
-    private boolean checkGET(String Cookie){
+    private boolean checkCookie(String Cookie){
         return false;
     }
 
 
 
 
-
+    private String checkGET(String GET,Map p){
+        if (checkEncoding(p,GET) == 0){
+            return GET;
+        }
+        return "NU";
+    }
 
 
     public HTTP parseRequest(String request, Map Probabilitati){
         HTTP pachet = new HTTP();
         String Sursa = "";
         String Destinatia = "";
-        String Payload = "";
+        String GET = "";
         String UserAgent = "";
         String Cookie = "";
         List<String> requestList = Arrays.asList(request.split("\n"));
@@ -167,8 +172,6 @@ public class TrafficHTTP implements Runnable {
                             Cookie = Cookie.replace("Cookie: ","");
                         }
                     }
-
-
                 }
                 catch (Exception ignored){
 
@@ -176,7 +179,45 @@ public class TrafficHTTP implements Runnable {
 
 
             }
+            List<String> aux2 = Arrays.asList(bucatica.split("/"));
+            if (GET.equals("")){
+                int remember = 0;
+                if(aux2.get(0).contains("GET")) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        GET = String.join(" ", aux2);
+                        GET = GET.replace("GET  ","");
+                        GET = GET.replace("?","");
+                        GET = GET.replace("\n","");
+                        GET = GET.replace("\r","");
+                        GET = GET.split("HTTP")[0];
+                    }
+                }
+            }
+        }
 
+        pachet.setCookies(Cookie);
+        pachet.setCookiesNumber();
+        pachet.setIP(Destinatia);
+        pachet.setUserAgent(UserAgent);
+        pachet.setGET(GET);
+        List<String> forCheck = Arrays.asList(GET.split("&"));
+        for (int k=0; k<forCheck.size(); k++) {
+            List<String> Splited = Arrays.asList(forCheck.get(k).split("="));
+            String GETresp="";
+            String forView="";
+            if(Splited.size() == 2) {
+                forView=Splited.get(1);
+                GETresp = checkGET(forView, Probabilitati);
+            }
+            else{
+                forView=Splited.get(0);
+                GETresp = checkGET(forView, Probabilitati);
+            }
+            if (!GETresp.equals("NU")) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    addTraffic("HTTP", "UNKNOWN BASE GET", "MEDIUM", Sursa, Destinatia, forView);
+                }
+            }
         }
 
         if(checkPayloadEncoding(Cookie, Probabilitati)) {
@@ -184,7 +225,7 @@ public class TrafficHTTP implements Runnable {
                 addTraffic("HTTP", "UNKNOWN BASE COOKIE", "LOW", Sursa, Destinatia, Cookie);
             }
         }
-        addTraffic("HTTP",UserAgent,"HIGH",Sursa,Destinatia,Cookie);
+        //addTraffic("HTTP",UserAgent,GET,Sursa,Destinatia,Cookie);
         return pachet;
 
     }
