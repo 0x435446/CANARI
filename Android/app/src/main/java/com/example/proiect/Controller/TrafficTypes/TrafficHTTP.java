@@ -26,6 +26,21 @@ import java.util.Scanner;
 
 public class TrafficHTTP implements Runnable {
 
+    private boolean checkFreqCookies(ArrayList<HTTP> pachete, String Destination){
+        for(int i=0;i<pachete.size();i++){
+            if(pachete.get(i).getIP().equals(Destination)) {
+                if (pachete.get(i).getDate().size() > 2) {
+                    if (pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 1) - pachete.get(i).getDate().get(pachete.get(i).getDate().size() - 3) < 60) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     public Map getProbabilitati() throws IOException {
         URL url = new URL("http://172.16.29.43:8080/Android/probabilitati.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -196,10 +211,10 @@ public class TrafficHTTP implements Runnable {
         }
 
         pachet.setCookies(Cookie);
-        pachet.setCookiesNumber();
         pachet.setIP(Destinatia);
         pachet.setUserAgent(UserAgent);
         pachet.setGET(GET);
+        pachet.setSursa(Sursa);
         List<String> forCheck = Arrays.asList(GET.split("&"));
         for (int k=0; k<forCheck.size(); k++) {
             List<String> Splited = Arrays.asList(forCheck.get(k).split("="));
@@ -225,7 +240,6 @@ public class TrafficHTTP implements Runnable {
                 addTraffic("HTTP", "UNKNOWN BASE COOKIE", "LOW", Sursa, Destinatia, Cookie);
             }
         }
-        //addTraffic("HTTP",UserAgent,GET,Sursa,Destinatia,Cookie);
         return pachet;
 
     }
@@ -247,26 +261,28 @@ public class TrafficHTTP implements Runnable {
                 }
 
                 HTTP pachet = parseRequest(output.toString(), Probabilitati);
-                /*
+
                 boolean ok = true;
                 for (int k=0;k<pachete.size();k++){
-                    if(pachete.get(k).getIP().equals(Destinatia)){
-                        pachete.get(k).setFreq(pachete.get(k).getFreq()+1);
+                    if(pachete.get(k).getIP().equals(pachet.getIP())){
+                        pachete.get(k).setCookiesNumber(pachete.get(k).getCookiesNumber()+1);
                         Long currentTimestamp = System.currentTimeMillis()/1000;
                         pachete.get(k).setDate(currentTimestamp);
                         ok=false;
                     }
                 }
                 if (ok){
-                    HTTP x = new HTTP();
-                    x.setIP(Destinatia);
-                    x.setFreq(0);
+                    pachet.setCookiesNumber(0);
                     Long currentTimestamp = System.currentTimeMillis()/1000;
-                    x.setDate(currentTimestamp);
-                    pachete.add(x);
+                    pachet.setDate(currentTimestamp);
+                    pachete.add(pachet);
                 }
 
-                 */
+                if(checkFreqCookies(pachete,pachet.getIP())){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        addTraffic("HTTP", "COOKIES FREQUENCY", "MEDIUM", pachet.getSursa() , pachet.getIP(), "-");
+                    }
+                }
             }
         } catch (Exception e) {
             System.out.println("Exception is caught");

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class HTTP implements Protocols{
 
+    private String Sursa;
     private String IP;
     private int freq;
     private ArrayList<Long> date;
@@ -12,6 +13,7 @@ public class HTTP implements Protocols{
     private int CookiesNumber;
     private String UserAgent;
     private String GET;
+    private int Malitios;
 
     public String getGET() {
         return GET;
@@ -21,7 +23,13 @@ public class HTTP implements Protocols{
         this.GET = GET;
     }
 
-    private int Malitios;
+    public String getSursa() {
+        return Sursa;
+    }
+
+    public void setSursa(String sursa) {
+        Sursa = sursa;
+    }
 
     public int getMalitios() {
         return Malitios;
@@ -51,8 +59,8 @@ public class HTTP implements Protocols{
         return CookiesNumber;
     }
 
-    public void setCookiesNumber() {
-        CookiesNumber = CookiesNumber + 1;
+    public void setCookiesNumber(int Number) {
+        CookiesNumber = Number;
     }
 
     public ArrayList<Long> getDate() {
