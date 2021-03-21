@@ -2,6 +2,9 @@ package com.example.proiect.Controller.Applications;
 
 import com.example.proiect.Model.Pipe;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +21,7 @@ public class ApplicationsHandler {
     }
 
     public void sendAPK(String forGET) throws IOException {
-        URL url = new URL("http://192.168.43.29:5000/checkAndroid?sha="+forGET);
+        URL url = new URL("http://192.168.150.130:5000/checkAndroid?sha="+forGET);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -31,6 +34,30 @@ public class ApplicationsHandler {
             urlConnection.disconnect();
         }
     }
+
+
+
+    public String getInfo()throws IOException {
+        URL url = new URL("http://192.168.150.130:5000/checkHashes");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            String text = null;
+            try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
+                text = scanner.useDelimiter("\\A").next();
+                if (text.equals("None")){
+                    return "None";
+                }
+                else{
+                    return text;
+                }
+            }
+        }
+        finally {
+            urlConnection.disconnect();
+        }
+    }
+
 
     public  ArrayList<ArrayList<String>> Check_apps() {
         Pipe x = Pipe.getInstance();

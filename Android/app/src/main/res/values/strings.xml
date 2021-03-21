@@ -7,4 +7,5 @@
     <string name="Print_traffic">Print traffic</string>
     <string name="Conn">Connections</string>
     <string name="Traffic">Traffic</string>
+    <string name="VulnApps">Get malware</string>
 </resources>
