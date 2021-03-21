@@ -165,19 +165,26 @@ def dns_start():
 								cursor3.execute("SELECT * FROM domains")
 								data3 = (cursor3.fetchall())
 								print ("AICI E DATA3:",data3)
-
-								sql = "INSERT INTO domains (Domains) VALUES('"+DNS_domain+"')"
-								cursor.execute(sql)
-								
+								DNS_ok = 0
+								for i in data3:
+									if i[1] == DNS_domain:
+										DNS_ok = 1
+										break;
+								if DNS_ok == 0:
+									sql = "INSERT INTO domains (Domains) VALUES('"+DNS_domain+"')"
+									cursor.execute(sql)
+									db.commit()
+									print ("AM INSERAT DOMENIUL!")
 								if var == 0:
-									try:
-										vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
-										#print (vt)
-										for i in vt:
-											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','"+HOST+"','"+ bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
-											db.commit()
-									except:
-										pass
+									if DNS_ok == 0:
+										try:
+											vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
+											#print (vt)
+											for i in vt:
+												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','"+HOST+"','"+ bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
+												db.commit()
+										except:
+											pass
 									print ("AICI E URL DE LA DNS!",domain)
 									stop = 0
 									#print ("SUBDOMENII:",SUBD)

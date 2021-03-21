@@ -608,7 +608,7 @@ def checkHashes():
 	cursor.execute("SELECT JSON FROM applications WHERE IP='"+request.remote_addr+"'")
 	data = (cursor.fetchall())
 	try:
-		return jsonify(data[0][0])
+		return jsonify(data)
 	except:
 		return "None"
 
