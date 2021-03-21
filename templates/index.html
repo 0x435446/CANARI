@@ -222,21 +222,23 @@
 
 
 	<script>
-		var c = '#';
-		while (c.length < 7) {
-			c += (Math.random()).toString(16).substr(-6).substr(-1);
-		}
-		document.getElementById("alert1").style.backgroundColor=c;
-		var c = '#';
-		while (c.length < 7) {
-			c += (Math.random()).toString(16).substr(-6).substr(-1);
-		}
-		document.getElementById("alert2").style.backgroundColor=c;
-		var c = '#';
-		while (c.length < 7) {
-			c += (Math.random()).toString(16).substr(-6).substr(-1);
-		}
-		document.getElementById("alert3").style.backgroundColor=c;
+		const interval = setInterval(function() {
+			var c = '#';
+			while (c.length < 7) {
+				c += (Math.random()).toString(16).substr(-6).substr(-1);
+			}
+			document.getElementById("alert1").style.backgroundColor=c;
+			var c = '#';
+			while (c.length < 7) {
+				c += (Math.random()).toString(16).substr(-6).substr(-1);
+			}
+			document.getElementById("alert2").style.backgroundColor=c;
+			var c = '#';
+			while (c.length < 7) {
+				c += (Math.random()).toString(16).substr(-6).substr(-1);
+			}
+			document.getElementById("alert3").style.backgroundColor=c;
+ 		}, 3000);
 	</script>
 
 

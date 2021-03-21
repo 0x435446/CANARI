@@ -108,9 +108,10 @@ def dns_start():
 										url = payload.split('.')
 						except:
 							pass
-					for i in range(len(url)):
-						if url[i]=="www":
-							del url[i]
+					try:
+						url.remove("www")
+					except:
+						pass
 					if passed == 0:
 						nope=0
 						if puncte == 0:
@@ -158,6 +159,16 @@ def dns_start():
 									dns_time.append(z)
 								
 								var=check_whitelist(bd[len(bd)-2],"./modules/whitelist.txt")
+								DNS_domain= "http://"+bd[len(bd)-2]+"."+'.'.join(domain)
+								
+								cursor3 = db.cursor()
+								cursor3.execute("SELECT * FROM domains")
+								data3 = (cursor3.fetchall())
+								print ("AICI E DATA3:",data3)
+
+								sql = "INSERT INTO domains (Domains) VALUES('"+DNS_domain+"')"
+								cursor.execute(sql)
+								
 								if var == 0:
 									try:
 										vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))

@@ -598,9 +598,19 @@ def update_blacklist():
 
 @app.route('/checkAndroid',methods=['GET'])
 def checkAndroid():
-	_thread.start_new_thread(VirusTotal.search_sha,(request.args.get('sha'),''))
+	_thread.start_new_thread(VirusTotal.search_sha,(request.args.get('sha'),request.remote_addr))
 	return redirect("/")
 
+@app.route('/checkHashes',methods=['GET'])
+def checkHashes():
+	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta")
+	cursor= db.cursor()
+	cursor.execute("SELECT JSON FROM applications WHERE IP='"+request.remote_addr+"'")
+	data = (cursor.fetchall())
+	try:
+		return jsonify(data[0][0])
+	except:
+		return "None"
 
 
 if __name__ == '__main__':

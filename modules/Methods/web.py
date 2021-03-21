@@ -126,20 +126,24 @@ def http_start():
 					if x == 0:
 						ok_http = 0
 						if URL != '':
-							if len(GET[0][1:]) > 0:
-								try:
-									print (verify_encoding(GET[0][1:]))
-									if verify_encoding(GET[0][1:]) <= 10:
-										if stop == 0:
-											if ok_http == 0:
-												ok_http = 1
-												print ("ALERT HTTP! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
-												#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
-												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'UNKNOWN BASE FOUND!','MEDIUM','"+HOST+"','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
-												db.commit()
-												#print ("AM AJUNS AICI!!!")
-								except:
-									pass
+							try:
+								if len(GET[0][1:]) > 0:
+									try:
+										print (verify_encoding(GET[0][1:]))
+										if verify_encoding(GET[0][1:]) <= 10:
+											if stop == 0:
+												if ok_http == 0:
+													ok_http = 1
+													print ("ALERT HTTP! UNKNOWN BASE FOUND!!! --> "+ str(GET[0][1:]))
+													#cursor.execute("INSERT INTO http (ID_event,Name,Alert_Type,Domain,Payload) VALUES('2', 'HTTP', 'UNKNOWN BASE FOUND!!!','"+URL+"','"+GET[0][1:]+"' )")
+													cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTP', 'UNKNOWN BASE FOUND!','MEDIUM','"+HOST+"','"+URL+"','"+GET[0][1:]+"','"+str(datetime.now())+"')")
+													db.commit()
+													#print ("AM AJUNS AICI!!!")
+									except:
+										pass
+							except:
+								print ("UITE AICI E O EROARE SI NU STIU DE CE",str(GET))
+								pass
 							if len(URLS) == 0:
 								x=WEB()
 								try:
