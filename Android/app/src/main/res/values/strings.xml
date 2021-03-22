@@ -8,4 +8,6 @@
     <string name="Conn">Connections</string>
     <string name="Traffic">Traffic</string>
     <string name="VulnApps">Get malware</string>
+    <string name="CheckBoxVulnApps">Only Malware</string>
+
 </resources>

@@ -2,12 +2,16 @@ package com.example.proiect.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -56,6 +60,12 @@ public class See_apps extends AppCompatActivity {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Toast.makeText(getApplicationContext(), forlongprint.get(i), Toast.LENGTH_LONG).show();
+
+
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("text label", forprint.get(i));
+                            clipboard.setPrimaryClip(clip);
+
                             return false;
                         }
                     });
@@ -93,12 +103,15 @@ public class See_apps extends AppCompatActivity {
                 ApplicationsHandler z = new ApplicationsHandler();
                 try {
                     String JSON=z.getInfo();
-                    ArrayList<String> Lista = z.checkJSON(JSON);
+                    CheckBox check = (CheckBox) findViewById(R.id.checkBoxMalware);
+                    boolean checked = check.isChecked();
+                    ArrayList<String> Lista = z.checkJSON(JSON,checked);
 
                     GridView g = (GridView) findViewById(R.id.gridViewVulns);
                     g.setVisibility(View.VISIBLE);
                     ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, Lista);
                     g.setAdapter(adapter);
+
 
                     ListView l = (ListView) findViewById((R.id.listViewApps));
                     l.setVisibility(View.INVISIBLE);

@@ -31,7 +31,7 @@ public class ApplicationsHandler {
 
 
 
-    public ArrayList<String> checkJSON(String JSON) throws JSONException {
+    public ArrayList<String> checkJSON(String JSON, boolean ok) throws JSONException {
 
         ArrayList<String> Lista = new ArrayList<>();
         Lista.add("API");
@@ -55,7 +55,7 @@ public class ApplicationsHandler {
                     Iterator<String> keys = reader.getJSONObject("scans").keys();
                     while (keys.hasNext()) {
                         String cheie = keys.next();
-                        if (reader.getJSONObject("scans").getJSONObject(cheie).getString("detected").equals("false")) {
+                        if (!ok) {
                             Lista.add("VirusTotal");
                             Lista.add(cheie);
                             Lista.add(reader.getJSONObject("scans").getJSONObject(cheie).getString("result"));
@@ -64,6 +64,18 @@ public class ApplicationsHandler {
                             else
                                 Lista.add("None");
                             Lista.add(forlongprint.get(i));
+                        }
+                        else{
+                            if (reader.getJSONObject("scans").getJSONObject(cheie).getString("detected").equals("true")) {
+                                Lista.add("VirusTotal");
+                                Lista.add(cheie);
+                                Lista.add(reader.getJSONObject("scans").getJSONObject(cheie).getString("result"));
+                                if (!reader.getJSONObject("scans").getJSONObject(cheie).getString("result").contains("None"))
+                                    Lista.add("HIGH");
+                                else
+                                    Lista.add("None");
+                                Lista.add(forlongprint.get(i));
+                            }
                         }
                     }
                 } catch (Exception ignored) {
