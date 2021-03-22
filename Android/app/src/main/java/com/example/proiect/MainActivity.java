@@ -19,6 +19,7 @@ import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
 
         Pipe x = Pipe.getInstance();
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        setContentView(R.layout.activity_main);
 
         Thread object
                 = new Thread(new Connections());
@@ -97,16 +98,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 check_metasploit();
 
-                /*
-                TrafficDNS x = new TrafficDNS();
-                try {
-                    List<String> ceva = x.loadSignatures();
-                    System.out.println("AICI E   "+x.checkBase64(ceva,"IyE="));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                 */
             }
 
         });
@@ -119,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(it,2);
             }
         });
+
+
 
     }
 
