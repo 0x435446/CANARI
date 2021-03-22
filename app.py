@@ -507,13 +507,14 @@ def preview_whitelist():
 
 
 def search_in_files(word,file):
-
 	if file == "Sources":
 		fisier = "./modules/whitelist_sources.txt"
 	elif file == "UserAgent":
 		fisier = './modules/whitelist_user_agent.txt'
 	elif file == "Domains":
 		fisier = './modules/whitelist.txt'
+	elif file == "Blacklist":
+		fisier = "./modules/blacklist.txt"
 	print ("AICI E FILE",file)
 	file2=open(fisier,"r")
 	content = file2.read().strip().split('\n')
@@ -601,6 +602,11 @@ def update_blacklist():
 			print (request.form)
 			if request.form['type'] == '1':
 				add_delete_domain_blacklist(request.form['data'])
+			if request.form['type'] == '2':
+				if (search_in_files(request.form['data'],"Blacklist") == 1):
+					return "Domeniul se afla in blacklist"
+				else:
+					return "Domeniul nu se afla in blacklist"
 			return "Done!"
 		else:
 			return redirect("/login")
