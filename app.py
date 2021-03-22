@@ -282,7 +282,6 @@ def process_login():
 			cursor.execute("SELECT * FROM users")
 			users = list(cursor.fetchall())
 			db.close()
-			print (users)
 			for i in range(len(users)):
 				if users[i][1] == username:
 					print ("USERNAME CORECT")
@@ -507,6 +506,22 @@ def preview_whitelist():
 
 
 
+def search_in_files(word,file):
+
+	if file == "Sources":
+		fisier = "./modules/whitelist_sources.txt"
+	elif file == "UserAgent":
+		fisier = './modules/whitelist_user_agent.txt'
+	elif file == "Domains":
+		fisier = './modules/whitelist.txt'
+	print ("AICI E FILE",file)
+	file2=open(fisier,"r")
+	content = file2.read().strip().split('\n')
+	file2.close()
+	if word in content:
+		return 1
+	return 0
+
 
 
 
@@ -521,6 +536,22 @@ def update_whitelist():
 				add_delete_payload(request.form['data'])
 			if request.form['type'] == '3':
 				add_delete_soruces(request.form['data'])
+			if request.form['type'] == '4':
+				if search_in_files(request.form['data'],request.form['list']) == 1:
+					print ("DA, E 1")
+					if request.form['list'] == "Sources":
+						return "Sursa exista!"
+					if request.form['list'] == "UserAgent":
+						return "User-Agent-ul exista!"
+					if request.form['list'] == "Domains":
+						return "Domeniul exista!"
+				else:
+					if request.form['list'] == "Sources":
+						return "Nu s-a gasit sursa cautata"
+					if request.form['list'] == "UserAgent":
+						return "Nu s-a gasit User-Agent-ul cautat"
+					if request.form['list'] == "Domains":
+						return "Nu s-a gasit domeniul cautat"
 			return "Done!"
 		else:
 			return redirect("/login")

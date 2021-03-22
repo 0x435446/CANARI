@@ -150,14 +150,12 @@
 			nume+=document.getElementById('searchtext').value;
 			nume+="&type=4&list=";
 			nume+=document.getElementById('list').value;
-			alert(nume);
 		}
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var response = this.responseText;
-				if(type != '4')
-					alert(response);
+				alert(response);
 			}
 		};
 		xhttp.open("POST", "/update_whitelist", true);
