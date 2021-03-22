@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,44 +25,7 @@ import java.util.Iterator;
 
 public class See_apps extends AppCompatActivity {
 
-    private void checkJSON(String JSON) throws JSONException {
 
-
-        JSON=JSON.replace("[","").replace("]","").replace("\"","");
-        JSONArray jsonarray = new JSONArray("["+JSON+"]");
-        ArrayList<String> Lista = new ArrayList<>();
-        Lista.add("API\tWebsite\tRezultat\tRisc\tApplication");
-
-        ApplicationsHandler z = new ApplicationsHandler();
-        ArrayList<ArrayList<String>> forret= new ArrayList<ArrayList<String>>();
-        forret=z.Check_apps();
-        ArrayList<String> forlongprint =  forret.get(1);
-
-        for(int i=0; i<jsonarray.length(); i++){
-            JSONObject obj = jsonarray.getJSONObject(i);
-            try {
-                JSONObject reader = obj;
-                Iterator<String> keys = reader.getJSONObject("scans").keys();
-                while(keys.hasNext()) {
-                    String cheie = keys.next();
-                    if (reader.getJSONObject("scans").getJSONObject(cheie).getString("detected").equals("false")){
-                        Lista.add("VirusTotal"+" "+cheie+ " "+ reader.getJSONObject("scans").getJSONObject(cheie).getString("result")+" HIGH " + forlongprint.get(i));
-                    }
-                }
-            }
-            catch (Exception ignored){
-
-            }
-        }
-
-
-        ListView g = (ListView) findViewById(R.id.listViewApps);
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, Lista);
-        g.setAdapter(adapter);
-
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +43,13 @@ public class See_apps extends AppCompatActivity {
                     ArrayList<String> forprint = forret.get(0);
                     ArrayList<String> forlongprint =  forret.get(1);
 
+
+                    GridView l = (GridView) findViewById((R.id.gridViewVulns));
+                    l.setVisibility(View.INVISIBLE);
+
+
                     ListView g = (ListView) findViewById(R.id.listViewApps);
+                    g.setVisibility(View.VISIBLE);
                     ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, forprint);
                     g.setAdapter(adapter);
                     g.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -123,12 +93,19 @@ public class See_apps extends AppCompatActivity {
                 ApplicationsHandler z = new ApplicationsHandler();
                 try {
                     String JSON=z.getInfo();
-                    checkJSON(JSON);
-                    if (!JSON.equals("None")){
-                    }
+                    ArrayList<String> Lista = z.checkJSON(JSON);
+
+                    GridView g = (GridView) findViewById(R.id.gridViewVulns);
+                    g.setVisibility(View.VISIBLE);
+                    ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, Lista);
+                    g.setAdapter(adapter);
+
+                    ListView l = (ListView) findViewById((R.id.listViewApps));
+                    l.setVisibility(View.INVISIBLE);
+
+
                 } catch (IOException | JSONException e) {
                     Toast.makeText(getApplicationContext(),"TEAPAAAAA",Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
                 }
 
             }
