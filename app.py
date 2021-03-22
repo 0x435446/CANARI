@@ -566,17 +566,21 @@ def update_whitelist():
 
 @app.route('/previewRules',methods=['GET'])
 def preview_rules():
-	try:
+	#try:
 		if session['loggedin'] == True:
+			update_rules=[['Protocol','Host','Dest','Others','Offset','Bytes','Risk','Message']]
 			rules = read_whitelist('./modules/Rules/rules.txt')
-			update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
+			#update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
+			for z in rules:
+				if z[0]!='#':
+					update_rules.append(z.split(':'))
 			print (update_rules)
 			return render_template('add_rules.html',rules=update_rules,len=len(update_rules))
 
-	except:
-		print ("NU ESTI LOGAT!")
-		pass
-	return redirect("/login")
+	#except:
+		#print ("NU ESTI LOGAT!")
+		#pass
+	#return redirect("/login")
 
 
 

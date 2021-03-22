@@ -46,22 +46,25 @@
 
 
 	<div class='content'>
+            <div class="titlu">Rules</div> 
 
 		<table class='tabel' id='table'>
-	        <tr>
-	                <th>Rules</th> 
-	        </tr>
 	        {%for i in range(len)%} 
 	            <tr>
-	                    <td>{{rules[i]}}</td> 
+	        		{%for j in rules[i]%} 
+	                    <td>{{j}}</td> 
+                    {%endfor%}
 	            </tr>
             {%endfor%}
-            <tr>
-            	<td class='plus'>
-                     <button style="background: url(static/images/plus.png); 
+	            <tr>
+            		{%for i in range(7)%} 
+	                	<td>&nbsp</td> 
+          			{%endfor%}
+            		<td>
+                    	 <button style="background: url(static/images/plus.png); 
 					    width:20px; height: 20px;background-size: cover; border:none;" onclick="add_rule('1')"></button>
-				</td>
-            </tr>
+					</td>
+	            </tr>
 		</table>
 
 

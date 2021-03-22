@@ -65,6 +65,7 @@ div.content{
 	margin-bottom: 50px;
 	width:50%;
 	float:left;
+	background-color: rgb(255, 255, 255) !important;
 }
 
 .tabel:hover{
@@ -91,5 +92,13 @@ td:hover{
 
 th{
 	font-size: 20px;	
-	background-color: white;
+	background-color: white !important;
+}
+
+
+div.titlu{
+	color:black;
+	text-align: center;
+	font-size: 20px;	
+	font-weight: bold;
 }
