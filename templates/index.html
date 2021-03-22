@@ -11,6 +11,8 @@
 </head>
 
 <body>
+
+
 	<div class="container">
 		<nav class="navbar navbar-expand-lg rounded" aria-label="Eleventh navbar example">
 		  <div class="container-fluid">
@@ -123,21 +125,42 @@
 		
 		
 		
-		<div class="secondfloatbox" id="second">
-			Filter:<br>
+		<div class="secondfloatbox" id="second">	
+
+
+
+
 			<form action="/" method="POST">
-				<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"> ICMP
-				<input type="checkbox" id="HTTP" name="HTTP" value="HTTP"> HTTP
-				<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"> HTTPS
-				<input type="checkbox" id="DNS" name="DNS" value="DNS"> DNS
-				<input type="checkbox" id="Connections" name="Connections" value="Connections"> Connections
-				<input type="checkbox" id="Listeners" name="Listening" value="Listening"> Listeners
-				<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"> Anomalies<br><br>
-				Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
-				<input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'>
-				<label>Descendent:</label><input type="checkbox" id="descendent" name="descendent" value="descendent"><br>
-				<input type="submit" value="Search">
-			</form>
+
+				<div class="multiselect">
+					<div class="selectBox" onclick="showCheckboxes()">
+						<select>
+							<option>Exfiltration tehniques</option>
+						</select>
+					<div class="overSelect"></div>
+					</div>
+					<div id="checkboxes">
+						<label for="one">
+							<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"/>ICMP</label>
+						<label for="two">
+							<input type="checkbox" iid="HTTP" name="HTTP" value="HTTP"/>HTTP</label>
+						<label for="three">
+							<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"/>HTTPS</label>
+						<label for="four">
+							<input type="checkbox" id="DNS" name="DNS" value="DNS"/>DNS</label>
+						<label for="five">
+							<input type="checkbox" id="Connections" name="Connections" value="Connections"/>Connections</label>
+						<label for="six">
+							<input type="checkbox" id="Listeners" name="Listening" value="Listening"/>Listeners</label>
+						<label for="seven">
+							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>Anomalies</label>
+					</div>
+				</div><br>
+					Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
+					<label>Numar de request-uri:</label><input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'><br>
+					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
+					<input type="submit" value="Search">
+				</form>
 		</div>
 
 		<div class="forthbox" id="forth">
@@ -220,6 +243,23 @@
 
 </body>
 
+
+
+
+	<script>
+	var expanded = false;
+
+	function showCheckboxes() {
+		var checkboxes = document.getElementById("checkboxes");
+		if (!expanded) {
+			checkboxes.style.display = "block";
+			expanded = true;
+		} else {
+			checkboxes.style.display = "none";
+			expanded = false;
+		}
+	}
+	</script>
 
 	<script>
 		const interval = setInterval(function() {

@@ -45,23 +45,25 @@
 		</nav>
 
 		<div class='continut'>
-
+			<input type="text" id="searchtext" name="searchtext" placeholder="Search">
+            	 <button style="background: url(static/images/plus.png); 
+			    width:20px; height: 20px;background-size: cover; border:none; display: inline; margin-top: -25px;" onclick="add_blacklist('2')"></button>
 
 			<table class='tabel'>
                 <tr>
                         <th>Domains blacklist</th> 
                 </tr>
+            	<td class='plus'>
+						<input type="text" id="dtext" name="dtext" value="Domain/IP"><br><br>
+                         <button style="background: url(static/images/plus.png); 
+						    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_blacklist('1')"></button>
+				</td>
 				{%for i in range(len)%} 
                     <tr>
                             <td>{{blacklist[i]}}</td> 
                     </tr>
                     {%endfor%}
                 <tr>
-                	<td class='plus'>
-							<input type="text" id="dtext" name="dtext" value="Domain/IP"><br><br>
-	                         <button style="background: url(static/images/plus.png); 
-							    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_blacklist('1')"></button>
-					</td>
                 </tr>
 			</table>
 
@@ -84,7 +86,11 @@
 		var nume="data=";
 		if (type == '1'){
 			nume+=document.getElementById('dtext').value;
-			nume+="&type=1"
+			nume+="&type=1";
+		}
+		if (type == '2'){
+			nume+=document.getElementById('searchtext').value;
+			nume+="&type=2";
 		}
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {

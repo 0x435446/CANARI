@@ -257,7 +257,6 @@ def process_register():
 			if request.method == 'POST':
 				username = MySQLdb.escape_string(request.form['username']).decode()
 				password = MySQLdb.escape_string(request.form['password']).decode()
-				generate_rsa.generate_pair(username)
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
 				cursor.execute("INSERT INTO users (username,password) VALUES('"+ username +"','"+ sha256(password.encode()).hexdigest() +"')")
@@ -276,27 +275,13 @@ def process_login():
 		print (request.form)
 		username = MySQLdb.escape_string(request.form['username']).decode()
 		password = MySQLdb.escape_string(request.form['password']).decode()
-		private_key = request.files['file']
-		print(private_key.filename)
-		dirName="/tmp/uploads/"
-		try:
-			os.makedirs(dirName)    
-			print("Directory " , dirName ,  " Created ")
-		except FileExistsError:
-			pass  
-		if(len(private_key.filename)>0):
-			private_key.save('/tmp/uploads/'+private_key.filename)
-		else:
-			private_key.filename='Nothing'
-		x = check_key.check('./modules/publicKeys/'+username+'.pem','/tmp/uploads/'+private_key.filename)
+		x = 1
 		if x == 1:
-			print ("CORRECT KEY")
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
 			cursor.execute("SELECT * FROM users")
 			users = list(cursor.fetchall())
 			db.close()
-			print (users)
 			for i in range(len(users)):
 				if users[i][1] == username:
 					print ("USERNAME CORECT")
@@ -305,12 +290,10 @@ def process_login():
 						session['loggedin'] = True
 						session['username']=username
 						print (session['loggedin'])
-		else:
-			print ("INCORRECT")
-		try:
-			os.system("rm /tmp/uploads/"+private_key.filename)
-		except:
-			pass
+					else:
+						print ("INCORRECT")
+				else:
+					print ("INCORRECT")
 	return redirect("/login")
 
 
@@ -523,6 +506,23 @@ def preview_whitelist():
 
 
 
+def search_in_files(word,file):
+	if file == "Sources":
+		fisier = "./modules/whitelist_sources.txt"
+	elif file == "UserAgent":
+		fisier = './modules/whitelist_user_agent.txt'
+	elif file == "Domains":
+		fisier = './modules/whitelist.txt'
+	elif file == "Blacklist":
+		fisier = "./modules/blacklist.txt"
+	print ("AICI E FILE",file)
+	file2=open(fisier,"r")
+	content = file2.read().strip().split('\n')
+	file2.close()
+	if word in content:
+		return 1
+	return 0
+
 
 
 
@@ -537,6 +537,22 @@ def update_whitelist():
 				add_delete_payload(request.form['data'])
 			if request.form['type'] == '3':
 				add_delete_soruces(request.form['data'])
+			if request.form['type'] == '4':
+				if search_in_files(request.form['data'],request.form['list']) == 1:
+					print ("DA, E 1")
+					if request.form['list'] == "Sources":
+						return "Sursa exista!"
+					if request.form['list'] == "UserAgent":
+						return "User-Agent-ul exista!"
+					if request.form['list'] == "Domains":
+						return "Domeniul exista!"
+				else:
+					if request.form['list'] == "Sources":
+						return "Nu s-a gasit sursa cautata"
+					if request.form['list'] == "UserAgent":
+						return "Nu s-a gasit User-Agent-ul cautat"
+					if request.form['list'] == "Domains":
+						return "Nu s-a gasit domeniul cautat"
 			return "Done!"
 		else:
 			return redirect("/login")
@@ -550,17 +566,21 @@ def update_whitelist():
 
 @app.route('/previewRules',methods=['GET'])
 def preview_rules():
-	try:
+	#try:
 		if session['loggedin'] == True:
+			update_rules=[['Protocol','Host','Dest','Others','Offset','Bytes','Risk','Message']]
 			rules = read_whitelist('./modules/Rules/rules.txt')
-			update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
+			#update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
+			for z in rules:
+				if z[0]!='#':
+					update_rules.append(z.split(':'))
 			print (update_rules)
 			return render_template('add_rules.html',rules=update_rules,len=len(update_rules))
 
-	except:
-		print ("NU ESTI LOGAT!")
-		pass
-	return redirect("/login")
+	#except:
+		#print ("NU ESTI LOGAT!")
+		#pass
+	#return redirect("/login")
 
 
 
@@ -586,6 +606,11 @@ def update_blacklist():
 			print (request.form)
 			if request.form['type'] == '1':
 				add_delete_domain_blacklist(request.form['data'])
+			if request.form['type'] == '2':
+				if (search_in_files(request.form['data'],"Blacklist") == 1):
+					return "Domeniul se afla in blacklist"
+				else:
+					return "Domeniul nu se afla in blacklist"
 			return "Done!"
 		else:
 			return redirect("/login")

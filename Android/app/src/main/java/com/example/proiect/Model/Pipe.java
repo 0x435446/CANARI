@@ -13,16 +13,6 @@ public class Pipe {
     private String metasploit;
     private String apps;
     private ArrayList<String> traffic;
-    private String JSON;
-
-
-    public String getJSON() {
-        return JSON;
-    }
-
-    public void setJSON(String JSON) {
-        this.JSON = JSON;
-    }
 
     public ArrayList<String> getTraffic() {
         return traffic;
