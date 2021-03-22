@@ -257,7 +257,6 @@ def process_register():
 			if request.method == 'POST':
 				username = MySQLdb.escape_string(request.form['username']).decode()
 				password = MySQLdb.escape_string(request.form['password']).decode()
-				generate_rsa.generate_pair(username)
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
 				cursor.execute("INSERT INTO users (username,password) VALUES('"+ username +"','"+ sha256(password.encode()).hexdigest() +"')")
@@ -276,21 +275,8 @@ def process_login():
 		print (request.form)
 		username = MySQLdb.escape_string(request.form['username']).decode()
 		password = MySQLdb.escape_string(request.form['password']).decode()
-		private_key = request.files['file']
-		print(private_key.filename)
-		dirName="/tmp/uploads/"
-		try:
-			os.makedirs(dirName)    
-			print("Directory " , dirName ,  " Created ")
-		except FileExistsError:
-			pass  
-		if(len(private_key.filename)>0):
-			private_key.save('/tmp/uploads/'+private_key.filename)
-		else:
-			private_key.filename='Nothing'
-		x = check_key.check('./modules/publicKeys/'+username+'.pem','/tmp/uploads/'+private_key.filename)
+		x = 1
 		if x == 1:
-			print ("CORRECT KEY")
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
 			cursor.execute("SELECT * FROM users")
@@ -305,12 +291,10 @@ def process_login():
 						session['loggedin'] = True
 						session['username']=username
 						print (session['loggedin'])
-		else:
-			print ("INCORRECT")
-		try:
-			os.system("rm /tmp/uploads/"+private_key.filename)
-		except:
-			pass
+					else:
+						print ("INCORRECT")
+				else:
+					print ("INCORRECT")
 	return redirect("/login")
 
 

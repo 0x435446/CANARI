@@ -46,22 +46,34 @@
 		</nav>
 
 		<div class='continut'>
+	        <tr>
+	        	<td class='plus'>
+						<input type="text" id="searchtext" name="uawtext" placeholder="Search">
+						<select id="list" name="list">
+						  <option value="Domains">Domains</option>
+						  <option value="UserAgent">UserAgent</option>
+						  <option value="Sources">Sources</option>
+						</select>
+	                     <button style="background: url(static/images/plus.png); 
+						    width:20px; height: 20px;background-size: cover; border:none; display: inline; margin-top: -25px;" onclick="add_whitelist('4')"></button>
+				</td>
+	        </tr>
 			<table class='tabel'>
                 <tr>
                         <th>Domains whitelist </th> 
+                </tr>
+                <tr>
+                	<td class='plus'>
+							<input type="text" id="wtext" name="wtext" value="Domain/IP"><br><br>
+	                         <button style="background: url(static/images/plus.png); 
+							    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('1')"></button>
+					</td>
                 </tr>
 				{%for i in range(len_whitelist)%} 
                     <tr>
                             <td>{{content_whitelist[i]}}</td> 
                     </tr>
                     {%endfor%}   
-	                <tr>
-	                	<td class='plus'>
-								<input type="text" id="wtext" name="wtext" value="Domain/IP"><br><br>
-		                         <button style="background: url(static/images/plus.png); 
-								    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('1')"></button>
-						</td>
-	                </tr>
 			</table>
 
 
@@ -69,36 +81,37 @@
                 <tr>
                         <th>User Agent whitelist</th> 
                 </tr>
+
+                <tr>
+                	<td class='plus'>
+							<input type="text" id="uawtext" name="uawtext" value="User-Agent"><br><br>
+	                         <button style="background: url(static/images/plus.png); 
+							    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('2')"></button>
+					</td>
+                </tr>
 				{%for i in range(len_content_whitelist_user_agent)%} 
                     <tr>
                             <td>{{content_whitelist_user_agent[i]}}</td> 
                     </tr>
                     {%endfor%}
-	                <tr>
-	                	<td class='plus'>
-								<input type="text" id="uawtext" name="uawtext" value="User-Agent"><br><br>
-		                         <button style="background: url(static/images/plus.png); 
-								    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('2')"></button>
-						</td>
-	                </tr>
 			</table>
 
 			<table class='tabel'>
                 <tr>
                     <th>Sources whitelist</th> 
                 </tr>
+                <tr>
+                	<td class='plus'>
+							<input type="text" id="swtext" name="swtext" value="Source"><br><br>
+	                         <button style="background: url(static/images/plus.png); 
+							    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('3')"></button>
+					</td>
+                </tr>
 				{%for i in range(len_content_whitelist_sources)%} 
                     <tr>
                         <td>{{content_whitelist_sources[i]}}</td> 
                     </tr>
                     {%endfor%}
-	                <tr>
-	                	<td class='plus'>
-								<input type="text" id="swtext" name="swtext" value="Source"><br><br>
-		                         <button style="background: url(static/images/plus.png); 
-								    width:20px; height: 20px;background-size: cover; border:none; display: inline;" onclick="add_whitelist('3')"></button>
-						</td>
-	                </tr>
 			</table>
 		</div>
 
@@ -132,11 +145,19 @@
 			nume+=document.getElementById('swtext').value;
 			nume+="&type=3"
 		}
+
+		if (type == '4'){
+			nume+=document.getElementById('searchtext').value;
+			nume+="&type=4&list=";
+			nume+=document.getElementById('list').value;
+			alert(nume);
+		}
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var response = this.responseText;
-				alert(response);
+				if(type != '4')
+					alert(response);
 			}
 		};
 		xhttp.open("POST", "/update_whitelist", true);
