@@ -60,12 +60,9 @@ public class See_apps extends AppCompatActivity {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Toast.makeText(getApplicationContext(), forlongprint.get(i), Toast.LENGTH_LONG).show();
-
-
                             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("text label", forprint.get(i));
                             clipboard.setPrimaryClip(clip);
-
                             return false;
                         }
                     });

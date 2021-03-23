@@ -25,7 +25,11 @@
         <activity android:name=".View.Preview_Connections" />
         <activity android:name=".MainActivity">
         </activity>
-        <activity android:name=".View.Preview_traffic" />
+        <activity android:name=".View.Preview_traffic"
+            android:configChanges="orientation"
+            android:screenOrientation= "sensorLandscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
         <activity android:name=".View.See_apps" />
     </application>
 
