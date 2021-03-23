@@ -37,7 +37,6 @@ def search_sha(URLs,adresa):
 	cursor2= db.cursor()
 	cursor2.execute("SELECT * FROM applications")
 	data2 = (cursor2.fetchall())
-	print (data2)
 	for_print=[]
 	for URL in URLs.split("|"):
 		time.sleep(25)

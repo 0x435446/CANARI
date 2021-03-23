@@ -5,22 +5,27 @@ import MySQLdb
 
 
 class METHODS:
-	@staticmethod
-	def check_header(self):
-   	   nr=0
-   	   try:
-   	   	   for i in range(len(self.header)-1,len(self.header)-3,-1):
-   	   	   	   lista=self.header[:]
-   	   	   	   del lista[i][2]
-   	   	   	   del lista[i][5]	
-   	   	   	   del lista[i-1][2]
-   	   	   	   del lista[i-1][5]
-   	   	   	   if(lista[i]!=lista[i-1]):
-   	   	   	   	    nr+=1
-   	   except:
-   	       pass
-   	   if nr==2:
-   	      print ("ALERT: IP HEADER CHANGED")
+  @staticmethod
+  def check_header(self):
+      nr=0
+      try:
+        for i in range(len(self.header)-1,len(self.header)-3,-1):
+          lista=self.header[:]
+          del lista[i][2]
+          del lista[i][5]	
+          del lista[i-1][2]
+          del lista[i-1][5]
+          if(lista[i]!=lista[i-1]):
+            nr+=1
+      except:
+        pass
+      if nr==2:
+        db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Anomalies', 'IP HEADER CHANGED','HIGH','-','-','"+str(nr)+"','"+str(datetime.now())+"')")
+        db.commit()
+        db.close()
+        print ("ALERT: IP HEADER CHANGED")
 
     
 def get_ip_address(ifname):
@@ -52,17 +57,22 @@ def get_stranger_ip(result):
 
 
 def get_header_ip(packet):
-	s=0	
-	check=0
-	for i in range(7,17):
-		if i!=12:
-			s+=int(packet[i],16)
-		else:
-			check=int(packet[i],16)
-	if int(hex(s^0xfffff)[3:],16)!=int(hex(check+2)[2:],16):
-		if int(hex(s^0xfffff)[3:],16)!=int(hex(check+3)[2:],16):
-			print ("ALERT: IP CHECKSUM FAILED")
-			print (int(hex(s^0xfffff)[3:],16),int(hex(check+3)[2:],16))
+  s=0	
+  check=0
+  for i in range(7,17):
+    if i!=12:
+      s+=int(packet[i],16)
+    else:
+      check=int(packet[i],16)
+  if int(hex(s^0xfffff)[3:],16)!=int(hex(check+2)[2:],16):
+    if int(hex(s^0xfffff)[3:],16)!=int(hex(check+3)[2:],16):
+      print ("ALERT: IP CHECKSUM FAILED")
+      db=MySQLdb.connect( host="localhost",user="root",passwd="FlagFlag123.",db="licenta")
+      cursor = db.cursor()
+      cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Anomalies', 'IP HEADER CHANGED','HIGH','-','-','"+str(nr)+"','"+str(datetime.now())+"')")
+      db.commit()
+      db.close()
+      print (int(hex(s^0xfffff)[3:],16),int(hex(check+3)[2:],16))
 
 
 def read_file(fisier):
