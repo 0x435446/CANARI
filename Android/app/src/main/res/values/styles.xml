@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources><style name="AppTheme.FullScreen" parent="Theme.AppCompat.DayNight">
-    <item name="windowNoTitle">true</item>
-    <item name="windowActionBar">false</item>
+<resources>
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="android:windowFullscreen">true</item>
     <item name="android:windowContentOverlay">@null</item>
     <!-- Primary brand color. -->
@@ -14,4 +13,9 @@
     <item name="colorSecondaryVariant">@color/teal_700</item>
     <item name="colorOnSecondary">@color/black</item>
     <!-- Status bar color. -->
-</style></resources>
+    </style>
+    <style name="DefaultTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+
+</resources>

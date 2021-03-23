@@ -1,32 +1,29 @@
 package com.example.proiect;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.proiect.Controller.Applications.CheckApps;
 import com.example.proiect.Controller.Connections.Connections;
 import com.example.proiect.Controller.Metasploit.Metasploit;
-import com.example.proiect.Controller.TrafficTypes.TrafficHTTP;
-import com.example.proiect.Model.Pipe;
 import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
+import com.example.proiect.Controller.TrafficTypes.TrafficHTTP;
 import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
+import com.example.proiect.Model.Pipe;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
-
-
-public class MainActivity extends AppCompatActivity {
+public class Menu extends AppCompatActivity {
 
 
     private void check_metasploit() {
@@ -36,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle abdt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_menu);
 
         Pipe x = Pipe.getInstance();
         x.setTraffic("Type");
@@ -83,51 +82,52 @@ public class MainActivity extends AppCompatActivity {
         object6.start();
 
 
-        Button Conn = findViewById(R.id.startBtn);
-        Conn.setOnClickListener(new View.OnClickListener() {
+        dl = (DrawerLayout)findViewById(R.id.dl);
+        abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(abdt);
+        abdt.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final NavigationView nav_view = (NavigationView)findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+        {
+
             @Override
-            public void onClick(View view) {
-                Intent it = new Intent(getApplicationContext(), Preview_Connections.class);
-                startActivityForResult(it,3);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if(id==R.id.conexiuni)
+                {
+                    Intent it = new Intent(getApplicationContext(), Preview_Connections.class);
+                    startActivityForResult(it,3);
+                }
+
+                if(id==R.id.metasploit)
+                {
+                    check_metasploit();
+                }
+
+                if(id==R.id.traffic)
+                {
+                    Intent it = new Intent(getApplicationContext(), Preview_traffic.class);
+                    startActivityForResult(it,2);
+                }
+                if(id==R.id.aplicatii)
+                {
+                    Intent it = new Intent(getApplicationContext(), See_apps.class);
+                    startActivityForResult(it,1);
+                }
+
+                return true;
             }
         });
-
-        Button Metasploit = findViewById(R.id.startBtn2);
-        Metasploit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                check_metasploit();
-
-            }
-
-        });
-
-        Button Traffic = findViewById(R.id.Traffic);
-        Traffic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(getApplicationContext(), Preview_traffic.class);
-                startActivityForResult(it,2);
-            }
-        });
-
-        Button Menu = findViewById(R.id.Menu);
-        Menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(getApplicationContext(), Menu.class);
-                startActivityForResult(it,3);
-            }
-        });
-
 
     }
 
-
-    public void open_see_apps(View view) {
-        Intent it = new Intent(getApplicationContext(), See_apps.class);
-        startActivityForResult(it,1);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
-
 }
-

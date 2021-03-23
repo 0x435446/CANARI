@@ -7,4 +7,10 @@
     <string name="Print_traffic">Print traffic</string>
     <string name="Conn">Connections</string>
     <string name="Traffic">Traffic</string>
+    <string name="VulnApps">Get malware</string>
+    <string name="CheckBoxVulnApps">Only Malware</string>
+
+
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>

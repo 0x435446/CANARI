@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/conexiuni"
+        android:title="Conexiuni">
+
+    </item>
+
+    <item
+        android:id="@+id/metasploit"
+        android:title="Metasploit">
+
+    </item>
+
+    <item
+        android:id="@+id/traffic"
+        android:title="Trafic">
+    </item>
+
+
+    <item
+        android:id="@+id/aplicatii"
+        android:title="Aplicatii">
+    </item>
+</menu>
