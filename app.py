@@ -568,7 +568,8 @@ def update_whitelist():
 def preview_rules():
 	#try:
 		if session['loggedin'] == True:
-			update_rules=[['Protocol','Host','Dest','Others','Offset','Bytes','Risk','Message']]
+			#update_rules=[['Protocol','Host','Dest','Others','Offset','Bytes','Risk','Message']]
+			update_rules=[]
 			rules = read_whitelist('./modules/Rules/rules.txt')
 			#update_rules=[z.replace(':',' : ') for z in rules if z[0]!='#' ]
 			for z in rules:
