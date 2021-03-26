@@ -156,6 +156,8 @@ public class ApplicationsHandler {
                 forret.add(forprint);
             }
         }
+
+        x.setLengthStatus(forprint.size());
         return forret;
     }
 }

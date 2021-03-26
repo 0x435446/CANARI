@@ -3,8 +3,11 @@ package com.example.proiect.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,11 +22,6 @@ public class Preview_traffic extends AppCompatActivity {
 
     private void check_traffic(){
         Pipe x = Pipe.getInstance();
-        /*
-        ListView g = (ListView) findViewById(R.id.listViewTraffic);
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,x.getTraffic());
-        g.setAdapter(adapter);
-         */
         TextView t = (TextView)findViewById((R.id.textView));
         t.setText(x.getTraffic().get(x.getTraffic().size()-2).toString());
         GridView g = (GridView) findViewById(R.id.gridViewTraffic);
@@ -44,6 +42,8 @@ public class Preview_traffic extends AppCompatActivity {
             }
         });
 
+
+        /*
         Button deleteDB = findViewById(R.id.deleteDB);
         deleteDB.setOnClickListener(new View.OnClickListener() {
         Pipe x = Pipe.getInstance();
@@ -55,7 +55,6 @@ public class Preview_traffic extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing but close the dialog
                         PacheteDB db = PacheteDB.getInstance(getApplicationContext());
                         db.getPacheteDao().nukeTable();
                         dialog.dismiss();
@@ -75,6 +74,11 @@ public class Preview_traffic extends AppCompatActivity {
             }
         });
 
+         */
+
 
     }
+
+
+
 }

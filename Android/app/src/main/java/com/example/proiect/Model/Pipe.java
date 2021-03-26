@@ -16,6 +16,25 @@ public class Pipe {
     private String apps;
     private ArrayList<String> traffic;
     private Context context;
+    private int checkStatus;
+    private int lengthStatus;
+
+
+    public int getLengthStatus() {
+        return lengthStatus;
+    }
+
+    public void setLengthStatus(int lengthStatus) {
+        this.lengthStatus = lengthStatus;
+    }
+
+    public int getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(int checkStatus) {
+        this.checkStatus = checkStatus;
+    }
 
     public Context getContext() {
         return context;
@@ -57,9 +76,9 @@ public class Pipe {
         this.apps = apps;
     }
 
-    // private constructor restricted to this class itself
     private Pipe(){
         this.traffic=new ArrayList<String>();
+        this.checkStatus = 0;
     }
 
 
@@ -71,6 +90,5 @@ public class Pipe {
 
         return single_instance;
     }
-
 
 }

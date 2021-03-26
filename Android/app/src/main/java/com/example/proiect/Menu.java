@@ -9,8 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proiect.Controller.Applications.ApplicationsHandler;
 import com.example.proiect.Controller.Applications.CheckApps;
 import com.example.proiect.Controller.Connections.Connections;
 import com.example.proiect.Controller.Metasploit.Metasploit;
@@ -26,7 +31,9 @@ import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Menu extends AppCompatActivity {
 
@@ -66,6 +73,7 @@ public class Menu extends AppCompatActivity {
         List<Pachete> pachete = db.getPacheteDao().getAll();
         PacheteUsage p = new PacheteUsage();
         p.addPachet(pachete);
+
 
 
         Thread object
@@ -135,10 +143,34 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("AICI E STATUSUL: "+x.getCheckStatus());
+        if (x.getCheckStatus() == 2){
+            TextView text = (TextView) findViewById(R.id.textStatisticiUnu);
+            text.setText("You need a rooted device");
+        }
+        if(x.getCheckStatus() == 1){
+            ApplicationsHandler z = new ApplicationsHandler();
+            ArrayList<ArrayList<String>> forret = new ArrayList<ArrayList<String>>();
+            forret = z.Check_apps();
+            TextView text = (TextView) findViewById(R.id.textStatisticiUnu);
+            text.setText("Aplicatii instalate: "+x.getLengthStatus());
+        }
+        else{
+            TextView text = (TextView) findViewById(R.id.textStatisticiUnu);
+            text.setText("Too early");
+        }
+
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
+
+
 }

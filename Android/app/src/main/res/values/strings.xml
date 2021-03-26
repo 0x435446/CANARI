@@ -11,6 +11,7 @@
     <string name="CheckBoxVulnApps">Only Malware</string>
     <string name="Refresh">Refresh</string>
     <string name="DeleteDB">ClearDB</string>
+    <string name="Statistics">Statistici Aplicatii</string>
 
     <string name="Open">Open</string>
     <string name="Close">Close</string>
