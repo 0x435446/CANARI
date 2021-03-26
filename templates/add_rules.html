@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/body.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/add_rules.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/divs.css') }}">
     
 </head>
 
@@ -48,6 +49,17 @@
 	<div class='content'>
             <div class="titlu">Rules</div> 
 
+<!--
+	        {%for i in range(len)%} 
+            	<div id='t_{{i}}' onmouseover="change_text('t_{{i}}')"class='lista'>
+            	
+            	{%for j in rules[i]%}
+            			<div  class='cutie'> {{j}} </div>
+            	{%endfor%}
+				</div>
+            {%endfor%}
+		-->
+
 		<table class='tabel' id='table'>
 	        {%for i in range(len)%} 
 	            <tr>
@@ -66,7 +78,6 @@
 					</td>
 	            </tr>
 		</table>
-
 
 		<div class="box" id='box'>
 			<button style="background: url(static/images/x.png); 
@@ -103,6 +114,7 @@
 		}
 
 	}
-	</script>
+</script>
+
 
 </html>

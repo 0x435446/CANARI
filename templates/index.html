@@ -112,7 +112,7 @@
 			
 			<div class="progressbar2">
 				 0/{{numar[-1]}}
-				 <span style="float: left">Anomalies</span>
+				 <span style="float: left">IPv4 Anomalies</span>
 				 <div class="progressbars">
 					<div class="progress" id="anomalies_progress">
 					</div>
@@ -153,7 +153,7 @@
 						<label for="six">
 							<input type="checkbox" id="Listeners" name="Listening" value="Listening"/>Listeners</label>
 						<label for="seven">
-							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>Anomalies</label>
+							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>IPv4 Anomalies</label>
 						<label for="eight">
 							<input type="checkbox" id="VirusTotal" name="VirusTotal" value="VirusTotal"/>VirusTotal</label>
 					</div>
@@ -264,22 +264,19 @@
 	</script>
 
 	<script>
+		var x = 0;
 		const interval = setInterval(function() {
-			var c = '#';
-			while (c.length < 7) {
-				c += (Math.random()).toString(16).substr(-6).substr(-1);
-			}
+			var low=["#64ff50","#42ff29","#42ff29","#1adb00","#17c400","#13a600"];
+			var medium=["#ffaf4d","#ffa02b","#ff8d00","#d97800","#ffa600","#ff8400"];
+			var high=["#ff4747","#ff2626","#ff0000","#e30000","#c90000","#a30000"];
+			var index = x % 6;
+			var c=low[index];
 			document.getElementById("alert1").style.backgroundColor=c;
-			var c = '#';
-			while (c.length < 7) {
-				c += (Math.random()).toString(16).substr(-6).substr(-1);
-			}
+			c=medium[index];
 			document.getElementById("alert2").style.backgroundColor=c;
-			var c = '#';
-			while (c.length < 7) {
-				c += (Math.random()).toString(16).substr(-6).substr(-1);
-			}
+			c=high[index];
 			document.getElementById("alert3").style.backgroundColor=c;
+			x+=1;
  		}, 3000);
 	</script>
 

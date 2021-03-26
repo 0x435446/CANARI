@@ -164,7 +164,6 @@ def dns_start():
 								cursor3 = db.cursor()
 								cursor3.execute("SELECT * FROM domains")
 								data3 = (cursor3.fetchall())
-								print ("AICI E DATA3:",data3)
 								DNS_ok = 0
 								for i in data3:
 									if i[1] == DNS_domain:
