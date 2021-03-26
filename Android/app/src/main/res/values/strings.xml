@@ -9,7 +9,8 @@
     <string name="Traffic">Traffic</string>
     <string name="VulnApps">Get malware</string>
     <string name="CheckBoxVulnApps">Only Malware</string>
-
+    <string name="Refresh">Refresh</string>
+    <string name="DeleteDB">ClearDB</string>
 
     <string name="Open">Open</string>
     <string name="Close">Close</string>

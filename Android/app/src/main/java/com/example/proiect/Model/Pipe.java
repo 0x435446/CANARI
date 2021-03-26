@@ -1,5 +1,7 @@
 package com.example.proiect.Model;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class Pipe {
@@ -13,6 +15,15 @@ public class Pipe {
     private String metasploit;
     private String apps;
     private ArrayList<String> traffic;
+    private Context context;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public ArrayList<String> getTraffic() {
         return traffic;

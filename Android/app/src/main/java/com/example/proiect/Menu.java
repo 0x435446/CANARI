@@ -14,14 +14,19 @@ import android.widget.Toast;
 import com.example.proiect.Controller.Applications.CheckApps;
 import com.example.proiect.Controller.Connections.Connections;
 import com.example.proiect.Controller.Metasploit.Metasploit;
+import com.example.proiect.Controller.Pachete.PacheteDB;
+import com.example.proiect.Controller.Pachete.PacheteUsage;
 import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
 import com.example.proiect.Controller.TrafficTypes.TrafficHTTP;
 import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
+import com.example.proiect.Model.Pachete;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class Menu extends AppCompatActivity {
 
@@ -49,13 +54,19 @@ public class Menu extends AppCompatActivity {
         x.setTraffic("Destinatie");
         x.setTraffic("Payload");
         x.setTraffic("Timestamp");
-
+        x.setContext(getApplicationContext());
         if (android.os.Build.VERSION.SDK_INT > 9)
         {
             StrictMode.ThreadPolicy policy = new
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        PacheteDB db = PacheteDB.getInstance(getApplication());
+        List<Pachete> pachete = db.getPacheteDao().getAll();
+        PacheteUsage p = new PacheteUsage();
+        p.addPachet(pachete);
+
 
         Thread object
                 = new Thread(new Connections());

@@ -1,10 +1,10 @@
 package com.example.proiect.Controller.TrafficTypes;
 
 import android.os.Build;
-import android.widget.Toast;
 
+import com.example.proiect.Controller.Pachete.PacheteDB;
 import com.example.proiect.Model.HTTP;
-import com.example.proiect.Model.ICMP;
+import com.example.proiect.Model.Pachete;
 import com.example.proiect.Model.Pipe;
 
 import java.io.BufferedInputStream;
@@ -107,6 +107,10 @@ public class TrafficHTTP implements Runnable {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         System.out.println(formatter.format(calendar.getTime()));
         x.setTraffic(formatter.format(calendar.getTime()).toString());
+
+        Pachete fordb = new Pachete(TYPE,MESSAGE,RISK,SURSA,DESTINATIE,PAYLOAD,formatter.format(calendar.getTime()).toString());
+        PacheteDB db = PacheteDB.getInstance(x.getContext());
+        db.getPacheteDao().insert(fordb);
     }
 
     public TrafficHTTP() {
