@@ -18,7 +18,33 @@ public class Pipe {
     private Context context;
     private int checkStatus;
     private int lengthStatus;
+    private int DNSCount;
+    private int HTTPCount;
+    private int ICMPCount;
 
+    public int getDNSCount() {
+        return DNSCount;
+    }
+
+    public void setDNSCount() {
+        this.DNSCount += 1;
+    }
+
+    public int getHTTPCount() {
+        return HTTPCount;
+    }
+
+    public void setHTTPCount() {
+        this.HTTPCount += 1;
+    }
+
+    public int getICMPCount() {
+        return ICMPCount;
+    }
+
+    public void setICMPCount() {
+        this.ICMPCount += 1;
+    }
 
     public int getLengthStatus() {
         return lengthStatus;

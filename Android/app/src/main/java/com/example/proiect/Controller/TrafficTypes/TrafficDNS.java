@@ -257,6 +257,7 @@ public class TrafficDNS implements Runnable{
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         System.out.println(formatter.format(calendar.getTime()));
         x.setTraffic(formatter.format(calendar.getTime()).toString());
+        x.setDNSCount();
 
         Pachete fordb = new Pachete(TYPE,MESSAGE,RISK,SURSA,DESTINATIE,PAYLOAD,formatter.format(calendar.getTime()).toString());
         PacheteDB db = PacheteDB.getInstance(x.getContext());
@@ -369,6 +370,7 @@ public class TrafficDNS implements Runnable{
         }
         catch (Exception e) {
             Pipe x= Pipe.getInstance();
+            x.setCheckStatus(2);
             System.out.println("Exception is caught");
         }
 

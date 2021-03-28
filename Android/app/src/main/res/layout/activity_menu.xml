@@ -14,6 +14,189 @@
         android:layout_height="match_parent"
         tools:context=".Menu">
 
+        <TextView
+            android:id="@+id/progressDNS"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="67dp"
+            android:layout_marginBottom="400dp"
+            android:text="@string/progressBar" />
+
+        <TextView
+            android:id="@+id/progressHTTP"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="67dp"
+            android:layout_marginBottom="463dp"
+            android:text="@string/progressBar" />
+
+        <TextView
+            android:id="@+id/progressICMP"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="67dp"
+            android:layout_marginBottom="531dp"
+            android:text="@string/progressBar" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="34dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="57dp"
+            android:layout_marginEnd="320dp"
+            android:layout_marginBottom="400dp"
+            android:text="@string/Statistics4" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="57dp"
+            android:layout_marginEnd="319dp"
+            android:layout_marginBottom="462dp"
+            android:text="@string/Statistics3" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="@style/MyProgressBar"
+            android:layout_width="214dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="110dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="402dp"
+            android:gravity="center" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="@style/MyProgressBar"
+            android:layout_width="214dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="110dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="533dp"
+            android:gravity="center" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="@style/MyProgressBar"
+            android:layout_width="214dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="110dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="466dp"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="333dp"
+            android:layout_marginEnd="44dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/button" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="231dp"
+            android:layout_marginEnd="44dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/button" />
+
+        <TextView
+            android:id="@+id/textStatisticiTrei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="227dp"
+            android:layout_marginEnd="146dp"
+            android:layout_marginBottom="-163dp"
+            android:gravity="center"
+            android:text="@string/Statistics"
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textStatisticiPatru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="331dp"
+            android:layout_marginEnd="148dp"
+            android:layout_marginBottom="-267dp"
+            android:gravity="center"
+            android:text="@string/Statistics"
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="131dp"
+            android:layout_marginEnd="44dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/button" />
+
+        <TextView
+            android:id="@+id/textStatisticiDoi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="127dp"
+            android:layout_marginEnd="146dp"
+            android:layout_marginBottom="-63dp"
+            android:gravity="center"
+            android:text="@string/Statistics"
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -24,11 +207,11 @@
             android:layout_marginStart="44dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="44dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/button" />
 
         <TextView
             android:id="@+id/textStatisticiUnu"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView"
@@ -39,7 +222,10 @@
             android:layout_marginTop="28dp"
             android:layout_marginEnd="146dp"
             android:layout_marginBottom="36dp"
-            android:text="@string/Statistics" />
+            android:gravity="center"
+            android:text="@string/Statistics"
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -49,12 +235,26 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="137dp"
-            android:layout_marginEnd="137dp"
-            android:layout_marginBottom="319dp"
+            android:layout_marginStart="295dp"
+            android:layout_marginEnd="-21dp"
+            android:layout_marginBottom="-34dp"
             android:max="100"
             android:progress="0"
-            android:visibility="invisible" />
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="57dp"
+            android:layout_marginEnd="316dp"
+            android:layout_marginBottom="531dp"
+            android:text="@string/Statistics2" />
+
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -66,4 +266,8 @@
         app:menu="@menu/navigation_menu">
 
     </com.google.android.material.navigation.NavigationView>
+
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
+

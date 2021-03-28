@@ -16,6 +16,8 @@
     </style>
     <style name="DefaultTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
-
-
+    <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">#FFFFFF</item>
+        <item name="android:progressTint">#FF5722</item>
+    </style>
 </resources>

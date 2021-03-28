@@ -12,7 +12,10 @@
     <string name="Refresh">Refresh</string>
     <string name="DeleteDB">ClearDB</string>
     <string name="Statistics">Statistici Aplicatii</string>
-
+    <string name="Statistics2">ICMP</string>
+    <string name="Statistics3">HTTP</string>
+    <string name="Statistics4">DNS</string>
+    <string name="progressBar">0/0</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
 </resources>
