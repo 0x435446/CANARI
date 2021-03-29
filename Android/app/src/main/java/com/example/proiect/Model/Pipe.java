@@ -2,7 +2,11 @@ package com.example.proiect.Model;
 
 import android.content.Context;
 
+import com.example.proiect.Model.DomainWhiteListDB.DomainWhilelist;
+import com.example.proiect.View.DomainWhiteListView;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pipe {
 
@@ -21,6 +25,15 @@ public class Pipe {
     private int DNSCount;
     private int HTTPCount;
     private int ICMPCount;
+    private List<DomainWhilelist> domainlist;
+
+    public List<DomainWhilelist> getDomainlist() {
+        return domainlist;
+    }
+
+    public void setDomainlist(DomainWhilelist domainlist) {
+        this.domainlist.add(domainlist);
+    }
 
     public int getDNSCount() {
         return DNSCount;

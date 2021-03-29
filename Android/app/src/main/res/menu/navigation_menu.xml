@@ -22,4 +22,9 @@
         android:id="@+id/aplicatii"
         android:title="Aplicatii">
     </item>
+
+    <item
+        android:id="@+id/Domains"
+        android:title="Domain Whitelist">
+    </item>
 </menu>

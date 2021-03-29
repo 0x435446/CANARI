@@ -11,8 +11,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,8 +28,9 @@ import com.example.proiect.Controller.Pachete.PacheteUsage;
 import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
 import com.example.proiect.Controller.TrafficTypes.TrafficHTTP;
 import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
-import com.example.proiect.Model.Pachete;
+import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
+import com.example.proiect.View.DomainWhiteListView;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
@@ -40,10 +39,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-
 
 
 public class Menu extends AppCompatActivity {
@@ -147,7 +142,11 @@ public class Menu extends AppCompatActivity {
                     Intent it = new Intent(getApplicationContext(), See_apps.class);
                     startActivityForResult(it,1);
                 }
-
+                if(id==R.id.Domains)
+                {
+                    Intent it = new Intent(getApplicationContext(), DomainWhiteListView.class);
+                    startActivityForResult(it,4);
+                }
                 return true;
             }
         });

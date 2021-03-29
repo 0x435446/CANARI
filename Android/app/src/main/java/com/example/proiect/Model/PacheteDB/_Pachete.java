@@ -1,0 +1,20 @@
+package com.example.proiect.Model.PacheteDB;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+
+import java.util.List;
+
+@Dao
+public interface _Pachete {
+    @Insert
+    void insert(Pachete pachet);
+
+    @Query("select*from pachete")
+        List<Pachete> getAll();
+
+    @Query("DELETE FROM pachete")
+        public void nukeTable();
+
+}

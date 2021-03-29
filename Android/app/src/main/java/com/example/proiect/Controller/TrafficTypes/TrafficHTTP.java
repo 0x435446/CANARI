@@ -4,7 +4,7 @@ import android.os.Build;
 
 import com.example.proiect.Controller.Pachete.PacheteDB;
 import com.example.proiect.Model.HTTP;
-import com.example.proiect.Model.Pachete;
+import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
 
 import java.io.BufferedInputStream;
