@@ -2,9 +2,12 @@ package com.example.proiect.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.proiect.Controller.DomainWhiteListDB.DomainWhitelistUsage;
 import com.example.proiect.Controller.Pachete.PacheteDB;
+import com.example.proiect.Controller.TrafficTypes.TrafficDNS;
 import com.example.proiect.Model.DomainWhiteListDB.DomainWhilelist;
 import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
@@ -47,6 +51,12 @@ public class DomainWhiteListView extends AppCompatActivity {
         setContentView(R.layout.activity_domain_white_list);
 
         this.getfromDomains();
+
+        /*
+        TrafficDNS t = new TrafficDNS();
+        Toast.makeText(getApplicationContext(),"AICI E REZULTATUL: "+t.checkDomain("facebook.com"),Toast.LENGTH_LONG).show();
+         */
+
         Button btnDomain = findViewById(R.id.buttonDomains);
         btnDomain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +84,8 @@ public class DomainWhiteListView extends AppCompatActivity {
                 return true;
             }
         });
+
+
 
     }
 }

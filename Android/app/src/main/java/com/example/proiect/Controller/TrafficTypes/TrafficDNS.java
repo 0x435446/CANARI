@@ -1,8 +1,11 @@
 package com.example.proiect.Controller.TrafficTypes;
 
 import android.os.Build;
+import android.widget.Toast;
 
+import com.example.proiect.Controller.DomainWhiteListDB.DomainWhitelistUsage;
 import com.example.proiect.Controller.Pachete.PacheteDB;
+import com.example.proiect.Model.DomainWhiteListDB.DomainWhilelist;
 import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.Model.DNS;
@@ -26,6 +29,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TrafficDNS implements Runnable{
+
+
+    public boolean checkDomain(String Domain){
+        DomainWhitelistUsage x = new DomainWhitelistUsage();
+        List<DomainWhilelist> domains = x.getDomains();
+        ArrayList<String> stringdomains = new ArrayList<>();
+        for (int i = 0; i < domains.size(); i++) {
+            stringdomains.add(domains.get(i).getDomain());
+        }
+        for (int i = 0; i < stringdomains.size(); i++) {
+            if (stringdomains.get(i).replace(" ","").replace("\t","").replace("\n","").equals(Domain.replace(" ","").replace("\t","").replace("\n","")))
+                return true;
+        }
+        return false;
+    }
 
     public String hexToAscii(String hexStr) {
         StringBuilder output = new StringBuilder("");
@@ -294,78 +312,83 @@ public class TrafficDNS implements Runnable{
                     output.append(buffer, 0, read);
                 }
                 String URL = get_URL(output.toString());
+                if(URL.endsWith(".")) {
+                    URL= URL.substring(0, URL.length() - 1);
+                }
                 Map Probabilitati = getProbabilitati();
-                List <String> Payload = getPayload(URL,TLD);
-                for(int i=0; i<Payload.size();i++){
+                List<String> Payload = getPayload(URL, TLD);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    URL = URL.replaceFirst(String.join(".", Payload), "");
+                    if (URL.charAt(0) == '.')
+                        URL = URL.replaceFirst("\\.", "");
+                }
+                if (!checkDomain(URL)) {
+                    for (int i = 0; i < Payload.size(); i++) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        URL=URL.replaceFirst(String.join(".", Payload),"");
-                        if(URL.charAt(0) == '.')
-                            URL=URL.replaceFirst("\\.","");
+
+
+                        if (checkPayloadEncoding(Payload.get(i), Probabilitati)) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                addTraffic("DNS", "UNKNOWN BASE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            }
+
+                        }
+                        if (checkPayloadLength(Payload.get(i))) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                addTraffic("DNS", "SUBDOMAIN EXFILTRATION LENGTH", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            }
+                        }
+                        if (checkPayloadNonAscii(Payload.get(i))) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                addTraffic("DNS", "NONASCII CHARS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            }
+                        }
+                        if (checkSignature(Payload.get(i), Signatures)) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                addTraffic("DNS", "SIGNATURE FOUND - HEX", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            }
+                        }
+                        if (checkBase64(Signatures, Payload.get(i))) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                addTraffic("DNS", "SIGNATURE FOUND - Base64", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            }
+                        }
+                    }
+                    if (checkPayloadNumberOfSubdomains(Payload)) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("DNS", "MULTIPLE SUBDOMAINS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                        }
+                    }
+                    if (checkForTXTRecord(output.toString())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("DNS", "TXT RECORD", "MEDIUM", get_Source(output.toString()), URL, String.join(".", Payload));
+                        }
+                    }
+                    boolean ok = true;
+                    for (int i = 0; i < pachete.size(); i++) {
+                        if (pachete.get(i).getIP().equals(URL)) {
+                            pachete.get(i).setFreq(pachete.get(i).getFreq() + 1);
+                            Long currentTimestamp = System.currentTimeMillis() / 1000;
+                            pachete.get(i).setDate(currentTimestamp);
+                            ok = false;
+                            break;
+                        }
                     }
 
-                    if(checkPayloadEncoding(Payload.get(i), Probabilitati)){
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "UNKNOWN BASE FOUND", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                        }
-
+                    if (ok) {
+                        DNS z = new DNS();
+                        z.setIP(URL);
+                        z.setFreq(1);
+                        Long currentTimestamp = System.currentTimeMillis() / 1000;
+                        z.setDate(currentTimestamp);
+                        pachete.add(z);
                     }
-                    if(checkPayloadLength(Payload.get(i))){
+                    if (checkFreq(pachete, URL)) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "SUBDOMAIN EXFILTRATION LENGTH", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                        }
-                    }
-                    if (checkPayloadNonAscii(Payload.get(i))){
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "NONASCII CHARS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                        }
-                    }
-                    if(checkSignature(Payload.get(i),Signatures)){
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "SIGNATURE FOUND - HEX", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                        }
-                    }
-                    if (checkBase64(Signatures,Payload.get(i))){
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            addTraffic("DNS", "SIGNATURE FOUND - Base64", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
+                            addTraffic("DNS", "HIGH FREQUENCY", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
                         }
                     }
                 }
-                if(checkPayloadNumberOfSubdomains(Payload)){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        addTraffic("DNS", "MULTIPLE SUBDOMAINS", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                    }
-                }
-                if (checkForTXTRecord(output.toString())){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        addTraffic("DNS", "TXT RECORD", "MEDIUM", get_Source(output.toString()), URL, String.join(".", Payload));
-                    }
-                }
-                boolean ok = true;
-                for (int i=0;i<pachete.size();i++){
-                    if(pachete.get(i).getIP().equals(URL)){
-                        pachete.get(i).setFreq(pachete.get(i).getFreq()+1);
-                        Long currentTimestamp = System.currentTimeMillis()/1000;
-                        pachete.get(i).setDate(currentTimestamp);
-                        ok = false;
-                        break;
-                    }
-                }
-
-                if (ok){
-                    DNS z = new DNS();
-                    z.setIP(URL);
-                    z.setFreq(1);
-                    Long currentTimestamp = System.currentTimeMillis()/1000;
-                    z.setDate(currentTimestamp);
-                    pachete.add(z);
-                }
-                if(checkFreq(pachete,URL)){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        addTraffic("DNS", "HIGH FREQUENCY", "HIGH", get_Source(output.toString()), URL, String.join(".", Payload));
-                    }
-                }
-
             }
         }
         catch (Exception e) {
