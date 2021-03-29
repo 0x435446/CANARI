@@ -2,7 +2,9 @@ package com.example.proiect.Controller.TrafficTypes;
 
 import android.os.Build;
 
+import com.example.proiect.Controller.DomainWhiteListDB.DomainWhitelistUsage;
 import com.example.proiect.Controller.Pachete.PacheteDB;
+import com.example.proiect.Model.DomainWhiteListDB.DomainWhilelist;
 import com.example.proiect.Model.HTTP;
 import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
@@ -25,6 +27,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TrafficHTTP implements Runnable {
+
+
+    public boolean checkDomain(String Domain){
+        DomainWhitelistUsage x = new DomainWhitelistUsage();
+        List<DomainWhilelist> domains = x.getDomains();
+        ArrayList<String> stringdomains = new ArrayList<>();
+        for (int i = 0; i < domains.size(); i++) {
+            stringdomains.add(domains.get(i).getDomain());
+        }
+        for (int i = 0; i < stringdomains.size(); i++) {
+            if (stringdomains.get(i).replace(" ","").replace("\t","").replace("\n","").equals(Domain.replace(" ","").replace("\t","").replace("\n","")))
+                return true;
+        }
+        return false;
+    }
 
     private boolean checkFreqCookies(ArrayList<HTTP> pachete, String Destination){
         for(int i=0;i<pachete.size();i++){
@@ -233,16 +250,20 @@ public class TrafficHTTP implements Runnable {
                 forView=Splited.get(0);
                 GETresp = checkGET(forView, Probabilitati);
             }
-            if (!GETresp.equals("NU")) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    addTraffic("HTTP", "UNKNOWN BASE GET", "MEDIUM", Sursa, Destinatia, forView);
+            if(!checkDomain(Destinatia)) {
+                if (!GETresp.equals("NU")) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        addTraffic("HTTP", "UNKNOWN BASE GET", "MEDIUM", Sursa, Destinatia, forView);
+                    }
                 }
             }
         }
 
-        if(checkPayloadEncoding(Cookie, Probabilitati)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                addTraffic("HTTP", "UNKNOWN BASE COOKIE", "LOW", Sursa, Destinatia, Cookie);
+        if(!checkDomain(Destinatia)) {
+            if (checkPayloadEncoding(Cookie, Probabilitati)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    addTraffic("HTTP", "UNKNOWN BASE COOKIE", "LOW", Sursa, Destinatia, Cookie);
+                }
             }
         }
         return pachet;
@@ -266,26 +287,27 @@ public class TrafficHTTP implements Runnable {
                 }
 
                 HTTP pachet = parseRequest(output.toString(), Probabilitati);
-
-                boolean ok = true;
-                for (int k=0;k<pachete.size();k++){
-                    if(pachete.get(k).getIP().equals(pachet.getIP())){
-                        pachete.get(k).setCookiesNumber(pachete.get(k).getCookiesNumber()+1);
-                        Long currentTimestamp = System.currentTimeMillis()/1000;
-                        pachete.get(k).setDate(currentTimestamp);
-                        ok=false;
+                if (!checkDomain(pachet.getIP())) {
+                    boolean ok = true;
+                    for (int k = 0; k < pachete.size(); k++) {
+                        if (pachete.get(k).getIP().equals(pachet.getIP())) {
+                            pachete.get(k).setCookiesNumber(pachete.get(k).getCookiesNumber() + 1);
+                            Long currentTimestamp = System.currentTimeMillis() / 1000;
+                            pachete.get(k).setDate(currentTimestamp);
+                            ok = false;
+                        }
                     }
-                }
-                if (ok){
-                    pachet.setCookiesNumber(0);
-                    Long currentTimestamp = System.currentTimeMillis()/1000;
-                    pachet.setDate(currentTimestamp);
-                    pachete.add(pachet);
-                }
+                    if (ok) {
+                        pachet.setCookiesNumber(0);
+                        Long currentTimestamp = System.currentTimeMillis() / 1000;
+                        pachet.setDate(currentTimestamp);
+                        pachete.add(pachet);
+                    }
 
-                if(checkFreqCookies(pachete,pachet.getIP())){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        addTraffic("HTTP", "COOKIES FREQUENCY", "MEDIUM", pachet.getSursa() , pachet.getIP(), "-");
+                    if (checkFreqCookies(pachete, pachet.getIP())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            addTraffic("HTTP", "COOKIES FREQUENCY", "MEDIUM", pachet.getSursa(), pachet.getIP(), "-");
+                        }
                     }
                 }
             }
