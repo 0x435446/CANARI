@@ -17,4 +17,7 @@ public interface _Pachete {
     @Query("DELETE FROM pachete")
         public void nukeTable();
 
+    @Query("SELECT * FROM pachete ORDER BY CASE WHEN :isAsc = 1 THEN ID END ASC, CASE WHEN :isAsc = 0 THEN ID END DESC")
+    List<Pachete> getAllDesc(boolean isAsc);
+
 }

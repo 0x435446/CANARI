@@ -76,7 +76,7 @@ public class Menu extends AppCompatActivity {
         }
 
         PacheteDB db = PacheteDB.getInstance(getApplication());
-        List<Pachete> pachete = db.getPacheteDao().getAll();
+        List<Pachete> pachete = db.getPacheteDao().getAllDesc(false);
         PacheteUsage p = new PacheteUsage();
         p.addPachet(pachete);
 
@@ -104,6 +104,7 @@ public class Menu extends AppCompatActivity {
         Thread object6
                 = new Thread(new TrafficHTTP());
         object6.start();
+
 
         dl = (DrawerLayout)findViewById(R.id.dl);
         abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
