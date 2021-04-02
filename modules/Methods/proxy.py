@@ -40,7 +40,7 @@ def verify_content(content,url,Source):
 	db.close()
 
 def check_whitelist(word):
-	x=open("./modules/whitelist.txt","r").read().strip().split('\n')
+	x=open("./modules/Filters/whitelist.txt","r").read().strip().split('\n')
 	for i in x:
 		print (word)
 		if i in word:
@@ -48,7 +48,7 @@ def check_whitelist(word):
 	return 0;
 
 def check_whitelist_ua(word):
-	x=open("./modules/whitelist_user_agent.txt","r").read().strip().split('\n')
+	x=open("./modules/Filters/whitelist_user_agent.txt","r").read().strip().split('\n')
 	for i in x:
 		print ("COCOSEL",i,word)
 		if i in word:
@@ -57,7 +57,7 @@ def check_whitelist_ua(word):
 
 def check_whitelist(word,path):
 	x=open(path,"r").read().strip().split('\n')
-	if path == "./modules/whitelist_sources.txt":
+	if path == "./modules/Filters/whitelist_sources.txt":
 		for i in x:
 			if i in word:
 				return 1
@@ -104,7 +104,7 @@ def request(flow: http.HTTPFlow):
 		if i.count(".")>2:
 			Source = i
 	print ("Source:",Source)
-	if check_whitelist(Source,"./modules/whitelist_sources.txt") == 0:
+	if check_whitelist(Source,"./modules/Filters/whitelist_sources.txt") == 0:
 		print("URL",flow.request.pretty_url)
 		x=check_whitelist(flow.request.pretty_url)
 		if x==0:

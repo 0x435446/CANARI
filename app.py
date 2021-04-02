@@ -10,8 +10,6 @@ from hashlib import sha256
 
 sys.path.append('./modules/')
 import VirusTotal
-import check_key
-import generate_rsa
 
 sys.path.append('./modules/Methods')
 import dns
@@ -37,7 +35,7 @@ mysql = MySQL(app)
 #FlagFlag123.
 
 def load_blacklist():
-	file=open("./modules/blacklist.txt","r")
+	file=open("./modules/Filters/blacklist.txt","r")
 	content = file.read().strip().split()
 	file.close()
 	for destination in content:
@@ -369,35 +367,35 @@ def processUpdate():
 
 
 def add_delete_destination(destination):
-	file=open("./modules/whitelist.txt","r")
+	file=open("./modules/Filters/whitelist.txt","r")
 	content = file.read().strip().split()
 	file.close()
 	if destination in content:
 		content.remove(destination)
-		modify = open("./modules/whitelist.txt","w")
+		modify = open("../modules/Filters/whitelist.txt","w")
 		modify.write('\n'.join(content))
 		modify.close()
 		return 0
 	content.append(destination)
-	modify = open("./modules/whitelist.txt","w")
+	modify = open("../modules/Filters/whitelist.txt","w")
 	modify.write('\n'.join(content))
 	modify.close()
 	return 1
 
 def add_delete_domain_blacklist(destination):
-	file=open("./modules/blacklist.txt","r")
+	file=open("./modules/Filters/blacklist.txt","r")
 	content = file.read().strip().split()
 	file.close()
 	if destination in content:
 		content.remove(destination)
 		os.system('sudo iptables -D OUTPUT -p all -d '+destination+' -j DROP')
-		modify = open("./modules/blacklist.txt","w")
+		modify = open("./modules/Filters/blacklist.txt","w")
 		modify.write('\n'.join(content))
 		modify.close()
 		return 0
 	content.append(destination)
 	os.system('sudo iptables -A OUTPUT -p all -d '+destination+' -j DROP')
-	modify = open("./modules/blacklist.txt","w")
+	modify = open("./modules/Filters/blacklist.txt","w")
 	modify.write('\n'.join(content))
 	modify.close()
 	return 1
@@ -405,17 +403,17 @@ def add_delete_domain_blacklist(destination):
 
 
 def add_delete_soruces(sources):
-	file=open("./modules/whitelist_sources.txt","r")
+	file=open("./modules/Filters/whitelist_sources.txt","r")
 	content = file.read().strip().split()
 	file.close()
 	if sources in content:
 		content.remove(sources)
-		modify = open("./modules/whitelist_sources.txt","w")
+		modify = open("./modules/Filters/whitelist_sources.txt","w")
 		modify.write('\n'.join(content))
 		modify.close()
 		return 0
 	content.append(sources)
-	modify = open("./modules/whitelist_sources.txt","w")
+	modify = open("./modules/Filters/whitelist_sources.txt","w")
 	modify.write('\n'.join(content))
 	modify.close()
 	return 1
@@ -445,17 +443,17 @@ def edit_destionation():
 def add_delete_payload(payload):
 	payload=payload.replace('*',' ')
 	print ("PAYLOAD",payload)
-	file=open("./modules/whitelist_user_agent.txt","r")
+	file=open("./modules/Filters/whitelist_user_agent.txt","r")
 	content = file.read().strip().split('\n')
 	file.close()
 	if payload in content:
 		content.remove(payload)
-		modify = open("./modules/whitelist_user_agent.txt","w")
+		modify = open("./modules/Filters/whitelist_user_agent.txt","w")
 		modify.write('\n'.join(content))
 		modify.close()
 		return 0
 	content.append(payload)
-	modify = open("./modules/whitelist_user_agent.txt","w")
+	modify = open("./modules/Filters/whitelist_user_agent.txt","w")
 	modify.write('\n'.join(content))
 	modify.close()
 	return 1
@@ -493,9 +491,9 @@ def read_whitelist(path):
 def preview_whitelist():
 	try:
 		if session['loggedin'] == True:
-			content_whitelist = read_whitelist('./modules/whitelist.txt')
-			content_whitelist_user_agent = read_whitelist('./modules/whitelist_user_agent.txt')
-			content_whitelist_sources = read_whitelist('./modules/whitelist_sources.txt')
+			content_whitelist = read_whitelist('./modules/Filters/whitelist.txt')
+			content_whitelist_user_agent = read_whitelist('./modules/Filters/whitelist_user_agent.txt')
+			content_whitelist_sources = read_whitelist('./modules/Filters/whitelist_sources.txt')
 			return render_template('preview.html',content_whitelist=content_whitelist,len_whitelist=len(content_whitelist),content_whitelist_user_agent=content_whitelist_user_agent,len_content_whitelist_user_agent=len(content_whitelist_user_agent),content_whitelist_sources=content_whitelist_sources,len_content_whitelist_sources=len(content_whitelist_sources))
 		else:
 			return redirect("/login")
@@ -508,13 +506,13 @@ def preview_whitelist():
 
 def search_in_files(word,file):
 	if file == "Sources":
-		fisier = "./modules/whitelist_sources.txt"
+		fisier = "./modules/Filters/whitelist_sources.txt"
 	elif file == "UserAgent":
-		fisier = './modules/whitelist_user_agent.txt'
+		fisier = './modules/Filters/whitelist_user_agent.txt'
 	elif file == "Domains":
-		fisier = './modules/whitelist.txt'
+		fisier = './modules/Filters/whitelist.txt'
 	elif file == "Blacklist":
-		fisier = "./modules/blacklist.txt"
+		fisier = "./modules/Filtersblacklist.txt"
 	print ("AICI E FILE",file)
 	file2=open(fisier,"r")
 	content = file2.read().strip().split('\n')
@@ -590,7 +588,7 @@ def preview_rules():
 def preview_blacklist():
 	try:
 		if session['loggedin'] == True:
-			blacklist = read_whitelist('./modules/blacklist.txt')
+			blacklist = read_whitelist('./modules/Filters/blacklist.txt')
 			return render_template('preview_blacklist.html',blacklist=blacklist,len=len(blacklist))
 
 	except:

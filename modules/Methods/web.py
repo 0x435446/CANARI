@@ -14,7 +14,7 @@ from verify_encoding import *
 
 def check_whitelist(word,path):
 	x=open(path,"r").read().strip().split('\n')
-	if path == "./modules/whitelist_sources.txt":
+	if path == "./modules/Filters/whitelist_sources.txt":
 		for i in x:
 			if i in word:
 				return 1
@@ -25,7 +25,7 @@ def check_whitelist(word,path):
 	return 0;
 
 def check_whitelist_user_agent(word):
-	x=open("./modules/whitelist_user_agent.txt","r").read().strip().split('\n')
+	x=open("./modules/Filters/whitelist_user_agent.txt","r").read().strip().split('\n')
 	for i in x:
 		if i==word:
 			return 1;
@@ -59,7 +59,7 @@ def http_start():
 		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		if "192.168.1.5" not in cmdout:
 			HOST = rules.check_rules('HTTP',cmdout)
-			if check_whitelist(HOST,"./modules/whitelist_sources.txt") == 0:
+			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
 				result=cmdout.split("\n\t\n\t")[0].split('\n')
 				for i in range(len(result)):
 					result[i]=result[i].split(': ')
@@ -122,7 +122,7 @@ def http_start():
 					for i in range(len(auxiliar_URL)-1):
 						if auxiliar_URL[i]!='www':
 							new_URL.append(auxiliar_URL[i])
-					x=check_whitelist('.'.join(new_URL),"./modules/whitelist.txt")
+					x=check_whitelist('.'.join(new_URL),"./modules/Filters/whitelist.txt")
 					if x == 0:
 						ok_http = 0
 						if URL != '':

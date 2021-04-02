@@ -13,7 +13,7 @@
 <body>
 
 
-	<div class="container">
+	<div class="container" id='container'>
 		<nav class="navbar navbar-expand-lg rounded" aria-label="Eleventh navbar example">
 		  <div class="container-fluid">
 			<a class="navbar-brand" href="#">Menu</a>
@@ -44,6 +44,19 @@
 		</nav>
 	</div>
 	
+
+	<div class="edit" id="edit">
+		<div class="edit_top" id="edit_top">
+			<button  onclick="hide()" class='edit_top_button'>X</button>
+		</div>
+		<div class="edit_left" id="edit_left">
+
+		</div>
+		<div class="edit_right" id="edit_right">
+
+		</div>
+	</div>
+
 	<div class="content">
 	
 		<div class="firstfloatbox" id="first">
@@ -163,6 +176,8 @@
 					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
 					<input type="submit" value="Search">
 				</form>
+
+
 		</div>
 
 		<div class="forthbox" id="forth">
@@ -215,7 +230,7 @@
                             <td>{{j}}</td> 
                         {%endfor%} 
                   		  <td>
-							    <button style="background: url(static/images/creion.png); 
+							    <button style="background: url(static/images/detalii.png); 
 							    width:50px; height: 50px;background-size: cover; border:none;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
                   		  </td>
                     </tr>
@@ -225,17 +240,7 @@
 		</div>
 
 
-		<div class="edit" id="edit">
-			<div class="edit_top" id="edit_top">
-				<button  onclick="hide()" class='edit_top_button'>X</button>
-			</div>
-			<div class="edit_left" id="edit_left">
-
-			</div>
-			<div class="edit_right" id="edit_right">
-
-			</div>
-		</div>
+		
 
 		
 		
@@ -247,6 +252,11 @@
 
 
 
+
+
+	<script>
+		 document.getElementById("forth").style.height =  document.getElementById("third").style.height; 
+	</script>
 
 	<script>
 	var expanded = false;
@@ -299,12 +309,12 @@
 		var ok = 0;
 		function reveal(id){
 			if (ok == 1){
-				document.getElementById("edit").style.visibility = "hidden";
+				document.getElementById("edit").style.display = "none";
 				ok = 0
 			}
 			else if (ok == 0){
 				get_edit_details(id);
-				document.getElementById("edit").style.visibility = "visible";
+				document.getElementById("edit").style.display = "block";
 				ok = 1
 			}
 		}
@@ -313,7 +323,7 @@
 
 	<script>
 		function hide(){
-			document.getElementById("edit").style.visibility = "hidden";
+				document.getElementById("edit").style.display = "none";
 			ok = 0;
 		}
 	</script>

@@ -25,7 +25,7 @@ body{
 .secondfloatbox{
 	padding-top:100px;
 	float:left;
-	width:50%;
+	width:30%;
 	color:black;
 	background-color: rgb(0,0,0,0.2);
 }
@@ -33,15 +33,18 @@ body{
 
 
 .thirdbox{
-	width:50%;
+	width:100%;
 	background-color: rgb(255,255,255,0.5);
 }
 
 .forthbox{
+	height: 412px;
+	padding-top:41px;
+	float:left;
 	padding-left:10px;
 	padding-right:10px;
-	float:right;
-	width:50%;
+	width:20%;
+	background-color: rgb(0,0,0,0.2);
 }
 
 input[type=text] {
@@ -84,19 +87,24 @@ table {
 	width: 100% ;
 	background-image: url("../images/background.png");
 	text-align:center;
+	font-size: 13px;
 }
 
 td {
-	border: 1px solid black;
+	border: 1px solid rgb(211,211,211);
 	background-color: white;
 	overflow: hidden;
+	overflow-y: hidden;
+	border-right: none;
+	border-left: none;
+	padding-left: 10px;
 }
 
+tr:hover td {background:#F5F5F5}
 
 div.progressbar2 {
 	margin: 0 auto;
-    margin-top: 15px;
-    #background-color: #20201F;                                   
+    margin-top: 15px;                                 
     border-radius: 6px; /* (heightOfInnerDiv / 2) + padding */
     padding: 4px;
     width:80%;
@@ -148,7 +156,7 @@ div.alert_box{
 	
 
 .edit{
-    position: absolute;
+	position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -159,8 +167,8 @@ div.alert_box{
     margin-left: 30%;
     margin-top: 15%;
     height: 40%;
-    visibility: hidden;
-
+    display: none;
+    z-index: 1;
 }
 
 

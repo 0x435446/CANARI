@@ -22,7 +22,7 @@ def check_chars(word):
 
 def check_whitelist(word,path):
 	x=open(path,"r").read().strip().split('\n')
-	if path == "./modules/whitelist_sources.txt":
+	if path == "./modules/Filters/whitelist_sources.txt":
 		for i in x:
 			if i in word:
 				return 1
@@ -71,7 +71,7 @@ def dns_start():
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		for_check=result
 		HOST = rules.check_rules('DNS',for_check)
-		if check_whitelist(HOST,"./modules/whitelist_sources.txt") == 0:
+		if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
 			result=result.split('\n\t')[0].replace('\t','')
 			try:
 				if '192.168.1.4' not in result:
@@ -158,7 +158,7 @@ def dns_start():
 								else:
 									dns_time.append(z)
 								
-								var=check_whitelist(bd[len(bd)-2],"./modules/whitelist.txt")
+								var=check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt")
 								DNS_domain= "http://"+bd[len(bd)-2]+"."+'.'.join(domain)
 								
 								cursor3 = db.cursor()
@@ -261,7 +261,7 @@ def dns_start():
 							else:
 								match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url)) #match url
 								if len(match) == 0:
-									if( check_whitelist(bd[len(bd)-2],"./modules/whitelist.txt") == 0):
+									if( check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt") == 0):
 										z=DNS_time(bd[len(bd)-2],HOST)
 										dns_ok=0
 										if len(dns_time)>0:

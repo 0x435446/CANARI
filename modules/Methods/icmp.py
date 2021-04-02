@@ -10,7 +10,7 @@ from datetime import datetime
 
 def check_whitelist(word,path):
 	x=open(path,"r").read().strip().split('\n')
-	if path == "./modules/whitelist_sources.txt":
+	if path == "./modules/Filters/whitelist_sources.txt":
 		for i in x:
 			if i in word:
 				return 1
@@ -39,7 +39,7 @@ def icmp_start():
 				host = search[i-1]
 				print ("HOST ICMP:",host)
 				break;
-		if check_whitelist(host,"./modules/whitelist_sources.txt") == 0:
+		if check_whitelist(host,"./modules/Filters/whitelist_sources.txt") == 0:
 			result = result.replace('\t','').split('\n')
 			res=[]
 			ok=0
