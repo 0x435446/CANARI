@@ -45,6 +45,10 @@
 	</div>
 	
 
+	<div class='modal' id='modal'>
+	</div>
+
+
 	<div class="edit" id="edit">
 		<div class="edit_top" id="edit_top">
 			<button  onclick="hide()" class='edit_top_button'>X</button>
@@ -56,6 +60,7 @@
 
 		</div>
 	</div>
+
 
 	<div class="content">
 	
@@ -310,11 +315,13 @@
 		function reveal(id){
 			if (ok == 1){
 				document.getElementById("edit").style.display = "none";
+				document.getElementById("modal").style.display = "none";
 				ok = 0
 			}
 			else if (ok == 0){
 				get_edit_details(id);
 				document.getElementById("edit").style.display = "block";
+				document.getElementById("modal").style.display = "block";
 				ok = 1
 			}
 		}
@@ -324,6 +331,7 @@
 	<script>
 		function hide(){
 				document.getElementById("edit").style.display = "none";
+				document.getElementById("modal").style.display = "none";
 			ok = 0;
 		}
 	</script>
