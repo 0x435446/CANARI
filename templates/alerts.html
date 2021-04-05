@@ -1,0 +1,330 @@
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
+    
+</head>
+
+<body>
+
+
+	<div class="container" id='container'>
+		<nav class="navbar navbar-expand-lg rounded" aria-label="Eleventh navbar example">
+		  <div class="container-fluid">
+			<a class="navbar-brand" href="#">Menu</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarsExample09">
+			  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item active">
+				  <a class="nav-link" aria-current="page" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/preview_whitelist">Whitelist</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/previewBlacklist">Blacklist</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/previewRules" tabindex="-1">Rules</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/register" tabindex="-1">Register</a>
+				</li>
+			  </ul>
+			</div>
+		  </div>
+		</nav>
+	</div>
+	
+
+	<div class='modal' id='modal'>
+	</div>
+
+
+	<div class="edit" id="edit">
+		<div class="edit_top" id="edit_top">
+			<button  onclick="hide()" class='edit_top_button'>X</button>
+		</div>
+		<div class="edit_left" id="edit_left">
+
+		</div>
+		<div class="edit_right" id="edit_right">
+
+		</div>
+	</div>
+
+		<div class='little_first_box' onclick="showFilters()">
+		</div>
+		<div class="firstfloatbox" id="first">
+		
+			
+			<form action="/alerts" method="POST">
+
+				<div class="multiselect">
+					<div class="selectBox" onclick="showCheckboxes()">
+						<select>
+							<option>Exfiltration tehniques</option>
+						</select>
+					<div class="overSelect"></div>
+					</div>
+					<div id="checkboxes">
+						<label for="one">
+							<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"/>ICMP</label>
+						<label for="two">
+							<input type="checkbox" iid="HTTP" name="HTTP" value="HTTP"/>HTTP</label>
+						<label for="three">
+							<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"/>HTTPS</label>
+						<label for="four">
+							<input type="checkbox" id="DNS" name="DNS" value="DNS"/>DNS</label>
+						<label for="five">
+							<input type="checkbox" id="Connections" name="Connections" value="Connections"/>Connections</label>
+						<label for="six">
+							<input type="checkbox" id="Listeners" name="Listening" value="Listening"/>Listeners</label>
+						<label for="seven">
+							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>IPv4 Anomalies</label>
+						<label for="eight">
+							<input type="checkbox" id="VirusTotal" name="VirusTotal" value="VirusTotal"/>VirusTotal</label>
+					</div>
+				</div><br>
+					Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
+					<label>Numar de request-uri:</label><input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'><br>
+					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
+					<input type="submit" value="Search">
+				</form>
+				<button style="float: right;" onclick="hide()">Close</button>
+		</div>
+	<div class="content">
+		
+
+		
+		
+		
+		
+		
+
+		<div class="thirdbox" id="third">
+			
+			<table id= "tabel_alerte">
+				<tr>
+					<td>
+							Index
+						</td>
+					<td>
+							Type
+					</td>
+					<td>
+							Message
+					</td>
+					<td>
+							Risk
+					</td>
+					<td>
+							Source
+					</td>
+					<td>
+							Destination
+					</td>
+					<td>
+							Payload
+					</td>
+					<td>
+							Timestamp
+					</td>
+					<td>
+							Edit
+					</td>
+				</tr>
+                   {%for i in range(len)%} 
+                    <tr>
+                        {%for j in data[i]%} 
+                            <td>{{j}}</td> 
+                        {%endfor%} 
+                  		  <td>
+							    <button style="background: url(static/images/detalii.png); 
+							    width:50px; height: 50px;background-size: cover; border:none;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
+                  		  </td>
+                    </tr>
+                    {%endfor%} 
+			</table>
+			
+		</div>
+
+
+		
+
+		
+		
+	</div>
+
+
+
+</body>
+
+
+
+
+
+	<script>
+		 document.getElementById("forth").style.height =  document.getElementById("third").style.height; 
+	</script>
+
+	<script>
+	var expanded = false;
+
+	function showCheckboxes() {
+		var checkboxes = document.getElementById("checkboxes");
+		if (!expanded) {
+			checkboxes.style.display = "block";
+			expanded = true;
+		} else {
+			checkboxes.style.display = "none";
+			expanded = false;
+		}
+	}
+	</script>
+
+	<script>
+		var x = 0;
+		const interval = setInterval(function() {
+			var low=["#64ff50","#42ff29","#42ff29","#1adb00","#17c400","#13a600"];
+			var medium=["#ffaf4d","#ffa02b","#ff8d00","#d97800","#ffa600","#ff8400"];
+			var high=["#ff4747","#ff2626","#ff0000","#e30000","#c90000","#a30000"];
+			var index = x % 6;
+			var c=low[index];
+			document.getElementById("alert1").style.backgroundColor=c;
+			c=medium[index];
+			document.getElementById("alert2").style.backgroundColor=c;
+			c=high[index];
+			document.getElementById("alert3").style.backgroundColor=c;
+			x+=1;
+ 		}, 3000);
+	</script>
+
+
+	<script>
+		document.getElementById("icmp_progress").style.width = "{{icmp}}";
+		document.getElementById("http_progress").style.width = "{{http}}";
+		document.getElementById("https_progress").style.width = "{{https}}";
+		document.getElementById("dns_progress").style.width = "{{dns}}";
+		document.getElementById("conn_progress").style.width = "{{cn}}";
+		document.getElementById("listen_progress").style.width = "{{lc}}";
+		document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
+		document.getElementById("vt_progress").style.width = "{{vt}}";
+		document.getElementById("https_progress").style.width = "{{hsc}}";
+		document.getElementById("second").style.height = document.getElementById("first").clientHeight;
+		document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
+	</script>
+	
+	<script>
+		var ok = 0;
+		function reveal(id){
+			if (ok == 1){
+				document.getElementById("edit").style.display = "none";
+				document.getElementById("modal").style.display = "none";
+				ok = 0
+			}
+			else if (ok == 0){
+				get_edit_details(id);
+				document.getElementById("edit").style.display = "block";
+				document.getElementById("modal").style.display = "block";
+				ok = 1
+			}
+		}
+	</script>
+
+
+	<script>
+		function hide(){
+				document.getElementById("edit").style.display = "none";
+				document.getElementById("modal").style.display = "none";
+			ok = 0;
+		}
+	</script>
+
+
+
+	<script>
+	function get_edit_details(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				document.getElementById("edit_left").innerHTML = response.split("|")[0];
+				document.getElementById("edit_right").innerHTML = response.split("|")[1];
+			}
+		};
+		xhttp.open("POST", "/update_edit", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
+
+
+	<script>
+	function post_edit_details_destination(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				alert(response);
+			}
+		};
+		xhttp.open("POST", "/edit_destionation", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
+
+	<script>
+	function post_edit_details_payload(id) {
+		var nume="button_id=";
+		var name=id;
+		nume = nume.concat(name);
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = this.responseText;
+				alert(response);
+			}
+		};
+		xhttp.open("POST", "/edit_payload", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(nume);
+	}
+	</script>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+    	function showFilters(){
+    		document.getElementById('first').style.display="block";
+    	}	
+    	function hide(){
+    		document.getElementById('first').style.display="none";
+    	}	
+
+
+    </script>
+
+
+</html>

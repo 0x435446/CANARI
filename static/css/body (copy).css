@@ -1,5 +1,5 @@
 body{
-	background-color: #d3dbe3;
+	background-image: url("../images/background.png");
 	font-family: "OCR A Std", monospace;
 }
 
@@ -7,8 +7,6 @@ body{
 	padding-top:10px;
 	color:red;
 	background-color: rgb(0,0,0,0);
-	padding-left: 20px;
-	padding-right: 20px;
 }
 
 .navbar{
@@ -19,22 +17,17 @@ body{
 .firstfloatbox{
 	float:left;
 	color:black;
-	width:60%;
-	background-color: rgb(255,255,255);
+	width:50%;
+	background-color: rgb(0,0,0,0.2);
 	padding-bottom:20px;
-	margin-top:20px;
-	margin-right: 2%;
 }
 
 .secondfloatbox{
-	margin-top:20px;
-	padding-top:10px;
-	padding-left:10px;
+	padding-top:100px;
 	float:left;
-	width:38%;
+	width:30%;
 	color:black;
-	background-color: rgb(255,255,255);
-	margin-left: 0px;
+	background-color: rgb(0,0,0,0.2);
 }
 
 
@@ -44,7 +37,15 @@ body{
 	background-color: rgb(255,255,255,0.5);
 }
 
-
+.forthbox{
+	height: 412px;
+	padding-top:41px;
+	float:left;
+	padding-left:10px;
+	padding-right:10px;
+	width:20%;
+	background-color: rgb(0,0,0,0.2);
+}
 
 input[type=text] {
 	height:30px;
@@ -104,6 +105,7 @@ tr:hover td {background:#F5F5F5}
 div.progressbar2 {
 	margin: 0 auto;
     margin-top: 15px;                                 
+    border-radius: 6px; /* (heightOfInnerDiv / 2) + padding */
     padding: 4px;
     width:80%;
     text-align:right;
@@ -113,64 +115,43 @@ div.progressbar2 {
 
 div.progressbars {
 	margin: auto;
-    background-color: lightgrey;
+    background-color: white;
     width:80%;
-    height: 10px;
+    height: 2px;
+    border-radius: 10px;
     text-align:center;
     color:black;
-	-webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75) inset;
-	-moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75) inset;
-	box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75) inset;
 }
 
 div.progress {
     background-color: black;
     width: 0%; /* Adjust with JavaScript */
-    height: 10px;
+    height: 2px;
+    border-radius: 10px;
     text-align:center;
     color:black;
-	border-radius: 0px;
-	-webkit-box-shadow: 1px 1px 1px 1px rgba(255,255,255,0.4) inset;
-	-moz-box-shadow: 1px 1px 1px 1px rgba(255,255,255,0.4) inset;
-	box-shadow: 1px 1px 1px 1px rgba(255,255,255,0.4) inset;
 }
 	
-.forthbox{
-	float:left;
-	padding-left:10px;
-	padding-bottom:10px;
-	width:100%;
-	background-color: white;
-	color:black;
-	text-align: left;
-	padding-left: 20px;
-	font-weight: bold;
-}
-
-
+	
 
 div.alert_box{
-	width:33%;
-	height: 150px;
-	font-size:35px;
+	border-radius: 10px;
+	padding-top: 20px;
+	padding-bottom:10px;
+	padding-left:10px;
+	padding-right:10px;
+	width:200px;
+	height: 100px;
+	font-size:20px;
 	text-align: center;
 	background-color: white;
 	float:left;
 	color:black;
-	border-right: 1px solid rgb(233,233,233);
-	border-top: 1px solid rgb(211,211,211);
-	z-index: 1;
-	font-weight: bold;
-
+	margin-left: 40px;
+	margin-top: 10px;
 }
 	
-div.alert_box_text{
-	padding-top: 10px;
-	width:150px;
-	height: 5px;
-	font-size: 20px;
-	border-right: none !important;
-}
+	
 	
 	
 
@@ -251,8 +232,7 @@ div.alert_box_text{
 
 
 
-div.counter{
-}
+
 
 
 
@@ -319,131 +299,4 @@ div.counter{
 	overflow: auto; 
 	background-color: rgb(0,0,0); 
 	background-color: rgba(0,0,0,0.4); 
-}
-
-
-
-
-div.risk_box{
-	width:50%;
-}
-
-
-div.details_box{
-	float:left;
-	width:50%;
-	margin-top: -25px;
-	padding-left: 10px;	
-	z-index: 1;
-
-}
-
-
-div.network_box{
-	visibility: hidden;
-	font-weight: bold;
-	border-bottom:  1px solid rgb(0,0,0,0.3)
-
-}
-
-
-
-.newtable{
-	width:100% !important;
-	padding-top: 10px;
-	text-align: left;
-}
-
-.newtable:hover{
-	width:100% !important;
-	padding-top: 10px;
-	text-align: left;
-	background-color: white !important;
-}
-
-.newtd{
-	border:none !important;
-}
-.newtd:hover{
-	background-color: white !important;
-}
-
-
-.newtr{
-}
-
-.newtr:hover{
-	background-color: white !important;
-}
-
-div.network_box_ips{
-	padding-top: 10px;
-	padding-left: 10px;	
-	font-size: 15px;
-	width:40%;
-	float:left;
-	height: 200px;
-	overflow-y: scroll;
-}
-
-div.network_most_used_ip{
-	float:left;
-	width:60%;
-	padding-top: 10px;
-	overflow: scroll;
-	overflow-y: scroll;
-	visibility: hidden;
-}
-
-div.network_most_used_ip_print{
-	font-size: 13px;
-	text-align: right;
-	padding-right: 90px;
-}
-
-
-
-.chart {
-	margin-top: 100px;
-	width:100%;
-	display: grid;
- 	height: 50%;
-}
-
-div.bar {
-	grid-row-start: 1;
-	grid-row-end: 101;
-	border-radius: 5px 5px 0 0;
-	background-color: #ff4136;
-	transition: 2s;
-}
-
-
-.caption {
-	font-size: 10px;
-}
-
-
-
-.loader {
-	margin: auto;
-	margin-top: 90px; 
-	border: 16px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 16px solid #3498db;
-	width: 300px;
-	height: 300px;
-	-webkit-animation: spin 2s linear infinite; /* Safari */
-	animation: spin 2s linear infinite;
-}
-
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }

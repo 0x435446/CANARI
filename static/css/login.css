@@ -1,5 +1,5 @@
 body{
-	background-image: url("../images/background.png");
+	background-color: #d3dbe3;
 	font-family: "OCR A Std", monospace;
 }
 
@@ -22,7 +22,6 @@ div.box{
 .box:hover{
 	background-color: white;
 	box-shadow: 0 25px 60px rgba(0,0,0,.8);
-	transition: 2s;
 }
 input[type=text], select {
 	height:40px;

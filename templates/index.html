@@ -27,6 +27,9 @@
 				  <a class="nav-link" aria-current="page" href="/">Home</a>
 				</li>
 				<li class="nav-item">
+				  <a class="nav-link" href="/alerts">Alerts</a>
+				</li>
+				<li class="nav-item">
 				  <a class="nav-link" href="/preview_whitelist">Whitelist</a>
 				</li>
 				<li class="nav-item">
@@ -64,6 +67,54 @@
 
 	<div class="content">
 	
+		<div class="forthbox" id="forth">
+			<div class='risk_box'>
+			Risk management 
+			<br>
+				<div class="alert_box" id='alert1'>
+					<div class='alert_box_text'>
+						Low</div>
+						<br>
+						<div id='counter1'>0</div>
+					
+				</div>
+				<div class="alert_box" id='alert2'>
+					<div class='alert_box_text'>
+						Medium</div><br>
+						<div id='counter2'>0</div>
+				</div>
+				<div class="alert_box" id='alert3'>
+					<div class='alert_box_text'>
+						High</div><br>
+						<div id='counter3'>0</div>
+				</div>
+			</div>
+			
+
+			<div class='details_box'>
+				Whitelist status
+				<br>
+				<div class="alert_box" id='alert1'>
+					<div class='alert_box_text'>
+						Domains</div>
+						<br>
+						<div id='counter4'>0</div>
+					
+				</div>
+				<div class="alert_box" id='alert2'>
+					<div class='alert_box_text'>
+						User-Agents</div><br>
+						<div id='counter5'>0</div>
+				</div>
+				<div class="alert_box" id='alert3'>
+					<div class='alert_box_text'>
+						Sources</div><br>
+						<div id='counter6'>0</div>
+				</div>
+			</div>
+		</div>
+
+
 		<div class="firstfloatbox" id="first">
 			<div class="progressbar2">
 			 {{numar[0]}}/{{numar[-1]}}
@@ -144,110 +195,31 @@
 		
 		
 		<div class="secondfloatbox" id="second">	
-
-
-
-
-			<form action="/" method="POST">
-
-				<div class="multiselect">
-					<div class="selectBox" onclick="showCheckboxes()">
-						<select>
-							<option>Exfiltration tehniques</option>
-						</select>
-					<div class="overSelect"></div>
-					</div>
-					<div id="checkboxes">
-						<label for="one">
-							<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"/>ICMP</label>
-						<label for="two">
-							<input type="checkbox" iid="HTTP" name="HTTP" value="HTTP"/>HTTP</label>
-						<label for="three">
-							<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"/>HTTPS</label>
-						<label for="four">
-							<input type="checkbox" id="DNS" name="DNS" value="DNS"/>DNS</label>
-						<label for="five">
-							<input type="checkbox" id="Connections" name="Connections" value="Connections"/>Connections</label>
-						<label for="six">
-							<input type="checkbox" id="Listeners" name="Listening" value="Listening"/>Listeners</label>
-						<label for="seven">
-							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>IPv4 Anomalies</label>
-						<label for="eight">
-							<input type="checkbox" id="VirusTotal" name="VirusTotal" value="VirusTotal"/>VirusTotal</label>
-					</div>
-				</div><br>
-					Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
-					<label>Numar de request-uri:</label><input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'><br>
-					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
-					<input type="submit" value="Search">
-				</form>
-
-
-		</div>
-
-		<div class="forthbox" id="forth">
-			<div class="alert_box" id='alert1'>
-				Risc scazut:<br>{{low_risk}}
+			<div class="loader" id='loader'></div>
+			<div class='network_box' id='network_box'>
+				Network details:
 			</div>
-			<div class="alert_box" id='alert2'>
-				Risc mediu:<br>{{medium_risk}}
-			</div>
-			<div class="alert_box" id='alert3'>
-				Risc ridicat:<br>{{high_risk}}
-			</div>
-		</div>
+			<div class='network_box_ips' id='network_box_ips'>
 
-		<div class="thirdbox" id="third">
-			
-			<table id= "tabel_alerte">
-				<tr>
-					<td>
-							Index
-						</td>
-					<td>
-							Type
-					</td>
-					<td>
-							Message
-					</td>
-					<td>
-							Risk
-					</td>
-					<td>
-							Source
-					</td>
-					<td>
-							Destination
-					</td>
-					<td>
-							Payload
-					</td>
-					<td>
-							Timestamp
-					</td>
-					<td>
-							Edit
-					</td>
-				</tr>
-                   {%for i in range(len)%} 
-                    <tr>
-                        {%for j in data[i]%} 
-                            <td>{{j}}</td> 
-                        {%endfor%} 
-                  		  <td>
-							    <button style="background: url(static/images/detalii.png); 
-							    width:50px; height: 50px;background-size: cover; border:none;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
-                  		  </td>
-                    </tr>
-                    {%endfor%} 
-			</table>
+			</div>
+
+			<div class='network_most_used_ip' id='network_most_used_ip'>
+				Most alerts on:
+				<div class="network_most_used_ip_print" id='network_most_used_ip_print'>
+
+				</div>
+			</div>
+
+			<div class="chart" id='chart' onmouseover="show()">
+			</div>
+
+
 			
 		</div>
 
 
-		
 
-		
+
 		
 	</div>
 
@@ -278,22 +250,6 @@
 	}
 	</script>
 
-	<script>
-		var x = 0;
-		const interval = setInterval(function() {
-			var low=["#64ff50","#42ff29","#42ff29","#1adb00","#17c400","#13a600"];
-			var medium=["#ffaf4d","#ffa02b","#ff8d00","#d97800","#ffa600","#ff8400"];
-			var high=["#ff4747","#ff2626","#ff0000","#e30000","#c90000","#a30000"];
-			var index = x % 6;
-			var c=low[index];
-			document.getElementById("alert1").style.backgroundColor=c;
-			c=medium[index];
-			document.getElementById("alert2").style.backgroundColor=c;
-			c=high[index];
-			document.getElementById("alert3").style.backgroundColor=c;
-			x+=1;
- 		}, 3000);
-	</script>
 
 
 	<script>
@@ -400,4 +356,212 @@
 
 
     <script src="js/bootstrap.bundle.min.js"></script>
+
+
+
+	<script>
+		let time=2000;
+		var nr1 = parseInt("{{low_risk}}");
+		var count1 = document.getElementById("counter1"); 
+		i=Math.floor(nr1/10);
+		var intervalID = setInterval(function() { 
+					if (i < nr1) { 
+						i = i + 1
+						count1.innerHTML=i.toString();
+					} else { 
+						clearInterval(intervalID); 
+					} 
+		        }, time/nr1); 
+
+
+		var nr2 = parseInt("{{medium_risk}}");
+		var count2 = document.getElementById("counter2"); 
+		var j=Math.floor(nr2/10);
+		var intervalID2 = setInterval(function() { 
+					if (j < nr2) { 
+						j = j + 1
+						count2.innerHTML=j.toString();
+					} else { 
+						clearInterval(intervalID2); 
+					} 
+		        }, time/nr2); 
+
+
+		var nr3 = parseInt("{{high_risk}}");
+		var count3 = document.getElementById("counter3"); 
+		var k=Math.floor(nr3/10);
+		var intervalID3 = setInterval(function() { 
+					if (k < nr3) { 
+						k = k + 1
+						count3.innerHTML=k.toString();
+					} else { 
+						clearInterval(intervalID3); 
+					} 
+		        }, time/nr3); 
+
+
+		var nr4 = parseInt("{{whitelist_c3}}");
+		var count4 = document.getElementById("counter4"); 
+		var l=Math.floor(nr4/10);
+		var intervalID4 = setInterval(function() { 
+					if (l < nr4) { 
+						l = l + 1
+						count4.innerHTML=l.toString();
+					} else { 
+						clearInterval(intervalID4); 
+					} 
+		        }, time/nr4); 
+
+
+		var nr5 = parseInt("{{whitelist_c2}}");
+		var count5 = document.getElementById("counter5"); 
+		var m=Math.floor(nr5/10);
+		var intervalID5 = setInterval(function() { 
+					if (m < nr5) { 
+						m = m + 1
+						count5.innerHTML=m.toString();
+					} else { 
+						clearInterval(intervalID5); 
+					} 
+		        }, time/nr5); 
+
+
+		var nr6 = parseInt("{{whitelist_c1}}");
+		var count6 = document.getElementById("counter6"); 
+		var n=Math.floor(nr6/10);
+		var intervalID6 = setInterval(function() { 
+					if (n < nr6) { 
+						n = n + 1
+						count6.innerHTML=n.toString();
+					} else { 
+						clearInterval(intervalID6); 
+					} 
+		        }, time/nr6); 
+	</script>
+
+
+
+	<script>
+	function sigmoid(t) {
+		return 1/(1+Math.pow(Math.E, -t));
+	}
+	var ips;
+	var count;
+	var count2;
+	var nume=""
+	let max = 0;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("loader").style.display="none";
+			document.getElementById("network_box").style.visibility="visible";
+			document.getElementById("network_most_used_ip").style.visibility="visible";
+			var response = this.responseText.split("\n");
+			var array = response[0].split(' ');
+			var forpage="";
+			forpage=forpage.concat("IPs:<br>")
+			forpage=forpage.concat("<table class='newtable'>")
+			let n = 10;
+			if (array.length<10){
+				n = array.length;
+			}
+			for(let i=0; i<n; i++){
+				forpage=forpage.concat("<tr class='newtr'>");
+				forpage=forpage.concat("<td class='newtd'>");
+				forpage=forpage.concat(array[i]);
+				forpage=forpage.concat("</td>");
+				forpage=forpage.concat("</tr>");
+			}
+			forpage=forpage.concat("</table>")
+			document.getElementById("network_box_ips").innerHTML = forpage;
+			var forprintips=""
+			count = response[1].split(' ');
+			ips = response[2].split(' ');
+			for(let i=0; i<4; i++){
+				forprintips=forprintips.concat(ips[i])
+				forprintips=forprintips.concat("<br>")
+			}
+			document.getElementById("network_most_used_ip_print").innerHTML = forprintips;
+			var end = 0;
+			var content="";
+			for(let i=0; i<ips.length; i++){
+				id="bar";
+				id=id.concat(i.toString());
+				var name="<div class='bar' id='bar";
+				name=name.concat(i.toString()+"'></div>");
+				content=content.concat(name)
+				//document.getElementById(id).style.gridRowEnd=(end).toString();
+			}
+			document.getElementById("chart").innerHTML=content;
+			count2 = count.slice();
+			let min = 9999;
+			for (i = 0; i < count.length; i++)
+			{
+				if(parseFloat(count[i])>max)
+				{
+					max = parseFloat(count[i]);
+				}
+			}
+
+			for (i = 0; i < count.length; i++)
+			{
+				if(parseFloat(count[i])<min)
+				{
+					min = parseFloat(count[i]);
+				}
+			}
+
+			for (i = 0; i < count.length; i++)
+			{
+				var norm = 1000*(parseFloat(count[i])-min)/(max-min);
+				count[i] = norm.toString();
+			}
+			max = 0;
+			for (i = 0; i < count.length; i++)
+			{
+				if(parseFloat(count[i])>max)
+				{
+					max = parseFloat(count[i]);
+				}
+			}
+			var procent = 100/ips.length+50;
+			for(let i=0; i < ips.length; i++){
+				document.getElementById("bar"+i.toString()).style.width=procent.toString()+"%";
+				document.getElementById("bar"+i.toString()).style.gridRowEnd=Math.ceil(max).toString();
+				document.getElementById("bar"+i.toString()).style.gridRowStart=Math.ceil(max-(count[i]).toString());
+				document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
+				//document.getElementById('bar'+i.toString()).innerHTML="<span class=\"caption\">"+ips[i]+"</span>";
+			}
+
+
+
+
+
+		}
+
+	};
+	xhttp.open("GET", "/loadIPs", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(nume);
+
+	function show(){
+		for(let i=0; i < ips.length; i++){
+			document.getElementById("bar"+i.toString()).style.gridRowStart="1";
+			document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
+		}
+		setTimeout(function(){
+			var procent = 100/ips.length+50;
+			for(let i=0; i < ips.length; i++){
+				document.getElementById("bar"+i.toString()).style.width=procent.toString()+"%";
+				document.getElementById("bar"+i.toString()).style.gridRowEnd=Math.ceil(max).toString();
+				document.getElementById("bar"+i.toString()).style.gridRowStart=Math.ceil(max-(count[i]).toString());
+				document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
+			}
+		}, 10000);
+	}
+	</script>
+
+
+
+
 </html>
