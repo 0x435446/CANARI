@@ -460,12 +460,12 @@ def add_delete_destination(destination):
 	file.close()
 	if destination in content:
 		content.remove(destination)
-		modify = open("../modules/Filters/whitelist.txt","w")
+		modify = open("./modules/Filters/whitelist.txt","w")
 		modify.write('\n'.join(content))
 		modify.close()
 		return 0
 	content.append(destination)
-	modify = open("../modules/Filters/whitelist.txt","w")
+	modify = open("./modules/Filters/whitelist.txt","w")
 	modify.write('\n'.join(content))
 	modify.close()
 	return 1
