@@ -2,6 +2,7 @@ import socket
 import fcntl
 import struct
 import MySQLdb 
+from datetime import datetime
 
 
 class METHODS:
@@ -69,7 +70,7 @@ def get_header_ip(packet):
       print ("ALERT: IP CHECKSUM FAILED")
       db=MySQLdb.connect( host="localhost",user="root",passwd="FlagFlag123.",db="licenta")
       cursor = db.cursor()
-      cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Anomalies', 'IP HEADER CHANGED','HIGH','-','-','"+str(nr)+"','"+str(datetime.now())+"')")
+      cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Anomalies', 'IP CHECKSUM FAILED','HIGH','-','-','"+str(str(int(hex(s^0xfffff)[3:],16))+' '+str(int(hex(check+3)[2:],16)))+"','"+str(datetime.now())+"')")
       db.commit()
       db.close()
       print (int(hex(s^0xfffff)[3:],16),int(hex(check+3)[2:],16))

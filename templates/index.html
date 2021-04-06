@@ -180,7 +180,7 @@
 			</div>
 			
 			<div class="progressbar2">
-				 0/{{numar[-1]}}
+				 {{numar[7]}}/{{numar[-1]}}
 				 <span style="float: left">IPv4 Anomalies</span>
 				 <div class="progressbars">
 					<div class="progress" id="anomalies_progress">
@@ -259,7 +259,7 @@
 		document.getElementById("dns_progress").style.width = "{{dns}}";
 		document.getElementById("conn_progress").style.width = "{{cn}}";
 		document.getElementById("listen_progress").style.width = "{{lc}}";
-		document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
+		document.getElementById("anomalies_progress").style.width = "{{ipv4_count}}";
 		document.getElementById("vt_progress").style.width = "{{vt}}";
 		document.getElementById("https_progress").style.width = "{{hsc}}";
 		document.getElementById("second").style.height = document.getElementById("first").clientHeight;

@@ -116,9 +116,11 @@
 
 				<form id='alerts_form' method="POST" action="/loadFile" enctype="multipart/form-data">
 					<button onclick="exportData() ; return false;" class='secondfloatbox_import_export_button' >Export logs ↓</button>
+
+					
 					<input type='file' id="getFile" name="file" style="display:none">
 					<button class='secondfloatbox_import_export_button' onclick="document.getElementById('getFile').click(); return false;">Import logs ↑</button>
-					<button id='uploadGetFile' style="background: url(static/images/refresh.svg); width:20px; height: 20px; background-size: cover; border:none;"></button>
+					<button id='uploadGetFile' class='uploadGetFile' style="background: url(static/images/refresh.svg); width:20px; height: 20px; background-size: cover; border:none;"></button>
 					<input type="submit" style="display:none">
 				</form>
 
@@ -245,7 +247,6 @@
 		  
 		  // Set up the request object
 		  var xhr = new XMLHttpRequest();
-			alert(1);
 		  
 		  // Open the connection and pass the file name
 		  xhr.open('POST', 'loadFile', true);
@@ -255,7 +256,6 @@
 		    if (xhr.status === 200) {
 		    	document.getElementById('third').innerHTML=xhr.responseText;
 		      // File(s) uploaded
-		      alert('File uploaded successfully');
 		    } else {
 		      alert('Something went wrong uploading the file.');
 		    }

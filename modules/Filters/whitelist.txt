@@ -11,5 +11,3 @@ amazonaws
 mozilla
 virustotal
 gstatic
-_gateway
-192.168.150.132

@@ -91,8 +91,12 @@ def select_graph():
 	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='HTTPS'")
 	data2 = (cursor2.fetchall())
 	https_count=data2[0][0]
+	cursor2= db.cursor()
+	cursor2.execute("SELECT Count(Type) FROM alerte WHERE Type='Anomalies'")
+	data2 = (cursor2.fetchall())
+	ipv4_count=data2[0][0]
 	db.close()
-	return icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count
+	return icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count,ipv4_count
 
 
 @app.route('/load_blacklist')
@@ -173,7 +177,7 @@ def index():
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 
-			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count=select_graph()
+			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count,ipv4_count=select_graph()
 			
 			numar=[]
 			numar.append(str(icmp_count))
@@ -183,9 +187,10 @@ def index():
 			numar.append(str(listen_count))
 			numar.append(str(connect_count))
 			numar.append(str(https_count))
-			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count))
+			numar.append(str(ipv4_count))
+			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count+ipv4_count))
 			
-			return render_template('index.html',whitelist_c1=whitelist_c1,whitelist_c2=whitelist_c2,whitelist_c3=whitelist_c3,data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
+			return render_template('index.html',ipv4_count=str(100*ipv4_count/len(data)),whitelist_c1=whitelist_c1,whitelist_c2=whitelist_c2,whitelist_c3=whitelist_c3,data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
 		else:
 			return redirect("/login")
 	except:
@@ -268,18 +273,8 @@ def alerts():
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 
-			icmp_count,dns_count,http_count,vs_count,listen_count,connect_count,https_count=select_graph()
 			
-			numar=[]
-			numar.append(str(icmp_count))
-			numar.append(str(dns_count))
-			numar.append(str(http_count))
-			numar.append(str(vs_count))
-			numar.append(str(listen_count))
-			numar.append(str(connect_count))
-			numar.append(str(https_count))
-			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count))
-			return render_template('alerts.html',whitelist_c1=whitelist_c1,whitelist_c2=whitelist_c2,whitelist_c3=whitelist_c3,data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
+			return render_template('alerts.html',data=datas,len=len(datas))
 		else:
 			print ("LOGIN 1")
 			return redirect("/login")

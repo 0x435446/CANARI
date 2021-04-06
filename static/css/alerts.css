@@ -84,7 +84,7 @@ div.secondfloatbox{
 	color:black;
 	background-color: rgb(255,255,255);
 	margin-left: 0px;
-	height: 200px;
+	height: 150px;
 	margin-bottom: 10px;
 }
 
@@ -104,11 +104,14 @@ div.secondfloatbox{
 }
 
 .secondfloatbox_import_export_button{
+	margin-top: 20px;
+	margin-left: 10px;
 	background-color: white;
 	border: 1px solid rgb(211,211,211);
 	border-radius: 5px;
-	margin-bottom: 100px;
+	margin-bottom: 10px;
 }
+
 
 
 
