@@ -109,14 +109,39 @@
 		
 
 		
-		
-		
-		
+		<div class="secondfloatbox" id="second">
+
+			<div class="secondfloatbox_import_export" id="second_box_imprt_export">
+
+
+				<form id='alerts_form' method="POST" action="/loadFile" enctype="multipart/form-data">
+					<button onclick="exportData() ; return false;" class='secondfloatbox_import_export_button' >Export logs ↓</button>
+					<input type='file' id="getFile" name="file" style="display:none">
+					<button class='secondfloatbox_import_export_button' onclick="document.getElementById('getFile').click(); return false;">Import logs ↑</button>
+					<button id='uploadGetFile' style="background: url(static/images/refresh.svg); width:20px; height: 20px; background-size: cover; border:none;"></button>
+					<input type="submit" style="display:none">
+				</form>
+
+
+
+				
+			</div>
+
+			<div class="secondfloatbox_box" id="second_box">
+
+				<form action="/alerts" method="POST">
+					<input class='secondfloatbox_input' type="text" id="dest" name="dest" placeholder='Domain'>
+					<input type="submit" value="Search"> <label class='sortare'></label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' >
+				</form>
+			
+			</div>
+			
+		</div>
 		
 
 		<div class="thirdbox" id="third">
 			
-			<table id= "tabel_alerte">
+			<table id="tabel_alerte">
 				<tr>
 					<td>
 							Index
@@ -173,7 +198,75 @@
 </body>
 
 
+	<script>
+		//https://blog.filestack.com/thoughts-and-knowledge/ajax-file-upload-formdata-examples/
+		function supportAjaxUploadWithProgress() {
+  			return supportFileAPI() && supportAjaxUploadProgressEvents() && supportFormData();
 
+  		function supportFileAPI() {
+		    var fi = document.createElement('INPUT');
+		    fi.type = 'file';
+		    return 'files' in fi;
+		  };
+
+		  function supportAjaxUploadProgressEvents() {
+		    var xhr = new XMLHttpRequest();
+		    return !! (xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
+		  };
+
+		  function supportFormData() {
+		    return !! window.FormData;
+		  }
+		}
+
+		var form = document.getElementById('alerts_form');
+		var fileSelect = document.getElementById('getFile');
+		var uploadButton = document.getElementById('uploadGetFile');
+		form.onsubmit = function(event) {
+		  // Prevent a non-AJAX file upload from starting
+		  event.preventDefault();
+
+		  // Let the user know that the upload has begun
+
+		  // Get the selected files from the input
+		  var files = fileSelect.files;
+		  
+		  // Create a new FormData object
+		  var formData = new FormData();
+		  
+		  // Loop through each of the selected files.
+		  for(var i = 0; i < files.length; i++){
+		    var file = files[i];
+		    // Check the file type
+
+		    // Add the file to the form's data
+		    formData.append('file', file, file.name);
+		  }
+		  
+		  // Set up the request object
+		  var xhr = new XMLHttpRequest();
+			alert(1);
+		  
+		  // Open the connection and pass the file name
+		  xhr.open('POST', 'loadFile', true);
+		  
+		  // Set up a handler for when the request finishes
+		  xhr.onload = function () {
+		    if (xhr.status === 200) {
+		    	document.getElementById('third').innerHTML=xhr.responseText;
+		      // File(s) uploaded
+		      alert('File uploaded successfully');
+		    } else {
+		      alert('Something went wrong uploading the file.');
+		    }
+		  };
+		  
+		  xhr.send(formData);
+		}
+
+
+
+	</script>
 
 
 	<script>
@@ -195,22 +288,6 @@
 	}
 	</script>
 
-	<script>
-		var x = 0;
-		const interval = setInterval(function() {
-			var low=["#64ff50","#42ff29","#42ff29","#1adb00","#17c400","#13a600"];
-			var medium=["#ffaf4d","#ffa02b","#ff8d00","#d97800","#ffa600","#ff8400"];
-			var high=["#ff4747","#ff2626","#ff0000","#e30000","#c90000","#a30000"];
-			var index = x % 6;
-			var c=low[index];
-			document.getElementById("alert1").style.backgroundColor=c;
-			c=medium[index];
-			document.getElementById("alert2").style.backgroundColor=c;
-			c=high[index];
-			document.getElementById("alert3").style.backgroundColor=c;
-			x+=1;
- 		}, 3000);
-	</script>
 
 
 	<script>
@@ -286,7 +363,6 @@
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var response = this.responseText;
-				alert(1);
 				alert(response);
 			}
 		};
@@ -331,7 +407,46 @@
     	}	
 
 
-    </script>
+	</script>
 
+	<script>
+		function exportData(){
+			var forLogs="";
+			var oTable = document.getElementById('tabel_alerte');
+
+			var rowLength = oTable.rows.length;
+			forLogs=forLogs.concat("Index\tType\tMessage\tRisk\tSource\tDestination\tPayload\tTimestamp\tEdit")
+			forLogs=forLogs.concat("\n");
+			for (i = 1; i < rowLength; i++){
+
+				var oCells = oTable.rows.item(i).cells;
+
+				var cellLength = oCells.length;
+
+				for(var j = 0; j < cellLength; j++){
+					var cellVal = oCells.item(j).innerHTML; 
+					var n = cellVal.includes("<button");
+					if (n == false){
+						forLogs=forLogs.concat(cellVal);
+						forLogs=forLogs.concat("\t");
+					}
+					else{
+						forLogs=forLogs.concat("\t:)");
+					}
+				}
+				forLogs=forLogs.concat("\n");
+			}
+			an = new Date().getDate();
+			luna = new Date().getMonth();
+			zi = new Date().getFullYear();
+			timestamp = new Date().getTime();
+			name=zi+"/"+luna+"/"+an+"-"+timestamp+".txt";
+			var bb = new Blob([forLogs ], { type: 'text/plain' });
+			var a = document.createElement('a');
+			a.download = name;
+			a.href = window.URL.createObjectURL(bb);
+			a.click();
+		}
+	</script>
 
 </html>

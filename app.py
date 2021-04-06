@@ -29,7 +29,7 @@ app.config['MYSQL_PASSWORD'] = 'FlagFlag123.'
 app.config['MYSQL_DB'] = 'BlockIT'
 
 app.config['UPLOAD_FOLDER']='/tmp/upload'
-
+app.config['UPLOAD_EXTENSIONS'] = ['.txt']
 
 mysql = MySQL(app)
 
@@ -138,6 +138,7 @@ def index():
 					numar_alerte = int(Data['numar_alerte'])
 				except:
 					numar_alerte = 10
+					pass
 				print (numar_alerte)
 				timestart = Data['timestart']
 				timestop = Data['timestop']
@@ -163,6 +164,7 @@ def index():
 					else:
 						cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
 					print ("AM AJUNS AICI!")
+					print ("DA")
 					datas = list(cursor.fetchall())
 			else:
 				cursor.execute("SELECT * FROM alerte limit 0,10")
@@ -192,7 +194,7 @@ def index():
 
 @app.route('/alerts', methods=['GET', 'POST'])
 def alerts():
-	try:
+	#try:
 		if session['loggedin'] == True: 
 			whitelist_c1,whitelist_c2,whitelist_c3 = get_whitelist_details()
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -202,46 +204,67 @@ def alerts():
 				Data = request.form
 				print ("AICI E DATA",Data)
 				conditie = list(Data)
-				del conditie[-1]
-				if 'descendent' in Data:
+				if conditie[0] != 'dest':
 					del conditie[-1]
-					descendent = 1
-				print (len(conditie))
-				print (conditie)
-				try:
-					numar_alerte = int(Data['numar_alerte'])
-				except:
-					numar_alerte = 10
-				print (numar_alerte)
-				timestart = Data['timestart']
-				timestop = Data['timestop']
-				if len(conditie)>2:
-					for i in range(len(conditie)):
-						conditie[i]=MySQLdb.escape_string(conditie[i]).decode()
-						conditie[i]="'"+conditie[i]+"'"
-						print (type(conditie[i]))
-					if len(timestart)>0 and len(timestop)>0:
-						if descendent == 1:
-							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+					if 'descendent' in Data:
+						del conditie[-1]
+						descendent = 1
+					print (len(conditie))
+					print (conditie)
+					try:
+						numar_alerte = int(Data['numar_alerte'])
+					except:
+						numar_alerte = 10
+						pass
+					print (numar_alerte)
+					timestart = Data['timestart']
+					timestop = Data['timestop']
+					if len(conditie)>2:
+						for i in range(len(conditie)):
+							conditie[i]=MySQLdb.escape_string(conditie[i]).decode()
+							conditie[i]="'"+conditie[i]+"'"
+							print (type(conditie[i]))
+						if len(timestart)>0 and len(timestop)>0:
+							if descendent == 1:
+								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+							else:
+								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
 						else:
-							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+							if descendent == 1:
+								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+							else:
+								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
+						datas = list(cursor.fetchall())
 					else:
 						if descendent == 1:
-							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+							if len(timestart)>0 and len(timestop)>0:
+								cursor.execute("SELECT * FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC limit 0,"+str(numar_alerte)+"")
+							else:
+								cursor.execute("SELECT * FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
 						else:
-							cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
-					datas = list(cursor.fetchall())
-				else:
-					if descendent == 1:
-						cursor.execute("SELECT * FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
-					else:
-						cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
-					print ("AM AJUNS AICI!")
-					datas = list(cursor.fetchall())
+							if len(timestart)>0 and len(timestop)>0:
+								cursor.execute("SELECT * FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+							else:
+								cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
+						print ("AM AJUNS AICI!")
+						datas = list(cursor.fetchall())
 			else:
 				cursor.execute("SELECT * FROM alerte limit 0,10")
 				datas = list(cursor.fetchall())
-			
+			try:
+				if conditie[0] == 'dest':
+					print (Data['dest'], "DATAAA")
+					if len(Data) == 2:
+						cursor.execute("SELECT * FROM alerte where Destination in ('"+Data['dest']+"') order by id DESC")
+					#cursor.execute("SELECT * FROM alerte where Destination in ("+', '.join(Data['dest'].split(','))+")")
+					else:
+						cursor.execute("SELECT * FROM alerte where Destination in ('"+Data['dest']+"')")
+
+					datas = list(cursor.fetchall())
+			except:
+				cursor.execute("SELECT * FROM alerte limit 0,10")
+				datas = list(cursor.fetchall())
+				pass
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 
@@ -256,12 +279,13 @@ def alerts():
 			numar.append(str(connect_count))
 			numar.append(str(https_count))
 			numar.append(str(icmp_count+dns_count+http_count+vs_count+listen_count+connect_count+https_count))
-			
 			return render_template('alerts.html',whitelist_c1=whitelist_c1,whitelist_c2=whitelist_c2,whitelist_c3=whitelist_c3,data=datas,len=len(datas),low_risk=search_risk("LOW")[0][0],medium_risk=search_risk("MEDIUM")[0][0],high_risk=search_risk("HIGH")[0][0]	,icmp=str(100*icmp_count/len(data))+"%",dns=str(100*dns_count/len(data))+"%",http=str(100*http_count/len(data))+"%",vt=str(100*vs_count/len(data))+"%",lc=str(100*listen_count/len(data)),cn=str(100*connect_count/len(data)),hsc=str(100*https_count/len(data)),numar=numar)
 		else:
+			print ("LOGIN 1")
 			return redirect("/login")
-	except:
-		return redirect("/login")
+	#except:
+		#print ("LOGIN 2")
+		#return redirect("/login")
 
 
 
@@ -732,6 +756,27 @@ def loadIP():
 	else:
 		return redirect("/login")
 
+
+@app.route('/loadFile', methods=['POST'])
+def upload_file():
+	print ("DA")
+	uploaded_file = request.files['file']
+	filename = uploaded_file.filename
+	if filename != '':
+		file_ext = os.path.splitext(filename)[1]
+		if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+			return "Extension not allowed"
+	logs = uploaded_file.read().decode()
+	lines = logs.split("\n")
+	print (lines)
+	for i in range(len(lines)):
+		lines[i] = "<tr>\n<td>"+lines[i].replace("\t"," </td><td>\n")+"\n</tr>"
+	lines.insert(0,"<table id='tabel_alerte'>")
+	lines.append("</table>")
+	print ('\n'.join(lines))
+	mesaj = '\n'.join(lines)
+	print (mesaj.replace("<td>\n </td>",""))
+	return mesaj.replace("<td>\n </td>","")
 
 if __name__ == '__main__':
 	app.run(debug=True,host= '0.0.0.0')

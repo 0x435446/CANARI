@@ -69,18 +69,53 @@ div.content{
 	width:30%;
 	background-color: rgb(255,255,255,0.8);
 	padding-right: 10px;
+	max-width: 500px;
+
+
 }
 
-.secondfloatbox{
+
+
+div.secondfloatbox{
 	padding-top:10px;
 	padding-left:10px;
 	float:left;
-	width:68%;
+	width:100%;
 	color:black;
 	background-color: rgb(255,255,255);
 	margin-left: 0px;
+	height: 200px;
+	margin-bottom: 10px;
 }
 
+.secondfloatbox_box{
+	margin:0;
+	width:100%;
+	text-align: left;
+	padding-left: 50px;
+	bottom:0;
+}
+
+.secondfloatbox_import_export{
+	padding-left: 50px;
+	margin:0;
+	width:100%;
+	text-align: left;
+}
+
+.secondfloatbox_import_export_button{
+	background-color: white;
+	border: 1px solid rgb(211,211,211);
+	border-radius: 5px;
+	margin-bottom: 100px;
+}
+
+
+
+.secondfloatbox_input{
+	width:85%;
+
+}
 
 
 .thirdbox{
