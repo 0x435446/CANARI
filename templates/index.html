@@ -454,8 +454,11 @@
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("loader").style.display="none";
-			document.getElementById("network_box").style.visibility="visible";
-			document.getElementById("network_most_used_ip").style.visibility="visible";
+			document.getElementById("chart").style.display="grid";
+			document.getElementById("network_box").style.display="block";
+			document.getElementById("network_box_ips").style.display="block";
+			document.getElementById("network_most_used_ip").style.display="block";
+			document.getElementById("network_most_used_ip_print").style.display="block";
 			var response = this.responseText.split("\n");
 			var array = response[0].split(' ');
 			var forpage="";
@@ -543,21 +546,25 @@
 	xhttp.open("GET", "/loadIPs", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send(nume);
-
+	var ok = 0;
 	function show(){
-		for(let i=0; i < ips.length; i++){
-			document.getElementById("bar"+i.toString()).style.gridRowStart="1";
-			document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
-		}
-		setTimeout(function(){
-			var procent = 100/ips.length+50;
+		if(ok == 0){
+			ok = 1;
 			for(let i=0; i < ips.length; i++){
-				document.getElementById("bar"+i.toString()).style.width=procent.toString()+"%";
-				document.getElementById("bar"+i.toString()).style.gridRowEnd=Math.ceil(max).toString();
-				document.getElementById("bar"+i.toString()).style.gridRowStart=Math.ceil(max-(count[i]).toString());
+				document.getElementById("bar"+i.toString()).style.gridRowStart="1";
 				document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
 			}
-		}, 10000);
+			setTimeout(function(){
+				var procent = 100/ips.length+50;
+				for(let i=0; i < ips.length; i++){
+					document.getElementById("bar"+i.toString()).style.width=procent.toString()+"%";
+					document.getElementById("bar"+i.toString()).style.gridRowEnd=Math.ceil(max).toString();
+					document.getElementById("bar"+i.toString()).style.gridRowStart=Math.ceil(max-(count[i]).toString());
+					document.getElementById("bar"+i.toString()).title="Source: "+ips[i]+"\nValues: "+count2[i];
+					ok = 0;
+				}
+			}, 10000);
+		}
 	}
 	</script>
 
