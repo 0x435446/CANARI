@@ -24,6 +24,7 @@ body{
 	padding-bottom:20px;
 	margin-top:20px;
 	margin-right: 2%;
+	box-shadow: 0 0 3px #000000;
 }
 
 .secondfloatbox{
@@ -35,6 +36,7 @@ body{
 	color:black;
 	background-color: rgb(255,255,255);
 	margin-left: 0px;
+	box-shadow: 0 0 3px #000000;
 }
 
 
@@ -145,6 +147,7 @@ div.progress {
 	text-align: left;
 	padding-left: 20px;
 	font-weight: bold;
+	box-shadow: 0 0 3px #000000;
 }
 
 

@@ -114,16 +114,16 @@
 			<div class="secondfloatbox_import_export" id="second_box_imprt_export">
 
 
-				<form id='alerts_form' method="POST" action="/loadFile" enctype="multipart/form-data">
+				<form id='alerts_form' method="POST" action="/loadFile" enctype="multipart/form-data" >
 					<button onclick="exportData() ; return false;" class='secondfloatbox_import_export_button' >Export logs ↓</button>
 
 					
 					<input type='file' id="getFile" name="file" style="display:none">
 					<button class='secondfloatbox_import_export_button' onclick="document.getElementById('getFile').click(); return false;">Import logs ↑</button>
-					<button id='uploadGetFile' class='uploadGetFile' style="background: url(static/images/refresh.svg); width:20px; height: 20px; background-size: cover; border:none;"></button>
+					<button id='uploadGetFile' class="secondfloatbox_box_refresh">View &#x21bb;</button>
 					<input type="submit" style="display:none">
-				</form>
 
+				</form>
 
 
 				
@@ -134,6 +134,7 @@
 				<form action="/alerts" method="POST">
 					<input class='secondfloatbox_input' type="text" id="dest" name="dest" placeholder='Domain'>
 					<input type="submit" value="Search"> <label class='sortare'></label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' >
+					
 				</form>
 			
 			</div>
@@ -448,5 +449,9 @@
 			a.click();
 		}
 	</script>
+
+
+
+
 
 </html>

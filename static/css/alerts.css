@@ -86,6 +86,7 @@ div.secondfloatbox{
 	margin-left: 0px;
 	height: 150px;
 	margin-bottom: 10px;
+	box-shadow: 0 0 3px #000000;
 }
 
 .secondfloatbox_box{
@@ -112,7 +113,16 @@ div.secondfloatbox{
 	margin-bottom: 10px;
 }
 
+.secondfloatbox_box_refresh{
+	margin-top: 20px;
+	margin-left: 10px;
+	background-color: #006442;
+	border: 1px solid #006442;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	color:white;
 
+}
 
 
 .secondfloatbox_input{
@@ -124,6 +134,7 @@ div.secondfloatbox{
 .thirdbox{
 	width:100%;
 	max-width: 1700px;
+
 }
 
 
@@ -166,9 +177,9 @@ legend{
 table {
 	table-layout: fixed ;
 	width: 100% ;
-	background-image: url("../images/background.png");
 	text-align:center;
 	font-size: 13px;
+	box-shadow: 0 0 3px #000000;
 }
 
 td {
