@@ -11,6 +11,7 @@ div.continut{
 	padding-left: 30px;
 	padding-right: 30px;
 	overflow: scroll;
+	box-shadow: 0 0 3px #000000;
 }
 
 

@@ -76,11 +76,13 @@ div.content{
 
 
 
+
+
 div.secondfloatbox{
 	padding-top:10px;
 	padding-left:10px;
 	float:left;
-	width:100%;
+	width:40%;
 	color:black;
 	background-color: rgb(255,255,255);
 	margin-left: 0px;
@@ -126,7 +128,7 @@ div.secondfloatbox{
 
 
 .secondfloatbox_input{
-	width:85%;
+	width:60%;
 
 }
 
@@ -232,15 +234,50 @@ div.progress {
 	float:left;
 	padding-left:10px;
 	padding-bottom:10px;
-	width:100%;
+	width:60%;
+	background-color: white;
+	color:black;
+	text-align: left;
+	padding-left: 20px; 
+	height: 150px;
+	overflow: auto;
+}
+
+
+.forthbox_left{
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	float:left;
+	padding-left:10px;
+	padding-bottom:10px;
+	width:50%;
 	background-color: white;
 	color:black;
 	text-align: left;
 	padding-left: 20px;
-	font-weight: bold;
+	border-right: 1px solid rgb(211,211,211);
+	height: 100%;
+}
+
+.forthbox_right{
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	float:left;
+	padding-left:10px;
+	padding-bottom:10px;
+	width:50%;
+	background-color: white;
+	color:black;
+	text-align: left;
+	padding-left: 20px;
+	border-right: 1px solid rgb(211,211,211);
+	height: 100%;
 }
 
 
+.drag{
+	
+}
 
 div.alert_box{
 	width:33%;
@@ -257,6 +294,10 @@ div.alert_box{
 
 }
 	
+
+
+
+
 div.alert_box_text{
 	padding-top: 10px;
 	width:150px;
@@ -265,6 +306,7 @@ div.alert_box_text{
 	border-right: none !important;
 }
 	
+
 	
 
 .edit{

@@ -101,7 +101,8 @@
 					Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
 					<label>Numar de request-uri:</label><input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'><br>
 					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
-					<input type="submit" value="Search">
+					<input type="hidden" id="hiddenID" name="hiddenID" value="QWERTY">
+					<input type="submit" value="Search" onclick="checkValues()">
 				</form>
 				<button style="float: right;" onclick="hide2()">Close</button>
 		</div>
@@ -141,39 +142,36 @@
 			
 		</div>
 		
+		<div class="forthbox" id="forth" >
+			<div class = 'forthbox_left' ondrop="drop(event)" ondragover="allowDrop(event)" id='forth_left'>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget1">Index</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget2">Type</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget3">Message</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget4">Risk</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget5">Source</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget6">Destination</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget7">Payload</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget8">Timestamp</p>
+				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Edit</p>
+			</div>
+
+			<div class = 'forthbox_right' ondrop="drop(event)" ondragover="allowDrop(event)">
+
+			</div>
+		</div>
 
 		<div class="thirdbox" id="third">
 			
 			<table id="tabel_alerte">
-				<tr>
-					<td>
-							Index
-						</td>
-					<td>
-							Type
-					</td>
-					<td>
-							Message
-					</td>
-					<td>
-							Risk
-					</td>
-					<td>
-							Source
-					</td>
-					<td>
-							Destination
-					</td>
-					<td>
-							Payload
-					</td>
-					<td>
-							Timestamp
-					</td>
-					<td>
-							Edit
-					</td>
-				</tr>
+					{%for i in range(header_len)%} 
+                    <tr>
+                        {%for j in header[i]%} 
+                            <td>{{j}}</td> 
+                        {%endfor%} 
+                    </tr>
+                    {%endfor%} 
+
+
                    {%for i in range(len)%} 
                     <tr>
                         {%for j in data[i]%} 
@@ -416,9 +414,7 @@
 			var oTable = document.getElementById('tabel_alerte');
 
 			var rowLength = oTable.rows.length;
-			forLogs=forLogs.concat("Index\tType\tMessage\tRisk\tSource\tDestination\tPayload\tTimestamp\tEdit")
-			forLogs=forLogs.concat("\n");
-			for (i = 1; i < rowLength; i++){
+			for (i = 0; i < rowLength; i++){
 
 				var oCells = oTable.rows.item(i).cells;
 
@@ -452,6 +448,43 @@
 
 
 
+<script>
+	function dragStart(event) {
+		event.dataTransfer.setData("Text", event.target.id);
+	}
+
+	function allowDrop(event) {
+		event.preventDefault();
+	}
+
+	function drop(event) {
+		event.preventDefault();
+		var data = event.dataTransfer.getData("Text");
+		event.target.appendChild(document.getElementById(data));
+	}
+</script>
+
+<script>
+
+	function checkValues(){
+		var x = document.getElementById('forth_left').innerHTML;
+		x = x.split("\n");
+		z = "";
+		for(let i=1; i<x.length; i++){
+			try {
+				if(x[i].length > 10)
+				{
+					x[i] = x[i].split(">")[1].split("<")[0];
+					z = z.concat(x[i]+", ");
+				}
+			}
+			catch{
+
+			}
+		}
+		document.getElementById('hiddenID').value=z;
+	}
 
 
+</script>
 </html>

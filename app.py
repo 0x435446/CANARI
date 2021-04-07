@@ -204,11 +204,28 @@ def alerts():
 			whitelist_c1,whitelist_c2,whitelist_c3 = get_whitelist_details()
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()
+			WeHaveEdit = 1
+			forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
 			if request.method == 'POST':
 				descendent = 0
+				WeHaveEdit = 0
 				Data = request.form
 				print ("AICI E DATA",Data)
+				try:
+					forSelect = Data['hiddenID']
+				except:
+					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
+					WeHaveEdit = 1
+					pass
+				forSelect = forSelect.replace("Index","ID")
+				forSelect = forSelect[:-2]
+				if("Edit" in forSelect):
+					WeHaveEdit = 1
+					forSelect = forSelect.replace(", Edit","")
+				print ("AICI E FORSELECT:",forSelect)
 				conditie = list(Data)
+				if "hiddenID" in Data:
+					del conditie[-1]
 				if conditie[0] != 'dest':
 					del conditie[-1]
 					if 'descendent' in Data:
@@ -231,26 +248,26 @@ def alerts():
 							print (type(conditie[i]))
 						if len(timestart)>0 and len(timestop)>0:
 							if descendent == 1:
-								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
 							else:
-								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
 						else:
 							if descendent == 1:
-								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
 							else:
-								cursor.execute("SELECT * FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
 						datas = list(cursor.fetchall())
 					else:
 						if descendent == 1:
 							if len(timestart)>0 and len(timestop)>0:
-								cursor.execute("SELECT * FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC limit 0,"+str(numar_alerte)+"")
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC limit 0,"+str(numar_alerte)+"")
 							else:
-								cursor.execute("SELECT * FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
+								cursor.execute("SELECT "+forSelect+" FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
 						else:
 							if len(timestart)>0 and len(timestop)>0:
-								cursor.execute("SELECT * FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
 							else:
-								cursor.execute("SELECT * FROM alerte limit 0,"+str(numar_alerte))
+								cursor.execute("SELECT "+forSelect+" FROM alerte limit 0,"+str(numar_alerte))
 						print ("AM AJUNS AICI!")
 						datas = list(cursor.fetchall())
 			else:
@@ -272,9 +289,13 @@ def alerts():
 				pass
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
-
-			
-			return render_template('alerts.html',data=datas,len=len(datas))
+			ceva = []
+			if WeHaveEdit == 1:
+				forSelect+=", Edit"
+			forSelect = forSelect.replace("ID","Index")
+			ceva.append(tuple(forSelect.split(", ")))
+			header = ceva
+			return render_template('alerts.html',data=datas,len=len(datas),header=header ,header_len=len(header))
 		else:
 			print ("LOGIN 1")
 			return redirect("/login")

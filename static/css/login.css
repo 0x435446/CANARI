@@ -17,6 +17,7 @@ div.box{
 	width:40%;
 	text-align: center;
 	height: 60%;
+	box-shadow: 0 0 3px #000000;
 
 }
 .box:hover{
