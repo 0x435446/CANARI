@@ -420,7 +420,7 @@
 			var oTable = document.getElementById('tabel_alerte');
 
 			var rowLength = oTable.rows.length;
-			for (i = 0; i < rowLength; i++){
+			for (let i = 0; i < rowLength; i++){
 
 				var oCells = oTable.rows.item(i).cells;
 
@@ -430,11 +430,16 @@
 					var cellVal = oCells.item(j).innerHTML; 
 					var n = cellVal.includes("<button");
 					if (n == false){
-						forLogs=forLogs.concat(cellVal);
-						forLogs=forLogs.concat("\t");
+						if ((i == 0) && (j == cellLength - 1)){
+							forLogs=forLogs.concat(cellVal);
+						}
+						else{
+							forLogs=forLogs.concat(cellVal);
+							forLogs=forLogs.concat("\t");
+						}
 					}
 					else{
-						forLogs=forLogs.concat("\t:)");
+						forLogs=forLogs.concat(":)");
 					}
 				}
 				forLogs=forLogs.concat("\n");

@@ -825,8 +825,9 @@ def upload_file():
 	lines.append("</table>")
 	print ('\n'.join(lines))
 	mesaj = '\n'.join(lines)
-	print (mesaj.replace("<td>\n </td>",""))
-	return mesaj.replace("<td>\n </td>","")
+	print ("AICI E MESAJUL")
+	print (mesaj.replace("<td>\replace </td>",""))
+	return mesaj.replace("<td>\replace </td>","")
 
 if __name__ == '__main__':
 	app.run(debug=True,host= '0.0.0.0')
