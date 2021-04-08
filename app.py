@@ -217,6 +217,7 @@ def alerts():
 					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
 					WeHaveEdit = 1
 					pass
+				forSelect = forSelect.replace("Index","ID")
 				forSelect = forSelect[:-2]
 				if("Edit" in forSelect):
 					WeHaveEdit = 1
@@ -224,9 +225,13 @@ def alerts():
 				print ("AICI E FORSELECT:",forSelect)
 				if forSelect == '':
 					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
-				forSelect = forSelect.replace("Index","ID")
 				conditie = list(Data)
+				destination =""
+				if "dest" in Data and len(Data)>1:
+					if Data['dest'] != "":
+						destination = Data['dest']
 				if "hiddenID" in Data:
+					del conditie[-1]
 					del conditie[-1]
 				if conditie[0] != 'dest':
 					del conditie[-1]
@@ -250,26 +255,50 @@ def alerts():
 							print (type(conditie[i]))
 						if len(timestart)>0 and len(timestop)>0:
 							if descendent == 1:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' and Destination = '"+destination+"' order by id DESC  limit 0,"+str(numar_alerte)+"")
 							else:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' and Destination = '"+destination+"' limit 0,"+str(numar_alerte))
 						else:
 							if descendent == 1:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") order by id DESC limit 0,"+str(numar_alerte))
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Destination = '"+destination+"' order by id DESC limit 0,"+str(numar_alerte))
 							else:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") limit 0,"+str(numar_alerte))
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Type in ("+', '.join(conditie)+") and Destination = '"+destination+"' limit 0,"+str(numar_alerte))
 						datas = list(cursor.fetchall())
 					else:
 						if descendent == 1:
 							if len(timestart)>0 and len(timestop)>0:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC limit 0,"+str(numar_alerte)+"")
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' order by id DESC limit 0,"+str(numar_alerte)+"")
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' and Destination = '"+destination+"' order by id DESC limit 0,"+str(numar_alerte)+"")
 							else:
-								cursor.execute("SELECT "+forSelect+" FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte WHERE Destination = '"+destination+"' ORDER BY id DESC limit 0,"+str(numar_alerte)+"")
 						else:
 							if len(timestart)>0 and len(timestop)>0:
-								cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"'limit 0,"+str(numar_alerte))
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte where Timestamp BETWEEN '"+timestart+" 00:00:00' AND '"+timestop+"' and Destination = '"+destination+"' limit 0,"+str(numar_alerte))
 							else:
-								cursor.execute("SELECT "+forSelect+" FROM alerte limit 0,"+str(numar_alerte))
+								if destination == "":
+									cursor.execute("SELECT "+forSelect+" FROM alerte limit 0,"+str(numar_alerte))
+								else:
+									cursor.execute("SELECT "+forSelect+" FROM alerte WHERE Destination = '"+destination+"' limit 0,"+str(numar_alerte))
 						print ("AM AJUNS AICI!")
 						datas = list(cursor.fetchall())
 			else:

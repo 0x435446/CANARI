@@ -9,6 +9,7 @@ div.content{
 	color:red;
 	padding-left: 20px;
 	padding-right: 20px;
+	max-width: 1700px;
 }
 
 .navbar{
@@ -70,8 +71,6 @@ div.content{
 	background-color: rgb(255,255,255,0.8);
 	padding-right: 10px;
 	max-width: 500px;
-
-
 }
 
 
@@ -82,11 +81,12 @@ div.secondfloatbox{
 	padding-top:10px;
 	padding-left:10px;
 	float:left;
-	width:40%;
+	width:30%;
 	color:black;
 	background-color: rgb(255,255,255);
 	margin-left: 0px;
-	height: 150px;
+	height: 80px;
+	margin-top: 40px;
 	margin-bottom: 10px;
 	margin-right: 2%;
 	box-shadow: 0 0 3px #000000;
@@ -101,7 +101,6 @@ div.secondfloatbox{
 }
 
 .secondfloatbox_import_export{
-	padding-left: 50px;
 	margin:0;
 	width:100%;
 	text-align: left;
@@ -114,6 +113,7 @@ div.secondfloatbox{
 	border: 1px solid rgb(211,211,211);
 	border-radius: 5px;
 	margin-bottom: 10px;
+	width:33%;
 }
 
 .secondfloatbox_box_refresh{
@@ -124,6 +124,7 @@ div.secondfloatbox{
 	border-radius: 5px;
 	margin-bottom: 10px;
 	color:white;
+	width:5em;
 
 }
 
@@ -136,7 +137,6 @@ div.secondfloatbox{
 
 .thirdbox{
 	width:100%;
-	max-width: 1700px;
 
 }
 
@@ -236,7 +236,7 @@ div.progress {
 	padding-left:10px;
 	padding-bottom:10px;
 	padding-top:20px;
-	width:58%;
+	width:68%;
 	background-color: white;
 	color:black;
 	text-align: left;
@@ -244,6 +244,7 @@ div.progress {
 	height: 150px;
 	overflow: auto;
 	box-shadow: 0 0 3px #000000;
+	margin-bottom: 10px;
 }
 
 
