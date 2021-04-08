@@ -131,37 +131,37 @@
 				
 			</div>
 
-			<!--
-			<div class="secondfloatbox_box" id="second_box">
-
-				<form action="/alerts" method="POST">
-					<input class='secondfloatbox_input' type="text" id="dest" name="dest" placeholder='Domain'>
-					<input type="submit" value="Search"> <label class='sortare'></label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' >
-					
-				</form>
-			
-			</div>
-			-->
 			
 		</div>
 		
 		<div class="forthbox" id="forth" >
-			<div class = 'forthbox_left' ondrop="drop(event)" ondragover="allowDrop(event)" id='forth_left'>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget1">Index</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget2">Type</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget3">Message</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget4">Risk</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget5">Source</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget6">Destination</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget7">Payload</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget8">Timestamp</p>
-				<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Edit</p>
+			<div class='forthbox_after' id='forthbox_after'>
+				<div class = 'forthbox_left' ondrop="drop(event)" ondragover="allowDrop(event)" id='forth_left'>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget1">Index</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget2">Type</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget3">Message</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget4">Risk</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget5">Source</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget6">Destination</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget7">Payload</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget8">Timestamp</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Edit</p>
+				</div>
+
+				<div class = 'forthbox_right' ondrop="drop(event)" ondragover="allowDrop(event)">
+				</div>
 			</div>
 
-			<div class = 'forthbox_right' ondrop="drop(event)" ondragover="allowDrop(event)">
+			<div class='forthbox_before' id='forthbox_before' onclick="discover()">
+
+				<div class='forthbox_before_left'>
+					Remove fileds from table →
+				</div>
+				<div class='forthbox_before_right'>
+					← Add fileds to table 
+				</div>
 
 			</div>
-
 		</div>
 
 		<div class="thirdbox" id="third">
@@ -495,5 +495,13 @@
 	}
 
 
+</script>
+
+
+<script>
+	function discover(){
+		document.getElementById('forthbox_after').style.display='block';
+		document.getElementById('forthbox_before').style.display='none';
+	}
 </script>
 </html>

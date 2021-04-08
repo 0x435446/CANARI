@@ -225,6 +225,8 @@ def alerts():
 				print ("AICI E FORSELECT:",forSelect)
 				if forSelect == '':
 					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
+					forSelect = forSelect.replace("Index","ID")
+					WeHaveEdit = 1
 				conditie = list(Data)
 				destination =""
 				if "dest" in Data and len(Data)>1:

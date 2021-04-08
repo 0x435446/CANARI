@@ -234,7 +234,6 @@ div.progress {
 .forthbox{
 	float:left;
 	padding-left:10px;
-	padding-bottom:10px;
 	padding-top:20px;
 	width:68%;
 	background-color: white;
@@ -247,7 +246,49 @@ div.progress {
 	margin-bottom: 10px;
 }
 
+.forthbox_after{
+	display: none;
+}
 
+.forthbox_before{
+	font-size: 25px;
+	color: white;
+    background-color: rgba(0,0,0,0.2);
+    height: 150px;
+    margin: none !important;
+	display: block;
+	margin-top: -20px;
+	margin-left: -20px;
+	box-shadow: 0 0 35px #ffffff inset;
+	text-shadow: 2px 2px #000000;
+}
+
+.forthbox_before:hover{
+	color: black;
+	text-shadow: 2px 2px #bbbbbb;
+	font-size: 30px;
+    background-color: rgba(0,0,0,0.5);
+	box-shadow: 0 0 35px #000000 inset;
+	transition-duration: 1s;
+	cursor: pointer;
+}
+
+
+.forthbox_before_left{
+	text-align: center;
+	padding-top: 50px;
+	float:left;
+	width: 50%;
+	height: 150px;
+}
+
+.forthbox_before_right{
+	text-align: center;
+	padding-top: 50px;
+	float:left;
+	width: 50%;
+	height: 120px;
+}
 
 
 .forthbox_left{
@@ -284,10 +325,17 @@ div.progress {
 }
 
 
+.question_mark{
+	display: flex; 
+	justify-content: flex-end;
+	height: 10px;
+	width:10px;
+	background-color: red;
 
+}
 
 .drag{
-	cursor:move;
+	cursor:all-scroll;
 	border-top: 1px solid rgb(233,233,233);
 }
 
