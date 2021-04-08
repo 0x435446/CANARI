@@ -247,6 +247,8 @@ div.progress {
 }
 
 
+
+
 .forthbox_left{
 	display: grid;
 	grid-template-columns: 25% 25% 25% 25%;
@@ -260,7 +262,9 @@ div.progress {
 	padding-left: 20px;
 	border-right: 1px solid rgb(211,211,211);
 	height: 100%;
+	background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1'  fill='whitesmoke'><text x='50%' y='60%' alignment-baseline='middle' text-anchor='middle' font-size='50'>Add</text></svg>");
 }
+
 
 .forthbox_right{
 	display: grid;
@@ -275,11 +279,15 @@ div.progress {
 	padding-left: 20px;
 	border-right: 1px solid rgb(211,211,211);
 	height: 100%;
+	background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' fill='whitesmoke'><text x='50%' y='60%' alignment-baseline='middle' text-anchor='middle' font-size='50'>Remove</text></svg>");
 }
 
 
+
+
 .drag{
-	
+	cursor:move;
+	border-top: 1px solid rgb(233,233,233);
 }
 
 div.alert_box{

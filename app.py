@@ -217,12 +217,14 @@ def alerts():
 					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
 					WeHaveEdit = 1
 					pass
-				forSelect = forSelect.replace("Index","ID")
 				forSelect = forSelect[:-2]
 				if("Edit" in forSelect):
 					WeHaveEdit = 1
 					forSelect = forSelect.replace(", Edit","")
 				print ("AICI E FORSELECT:",forSelect)
+				if forSelect == '':
+					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
+				forSelect = forSelect.replace("Index","ID")
 				conditie = list(Data)
 				if "hiddenID" in Data:
 					del conditie[-1]
