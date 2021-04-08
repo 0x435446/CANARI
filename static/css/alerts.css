@@ -88,6 +88,7 @@ div.secondfloatbox{
 	margin-left: 0px;
 	height: 150px;
 	margin-bottom: 10px;
+	margin-right: 2%;
 	box-shadow: 0 0 3px #000000;
 }
 
@@ -234,13 +235,15 @@ div.progress {
 	float:left;
 	padding-left:10px;
 	padding-bottom:10px;
-	width:60%;
+	padding-top:20px;
+	width:58%;
 	background-color: white;
 	color:black;
 	text-align: left;
 	padding-left: 20px; 
 	height: 150px;
 	overflow: auto;
+	box-shadow: 0 0 3px #000000;
 }
 
 

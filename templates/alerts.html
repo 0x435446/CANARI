@@ -177,10 +177,12 @@
                         {%for j in data[i]%} 
                             <td>{{j}}</td> 
                         {%endfor%} 
+                        {% if editButton == 1 %}
                   		  <td>
 							    <button style="background: url(static/images/detalii.png); 
 							    width:50px; height: 50px;background-size: cover; border:none;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
                   		  </td>
+                  		 {%endif%}
                     </tr>
                     {%endfor%} 
 			</table>
@@ -468,21 +470,19 @@
 
 	function checkValues(){
 		var x = document.getElementById('forth_left').innerHTML;
-		x = x.split("\n");
-		z = "";
-		for(let i=1; i<x.length; i++){
-			try {
-				if(x[i].length > 10)
-				{
-					x[i] = x[i].split(">")[1].split("<")[0];
-					z = z.concat(x[i]+", ");
+		var z = x.split("<");
+		var forReturn = "";
+		for(let i=1; i<z.length; i++){
+			z[i] = z[i].split(",");
+			for(let j=0; j<z[i].length; j++){
+				var n = z[i][j].includes("dragtarget");
+				if (n == true){
+					var type = z[i][j].split(">")[1];
+					forReturn = forReturn.concat(type+", ");
 				}
 			}
-			catch{
-
-			}
 		}
-		document.getElementById('hiddenID').value=z;
+		document.getElementById('hiddenID').value=forReturn;
 	}
 
 

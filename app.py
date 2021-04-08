@@ -290,12 +290,15 @@ def alerts():
 			cursor.execute("SELECT * FROM alerte")
 			data = list(cursor.fetchall())
 			ceva = []
+			editButton = 0
 			if WeHaveEdit == 1:
 				forSelect+=", Edit"
+				editButton = 1
 			forSelect = forSelect.replace("ID","Index")
 			ceva.append(tuple(forSelect.split(", ")))
 			header = ceva
-			return render_template('alerts.html',data=datas,len=len(datas),header=header ,header_len=len(header))
+
+			return render_template('alerts.html',data=datas,len=len(datas),header=header ,header_len=len(header),editButton=editButton)
 		else:
 			print ("LOGIN 1")
 			return redirect("/login")
