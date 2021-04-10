@@ -22,30 +22,24 @@ def icmp_start():
 	times=[]
 	ip=get_ip_address('ens33')  
 	#ip='osboxes'
-	print (ip)
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
 	global start_icmp
 	start_icmp=1
 	while(start_icmp!=0):
 		cmd="sudo tcpdump -i ens33 -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply 2>/dev/null"
-		print ("------------------------------------------------------------------------------------")
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		search= result.split(' ')
 		host=''
 		for i in range(len(search)-2):
 			if search[i] == '>':
-				print ("SURSA",search)
 				host = search[i-1]
-				print ("HOST ICMP:",host)
 				break;
 		if check_whitelist(host,"./modules/Filters/whitelist_sources.txt") == 0:
 			result = result.replace('\t','').split('\n')
 			res=[]
 			ok=0
-			print (result[1])
 			if (" >" in result[1]) :
-				print ("N-AM AJUNS INCA AICI")
 				for k in range(len(times)):
 					if(times[k].ip==get_stranger_ip(result[1])):
 						times[k].add(int(timp.time()))
@@ -61,8 +55,6 @@ def icmp_start():
 					if str(iii[0]) == str(response):
 						z=1
 				if z==0:
-					print ("UNUL NOU")
-					print (result[1])
 					if for_test==0:
 						cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('ICMP', 'NEW IP ADDED','LOW','"+host+"','"+str(response)+"','-','"+str(datetime.now())+"')")
 						db.commit()
@@ -79,7 +71,6 @@ def icmp_start():
 			values=values.split(' ')
 			times[len(times)-1].header.append(values[7:][:10])
 			ICMP.check_header(times[len(times)-1])
-			print ("DA")
 			get_header_ip(values)
 			if ckeck(values,16) ==  0:
 				if ckeck(values,97) ==  0:

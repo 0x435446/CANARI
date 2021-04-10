@@ -97,7 +97,6 @@ def dns_start():
 									if scan_url[j] == '>':
 										url = scan_url[j+1]
 							payload=result[1].split('?')[1].split(' ')[1]
-							print ("AICI E URL",url)
 							if 'addr' not in payload:
 								if len(url[len(url)-2]) > 0:
 									if payload.count('.') < 2:
@@ -105,7 +104,6 @@ def dns_start():
 										db.commit()
 										passed = 1
 									else:
-										print ("PASSED")
 										url = payload.split('.')
 						except:
 							pass
@@ -174,24 +172,19 @@ def dns_start():
 									sql = "INSERT INTO domains (Domains) VALUES('"+DNS_domain+"')"
 									cursor.execute(sql)
 									db.commit()
-									print ("AM INSERAT DOMENIUL!")
 								if var == 0:
 									if DNS_ok == 0:
 										try:
 											vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
-											#print (vt)
 											for i in vt:
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','"+HOST+"','"+ bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
 												db.commit()
 										except:
 											pass
-									print ("AICI E URL DE LA DNS!",domain)
 									stop = 0
-									#print ("SUBDOMENII:",SUBD)
 									for i in range(len(SUBD)):
 										if SUBD[i] == bd[0]:
 											stop = 1
-									#print ("AICI SUNT ASTEA:",SUBD)
 									if stop == 0:
 										SUBD.append(bd[0])
 										ok=0
@@ -282,7 +275,6 @@ def dns_start():
 													if url[i] not in tld:
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND 2','HIGH,'"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
 														db.commit()
-														print (verify_encoding(url[i]),url[i])
 			except:
 				print ("PACHET MALFORMAT - DNS",result)
 				pass

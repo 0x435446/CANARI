@@ -129,7 +129,6 @@ def http_start():
 							try:
 								if len(GET[0][1:]) > 0:
 									try:
-										print (verify_encoding(GET[0][1:]))
 										if verify_encoding(GET[0][1:]) <= 10:
 											if stop == 0:
 												if ok_http == 0:
@@ -218,7 +217,6 @@ def http_start():
 																	founda=1
 											#print ("AM AJUNS LA COOKIES")
 											#print (URLS[i].adds)
-											print ("AICI E COOKIE:",Cookie)
 											for ii in range(len(URLS[i].Cookies)):
 												ok2=0
 												if URLS[i].Cookies[ii] == Cookie:
