@@ -67,6 +67,7 @@ def get_header_ip(packet):
       check=int(packet[i],16)
   if int(hex(s^0xfffff)[3:],16)!=int(hex(check+2)[2:],16):
     if int(hex(s^0xfffff)[3:],16)!=int(hex(check+3)[2:],16):
+     if int(hex(s^0xfffff)[3:],16)!=int(hex(check+1)[2:],16):
       print ("ALERT: IP CHECKSUM FAILED")
       db=MySQLdb.connect( host="localhost",user="root",passwd="FlagFlag123.",db="licenta")
       cursor = db.cursor()
@@ -90,3 +91,11 @@ def read_file(fisier):
       line = fp.readline()
       cnt += 1
   return x
+
+
+def checkIPs(ip):
+  f=open('/tmp/ips.txt',"r").read().strip().split(' ')
+  if ip not in f:
+    print ("DJADJADJADJADJA")
+  else:
+    print ("ESTE IN LISTA")

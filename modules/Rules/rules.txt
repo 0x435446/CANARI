@@ -4,3 +4,4 @@
 DNS:*:*:*:0:0051:HIGH:MesajDNS
 DNS:*:*:*:0:0052:LOW:MesajDNS
 HTTP:*:*:*:0:1234:MEDIUM:MesajHTTP
+1:1:1:1:1:1:1:1

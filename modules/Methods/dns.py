@@ -71,6 +71,7 @@ def dns_start():
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		for_check=result
 		HOST = rules.check_rules('DNS',for_check)
+		checkIPs(HOST)
 		if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
 			result=result.split('\n\t')[0].replace('\t','')
 			try:

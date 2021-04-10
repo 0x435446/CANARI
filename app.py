@@ -121,7 +121,14 @@ def index():
 			print ("ICMP_STARTED")
 			_thread.start_new_thread(web.http_start,())
 			print ("HTTP_STARTED")
-			#load_blacklist()
+			try:
+				_thread.start_new_thread(Network.checkIPsThread,())
+				print ("CheckNetwork_Started")
+			except:
+				print ("NAHHHHHH")
+				pass
+			
+			#load_blacklist()		
 			#_thread.start_new_thread(https.start,())
 			#print ("HTTPS_STARTED")
 			whitelist_c1,whitelist_c2,whitelist_c3 = get_whitelist_details()

@@ -1,5 +1,6 @@
 import subprocess
 import MySQLdb 
+import time
 
 def checkIP(base):
 	ips=[]
@@ -26,3 +27,13 @@ def checkMostIP():
 				ip.append(str(i[0]))
 				nr+=1
 	return count,ip
+
+
+def checkIPsThread():
+	while(True):
+		time.sleep(10)
+		lista = checkIP("192.168.150")
+		f = open('/tmp/ips.txt','w')
+		for i in lista:
+			f.write(i)
+		f.close()
