@@ -226,9 +226,9 @@ def alerts():
 					pass
 				forSelect = forSelect.replace("Index","ID")
 				forSelect = forSelect[:-2]
-				if("Edit" in forSelect):
+				if("Actions" in forSelect):
 					WeHaveEdit = 1
-					forSelect = forSelect.replace(", Edit","")
+					forSelect = forSelect.replace(", Actions","")
 				print ("AICI E FORSELECT:",forSelect)
 				if forSelect == '':
 					forSelect ='Index, Type, Message, Risk, Source, Destination, Payload, Timestamp'
@@ -332,7 +332,7 @@ def alerts():
 			ceva = []
 			editButton = 0
 			if WeHaveEdit == 1:
-				forSelect+=", Edit"
+				forSelect+=", Actions"
 				editButton = 1
 			forSelect = forSelect.replace("ID","Index")
 			ceva.append(tuple(forSelect.split(", ")))

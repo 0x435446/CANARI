@@ -145,20 +145,21 @@
 					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget6">Destination</p>
 					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget7">Payload</p>
 					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget8">Timestamp</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Edit</p>
+					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Actions</p>
 				</div>
 
 				<div class = 'forthbox_right' ondrop="drop(event)" ondragover="allowDrop(event)">
+					<div class='forthbox_question' onclick="question()">?</div>
 				</div>
 			</div>
 
 			<div class='forthbox_before' id='forthbox_before' onclick="discover()">
 
 				<div class='forthbox_before_left'>
-					Remove fileds from table →
+					Remove fields from table →
 				</div>
 				<div class='forthbox_before_right'>
-					← Add fileds to table 
+					← Add fields to table 
 				</div>
 
 			</div>
@@ -502,6 +503,13 @@
 	function discover(){
 		document.getElementById('forthbox_after').style.display='block';
 		document.getElementById('forthbox_before').style.display='none';
+		document.getElementById('forth').style.paddingTop = "0px"; 
+	}
+
+	function question(){
+		document.getElementById('forthbox_after').style.display='none';
+		document.getElementById('forthbox_before').style.display='block';
+		document.getElementById('forth').style.paddingTop = "20px"; 
 	}
 </script>
 </html>
