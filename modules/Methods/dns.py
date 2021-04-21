@@ -12,6 +12,9 @@ from verify_encoding import *
 from VirusTotal import *
 import rules
 
+sys.path.append('./modules/MachineLearning')
+import predict
+
 def check_chars(word):
 	for i in range(len(word)):
 		if ord(word[i])<=0x20 or ord(word[i]) >=ord('z'):
@@ -65,16 +68,16 @@ def dns_start():
 	global start_dns
 	start_dns=1
 	while(start_dns!=0):
-			cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
-			ok_txt = 0
-			puncte = 0
-			result = subprocess.check_output(cmd, shell=True).decode('utf-8')
-			for_check=result
-			HOST = rules.check_rules('DNS',for_check)
-			checkIPs(HOST)
-			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
-				result=result.split('\n\t')[0].replace('\t','')
-			try:
+				cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
+				ok_txt = 0
+				puncte = 0
+				result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+				for_check=result
+				HOST = rules.check_rules('DNS',for_check)
+				checkIPs(HOST)
+				if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
+					result=result.split('\n\t')[0].replace('\t','')
+			#try:
 				if '192.168.1.4' not in result:
 					result=result.split('\n')
 					flag=result[0].split('[')[1].split(']')[0]
@@ -99,12 +102,22 @@ def dns_start():
 							payload=result[1].split('?')[1].split(' ')[1]
 							if 'addr' not in payload:
 								if len(url[len(url)-2]) > 0:
+
+									raspuns_ML = predict.check_model_3(payload)
+									if (raspuns_ML == 1):
+										print ("SUBDOMENIU OK",payload)
+									else:
+										print ("SUBDOMENIU MALITIOS",payload)
+										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS - DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
+										db.commit()
+
 									if payload.count('.') < 2:
 										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 										db.commit()
 										passed = 1
 									else:
 										url = payload.split('.')
+
 						except:
 							pass
 					try:
@@ -156,7 +169,7 @@ def dns_start():
 										dns_time.append(z)
 								else:
 									dns_time.append(z)
-								
+									
 								var=check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt")
 								DNS_domain= "http://"+bd[len(bd)-2]+"."+'.'.join(domain)
 								
@@ -192,6 +205,17 @@ def dns_start():
 											for i in range(len(database)):
 												if(database[i].check(bd[len(bd)-2])==1):
 													for j in range(len(bd)-2):
+
+
+														raspuns_ML = predict.check_model_3(bd[j])
+														if (raspuns_ML == 1):
+															print ("SUBDOMENIU OK",bd[j])
+														else:
+															print ("SUBDOMENIU MALITIOS",bd[j])
+															cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+															db.commit()
+
+
 														if len(str(bd[j])) > 10:
 															#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION LENGTH','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
 															cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
@@ -256,6 +280,14 @@ def dns_start():
 								match = re.findall(r'((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', '.'.join(url)) #match url
 								if len(match) == 0:
 									if( check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt") == 0):
+										raspuns_ML = predict.check_model_3('.'.join(url[:-2]))
+										if (raspuns_ML == 1):
+											print ("SUBDOMENIU OK",'.'.join(url[:-2]))
+										else:
+											print ("SUBDOMENIU MALITIOS",'.'.join(url[:-2]))
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+'.'.join(url[:-2])+"','"+str(datetime.now())+"')")
+											db.commit()
+
 										z=DNS_time(bd[len(bd)-2],HOST)
 										dns_ok=0
 										if len(dns_time)>0:
@@ -275,9 +307,9 @@ def dns_start():
 													if url[i] not in tld:
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
 														db.commit()
-			except:
-				print ("PACHET MALFORMAT - DNS",result)
-				pass
+			#except:
+				#print ("PACHET MALFORMAT - DNS",result)
+				#pass
 
 def stop_dns():
 	global start_dns
