@@ -188,6 +188,15 @@
 				 </div>
 			</div>
 			
+			<div class="progressbar2">
+				 {{numar[8]}}/{{numar[-1]}}
+				 <span style="float: left">Machine Learning</span>
+				 <div class="progressbars">
+					<div class="progress" id="ml_progress">
+					</div>
+				 </div>
+			</div>
+			
 			
 		</div>
 		
@@ -260,6 +269,7 @@
 		document.getElementById("conn_progress").style.width = "{{cn}}";
 		document.getElementById("listen_progress").style.width = "{{lc}}";
 		document.getElementById("anomalies_progress").style.width = "{{ipv4_count}}";
+		document.getElementById("ml_progress").style.width = "{{ml_count}}";
 		document.getElementById("vt_progress").style.width = "{{vt}}";
 		document.getElementById("https_progress").style.width = "{{hsc}}";
 		document.getElementById("second").style.height = document.getElementById("first").clientHeight;

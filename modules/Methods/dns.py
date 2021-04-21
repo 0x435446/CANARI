@@ -68,16 +68,16 @@ def dns_start():
 	global start_dns
 	start_dns=1
 	while(start_dns!=0):
-				cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
-				ok_txt = 0
-				puncte = 0
-				result = subprocess.check_output(cmd, shell=True).decode('utf-8')
-				for_check=result
-				HOST = rules.check_rules('DNS',for_check)
-				checkIPs(HOST)
-				if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
-					result=result.split('\n\t')[0].replace('\t','')
-			#try:
+			cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
+			ok_txt = 0
+			puncte = 0
+			result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+			for_check=result
+			HOST = rules.check_rules('DNS',for_check)
+			checkIPs(HOST)
+			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
+				result=result.split('\n\t')[0].replace('\t','')
+			try:
 				if '192.168.1.4' not in result:
 					result=result.split('\n')
 					flag=result[0].split('[')[1].split(']')[0]
@@ -169,7 +169,7 @@ def dns_start():
 										dns_time.append(z)
 								else:
 									dns_time.append(z)
-									
+
 								var=check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt")
 								DNS_domain= "http://"+bd[len(bd)-2]+"."+'.'.join(domain)
 								
@@ -307,9 +307,9 @@ def dns_start():
 													if url[i] not in tld:
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
 														db.commit()
-			#except:
-				#print ("PACHET MALFORMAT - DNS",result)
-				#pass
+			except:
+				print ("PACHET MALFORMAT - DNS",result)
+				pass
 
 def stop_dns():
 	global start_dns
