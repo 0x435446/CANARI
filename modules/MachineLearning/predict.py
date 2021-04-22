@@ -73,7 +73,7 @@ def check_model_2(word):
     return (int(out[0][0]))
 
 def check_model_3(word):
-    model=load_model("./modules/MachineLearning/models/model4.h5")
+    model=load_model("./modules/MachineLearning/models/model4.2.h5")
     crs=[]
     d={}
     d=verify_enc.initializare(d)
@@ -86,6 +86,9 @@ def check_model_3(word):
     cifre = verify_enc.count_cifre(word)
     puncte = verify_enc.count_dots(word)
     minus = verify_enc.count_lines(word)
+    underscore = verify_enc.count_underscore(word)
+    slash = verify_enc.count_slashes(word)
+    entropy = verify_enc.get_entropy(word)
     all_lens = verify_enc.get_every_len(word)
     test.append(float(encoding))
     test.append(float(litere_mari))
@@ -95,6 +98,9 @@ def check_model_3(word):
     test.append(float(cifre))
     test.append(float(puncte))
     test.append(float(minus))
+    test.append(float(underscore))
+    test.append(float(slash))
+    test.append(float(entropy))
     for z in all_lens:
         test.append(float(z))
     crs.append(test)

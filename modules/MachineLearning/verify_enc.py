@@ -1,4 +1,9 @@
 from string import ascii_letters,digits
+
+import math
+
+
+
 d={}
 def initializare(d):
     data = open( './modules/MachineLearning/probabil.txt' ).read().split('\n')
@@ -12,7 +17,28 @@ def initializare(d):
 
 
 def initializare_ads(d):
-    data = open( './modules/MachineLearning/ads_prob.txt' ).read().split('\n')
+    data = open( 'ads_prob.txt' ).read().split('\n')
+    for i in range(len(data)):
+        try:
+            data[i]=data[i].split(':')
+            d[data[i][0]]=data[i][1]
+        except:
+            pass
+    return d
+
+
+def initializare_DNS(d):
+    data = open( 'probabilitati_DNS.txt' ).read().split('\n')
+    for i in range(len(data)):
+        try:
+            data[i]=data[i].split(':')
+            d[data[i][0]]=data[i][1]
+        except:
+            pass
+    return d
+
+def initializare_big():
+    data = open( 'all_prob.txt' ).read().split('\n')
     for i in range(len(data)):
         try:
             data[i]=data[i].split(':')
@@ -23,20 +49,20 @@ def initializare_ads(d):
 
 
 def verify_encoding(word,d):
-	suma=0
-	nr=0
-	for i in range(len(word)-1):
-		try:
-			nr+=1
-			grup=word[i]+word[i+1]
-			if d[grup]:
-				suma+=int(d[grup])
-		except:
-			pass
-	try:
-		return suma/nr
-	except:
-		pass
+    suma=0
+    nr=0
+    for i in range(len(word)-1):
+        try:
+            nr+=1
+            grup=word[i]+word[i+1]
+            if d[grup]:
+                suma+=int(d[grup])
+        except:
+            pass
+    try:
+        return suma/nr
+    except:
+        pass
 
 
 def count_lower_probabilities(word):
@@ -76,6 +102,12 @@ def count_cifre(word):
 def count_dots(word):
     return word.count('.')
 
+def count_slashes(word):
+    return word.count('\\')
+
+def count_underscore(word):
+    return word.count('_')
+
 def count_lines(word):
     return word.count('-')
 
@@ -84,7 +116,7 @@ def get_every_len(word):
     array = []
     for i in word:
         array.append(float(len(i)))
-    for i in range(len(array),100):
+    for i in range(len(array),20):
         array.append(float(0))
     return array
 
@@ -99,3 +131,11 @@ def read_file(name):
         new=i.split(' ,')
         lst.append(new)
     return lst
+
+
+
+def get_entropy(word):
+    prob = [ float(word.count(c)) / len(word) for c in dict.fromkeys(list(word)) ]
+    entropy = - sum([ p * math.log(p) / math.log(2.0) for p in prob ])
+    return entropy
+
