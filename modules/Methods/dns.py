@@ -103,15 +103,16 @@ def dns_start():
 							if 'addr' not in payload:
 								if len(url[len(url)-2]) > 0:
 
-									raspuns_ML = predict.check_model_3(payload)
-									if (raspuns_ML == 1):
-										print ("SUBDOMENIU OK",payload)
-									else:
-										print ("SUBDOMENIU MALITIOS",payload)
-										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS - DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
-										db.commit()
-
 									if payload.count('.') < 2:
+
+										raspuns_ML = predict.check_model_3(payload)
+										if (raspuns_ML == 1):
+											print ("SUBDOMENIU OK",payload)
+										else:
+											print ("SUBDOMENIU MALITIOS",payload)
+											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS - DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
+											db.commit()
+
 										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 										db.commit()
 										passed = 1
@@ -205,8 +206,7 @@ def dns_start():
 											for i in range(len(database)):
 												if(database[i].check(bd[len(bd)-2])==1):
 													for j in range(len(bd)-2):
-
-
+														
 														raspuns_ML = predict.check_model_3(bd[j])
 														if (raspuns_ML == 1):
 															print ("SUBDOMENIU OK",bd[j])
@@ -214,7 +214,7 @@ def dns_start():
 															print ("SUBDOMENIU MALITIOS",bd[j])
 															cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 															db.commit()
-
+														
 
 														if len(str(bd[j])) > 10:
 															#cursor.execute("INSERT INTO dns (ID_event,Name,Alert_Type,Domain,Subdomain) VALUES('1', 'DNS', 'DNS EXFILTRATION LENGTH','"+bd[len(bd)-2]+"','"+bd[j]+"' )")
@@ -241,6 +241,15 @@ def dns_start():
 												kappa=DNS(bd[len(bd)-2])
 												for j in range(len(bd)-2):
 													kappa.add(bd[j],int(time.time()))
+
+													raspuns_ML = predict.check_model_3(bd[j])
+													if (raspuns_ML == 1):
+														print ("SUBDOMENIU OK",bd[j])
+													else:
+														print ("SUBDOMENIU MALITIOS",bd[j])
+														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
+														db.commit()
+
 													if len(str(bd[j])) > 10:
 														print ("ALERT! DNS EXFILTRATION LEN - "+ str(len(str(bd[j]))))
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DNS EXFILTRATION LENGTH','HIGH','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")

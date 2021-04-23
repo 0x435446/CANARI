@@ -50,7 +50,7 @@ def check_model_1(word):
     # test_scaled=scaler.fit(X_train)
     # =============================================================================
     out = model.predict(crs)
-    return (int(out[0][0]))
+    print (int(out[0][0]))
     
     
 def check_model_2(word):
@@ -60,7 +60,6 @@ def check_model_2(word):
     d=verify_enc.initializare(d)
     test = []
     encoding = verify_enc.verify_encoding(word,d)
-    print (encoding)
     test.append(float(encoding))
     #test.append(float(count_cifre))
     crs.append(test)
@@ -70,13 +69,14 @@ def check_model_2(word):
     # test_scaled=scaler.fit(X_train)
     # =============================================================================
     out = model.predict(crs)
-    return (int(out[0][0]))
+    print (int(out[0][0]))
+    print (encoding)
 
 def check_model_3(word):
-    model=load_model("./modules/MachineLearning/models/model4.2.h5")
+    model=load_model("./modules/MachineLearning/models/model4.5.h5")
     crs=[]
     d={}
-    d=verify_enc.initializare(d)
+    d=verify_enc.initializare_extins()
     test = []
     encoding = verify_enc.verify_encoding(word,d)
     litere_mari = verify_enc.count_litere_mari(word)
@@ -110,11 +110,5 @@ def check_model_3(word):
     # test_scaled=scaler.fit(X_train)
     # =============================================================================
     out = model.predict(crs)
-    return (int(out[0][0]))
+    return int(out[0][0])
 
-    
-
-
-#check_model_1(word)
-#check_model_2(word)
-#check_model_3(word)

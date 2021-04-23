@@ -17,7 +17,7 @@ def initializare(d):
 
 
 def initializare_ads(d):
-    data = open( 'ads_prob.txt' ).read().split('\n')
+    data = open( './modules/MachineLearning/ads_prob.txt' ).read().split('\n')
     for i in range(len(data)):
         try:
             data[i]=data[i].split(':')
@@ -28,7 +28,7 @@ def initializare_ads(d):
 
 
 def initializare_DNS(d):
-    data = open( 'probabilitati_DNS.txt' ).read().split('\n')
+    data = open( './modules/MachineLearning/probabilitati_dns.txt' ).read().split('\n')
     for i in range(len(data)):
         try:
             data[i]=data[i].split(':')
@@ -38,7 +38,7 @@ def initializare_DNS(d):
     return d
 
 def initializare_big():
-    data = open( 'all_prob.txt' ).read().split('\n')
+    data = open( './modules/MachineLearning/probabilitati_subdomenii.txt' ).read().split('\n')
     for i in range(len(data)):
         try:
             data[i]=data[i].split(':')
@@ -47,22 +47,31 @@ def initializare_big():
             pass
     return d
 
-
-def verify_encoding(word,d):
-    suma=0
-    nr=0
-    for i in range(len(word)-1):
+def initializare_extins():
+    data = open( './modules/MachineLearning/probabilitati_extins.txt' ).read().split('\n')
+    for i in range(len(data)):
         try:
-            nr+=1
-            grup=word[i]+word[i+1]
-            if d[grup]:
-                suma+=int(d[grup])
+            data[i]=data[i].split(':')
+            d[data[i][0]]=data[i][1]
         except:
             pass
-    try:
-        return suma/nr
-    except:
-        pass
+    return d
+
+def verify_encoding(word,d):
+	suma=0
+	nr=0
+	for i in range(len(word)-1):
+		try:
+			nr+=1
+			grup=word[i]+word[i+1]
+			if d[grup]:
+				suma+=int(d[grup])
+		except:
+			pass
+	try:
+		return suma/nr
+	except:
+		pass
 
 
 def count_lower_probabilities(word):

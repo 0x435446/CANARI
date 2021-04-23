@@ -67,6 +67,15 @@ class DNS_time():
 
   def add(self):
     print ("SCADEREA:",int(time.time())-int(self.time))
+    if int(time.time())-int(self.time) < 10:
+     if self.number > 15:
+        print ("COMMITED")
+        db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'HIGH FREQUENCY / SECONDS','HIGH','"+self.source+"','"+self.domain+"','"+str(self.number)+"','"+str(datetime.now())+"')")
+        db.commit()
+        self.time = str(int(time.time()))
+        self.number = 0
     if int(time.time())-int(self.time) > 3600:
       print ("COCOSEL",self.number)
       if self.number > 400:
