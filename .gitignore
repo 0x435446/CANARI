@@ -2,3 +2,5 @@
 *pyc*
 Module_Aparare/Testare/*
 Module_Aparare/IDS/Methods/osboxes/*
+*.pcap*
+Static/Traffic/*
