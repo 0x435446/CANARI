@@ -58,13 +58,31 @@
 	
 	<div class="content">
 		
-	<div ondragover=alert(1) class="thirdbox" id="third">
-				
-		<form action="/action_page.php">
-			<input type="file" id="myFile" name="filename">
-			<input type="submit">
-		</form>
-		
+	<div ondragover="changeDiv()" ondrop="dropHandler()"class="thirdbox" id="third">
+		<div id='after_box' class='after_box'>
+			<div id='after_box_left' class='after_box_left'>
+				<label id="fileDragName"></label><br>
+				<label id="fileDragSize"></label><br>
+				<label id="fileDragType"></label><br>
+				<label id="RequestsNumberDNS"></label><br>
+				<label id="DifferentRequestsDNS"></label><br>
+			</div>
+
+
+			<div id='after_box_right' class='after_box_right'>
+
+			</div>
+		</div>
+
+
+		<div id="holder" style="width:100%; height:100%; border: 10px dashed #ddd">
+
+			<div id='thirdbox_content' class="thirdbox_content">
+				Drag here your files
+			</div>
+
+		</div>
+
 	</div>
 
 	
@@ -76,310 +94,112 @@
 </body>
 
 
-	<script>
-		//https://blog.filestack.com/thoughts-and-knowledge/ajax-file-upload-formdata-examples/
-		function supportAjaxUploadWithProgress() {
-  			return supportFileAPI() && supportAjaxUploadProgressEvents() && supportFormData();
-
-  		function supportFileAPI() {
-		    var fi = document.createElement('INPUT');
-		    fi.type = 'file';
-		    return 'files' in fi;
-		  };
-
-		  function supportAjaxUploadProgressEvents() {
-		    var xhr = new XMLHttpRequest();
-		    return !! (xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
-		  };
-
-		  function supportFormData() {
-		    return !! window.FormData;
-		  }
+<script>
+	function readfiles(files) {
+		var last = '';
+		var formData = new FormData();
+		for (var i = 0; i < files.length; i++) {
+			reader = new FileReader();
+			reader.onload = function(event) {
+				//document.getElementById('fileDragData').innerHTML = event.target.result;
+			}
+			reader.readAsDataURL(files[i]);
+			formData.append('file', files[i], files[i].name);
 		}
 
-		var form = document.getElementById('alerts_form');
-		var fileSelect = document.getElementById('getFile');
-		var uploadButton = document.getElementById('uploadGetFile');
-		form.onsubmit = function(event) {
-		  // Prevent a non-AJAX file upload from starting
-		  event.preventDefault();
-
-		  // Let the user know that the upload has begun
-
-		  // Get the selected files from the input
-		  var files = fileSelect.files;
-		  
-		  // Create a new FormData object
-		  var formData = new FormData();
-		  
-		  // Loop through each of the selected files.
-		  for(var i = 0; i < files.length; i++){
-		    var file = files[i];
-		    // Check the file type
-
-		    // Add the file to the form's data
-		    formData.append('file', file, file.name);
-		  }
-		  
-		  // Set up the request object
-		  var xhr = new XMLHttpRequest();
-		  
-		  // Open the connection and pass the file name
-		  xhr.open('POST', 'loadFile', true);
-		  
-		  // Set up a handler for when the request finishes
-		  xhr.onload = function () {
-		    if (xhr.status === 200) {
-		    	document.getElementById('third').innerHTML=xhr.responseText;
-		      // File(s) uploaded
-		    } else {
-		      alert('Something went wrong uploading the file.');
-		    }
-		  };
-		  
-		  xhr.send(formData);
-		}
-
-
-
-	</script>
-
-
-	<script>
-		 document.getElementById("forth").style.height =  document.getElementById("third").style.height; 
-	</script>
-
-	<script>
-	var expanded = false;
-
-	function showCheckboxes() {
-		var checkboxes = document.getElementById("checkboxes");
-		if (!expanded) {
-			checkboxes.style.display = "block";
-			expanded = true;
-		} else {
-			checkboxes.style.display = "none";
-			expanded = false;
-		}
-	}
-	</script>
-
-
-
-	<script>
-		document.getElementById("icmp_progress").style.width = "{{icmp}}";
-		document.getElementById("http_progress").style.width = "{{http}}";
-		document.getElementById("https_progress").style.width = "{{https}}";
-		document.getElementById("dns_progress").style.width = "{{dns}}";
-		document.getElementById("conn_progress").style.width = "{{cn}}";
-		document.getElementById("listen_progress").style.width = "{{lc}}";
-		document.getElementById("anomalies_progress").style.width = "{{anomalies}}";
-		document.getElementById("vt_progress").style.width = "{{vt}}";
-		document.getElementById("https_progress").style.width = "{{hsc}}";
-		document.getElementById("second").style.height = document.getElementById("first").clientHeight;
-		document.getElementById("third").style.marginTop  = document.getElementById("second").clientHeight;
-	</script>
-	
-	<script>
-		var ok = 0;
-		function reveal(id){
-			if (ok == 1){
-				document.getElementById("edit").style.display = "none";
-				document.getElementById("modal").style.display = "none";
-				ok = 0
-			}
-			else if (ok == 0){
-				get_edit_details(id);
-				document.getElementById("edit").style.display = "block";
-				document.getElementById("modal").style.display = "block";
-				ok = 1
-			}
-		}
-	</script>
-
-
-	<script>
-		function hide(){
-				document.getElementById("edit").style.display = "none";
-				document.getElementById("modal").style.display = "none";
-			ok = 0;
-		}
-	</script>
-
-
-
-	<script>
-	function get_edit_details(id) {
-		var nume="button_id=";
-		var name=id;
-		nume = nume.concat(name);
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var response = this.responseText;
-				document.getElementById("edit_left").innerHTML = response.split("|")[0];
-				document.getElementById("edit_right").innerHTML = response.split("|")[1];
-			}
-		};
-		xhttp.open("POST", "/update_edit", true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send(nume);
-	}
-	</script>
-
-
-
-
-	<script>
-	function post_edit_details_destination(id) {
-		var nume="button_id=";
-		var name=id;
-		nume = nume.concat(name);
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var response = this.responseText;
-				alert(response);
-			}
-		};
-		xhttp.open("POST", "/edit_destionation", true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send(nume);
-	}
-	</script>
-
-
-
-	<script>
-	function post_edit_details_payload(id) {
-		var nume="button_id=";
-		var name=id;
-		nume = nume.concat(name);
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var response = this.responseText;
-				alert(response);
-			}
-		};
-		xhttp.open("POST", "/edit_payload", true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send(nume);
-	}
-	</script>
-
-
-    <script src="js/bootstrap.bundle.min.js"></script>
-
-
-    <script>
-    	function showFilters(){
-    		document.getElementById('first').style.display="block";
-    		document.getElementById('little_first_box').style.display="none";
-    	}	
-    	function hide2(){
-    		document.getElementById('first').style.display="none";
-    		document.getElementById('little_first_box').style.display="block";
-    	}	
-
-
-	</script>
-
-	<script>
-		function exportData(){
-			var forLogs="";
-			var oTable = document.getElementById('tabel_alerte');
-
-			var rowLength = oTable.rows.length;
-			for (let i = 0; i < rowLength; i++){
-
-				var oCells = oTable.rows.item(i).cells;
-
-				var cellLength = oCells.length;
-
-				for(var j = 0; j < cellLength; j++){
-					var cellVal = oCells.item(j).innerHTML; 
-					var n = cellVal.includes("<button");
-					if (n == false){
-						if ((i == 0) && (j == cellLength - 1)){
-							forLogs=forLogs.concat(cellVal);
-						}
-						else{
-							forLogs=forLogs.concat(cellVal);
-							forLogs=forLogs.concat("\t");
-						}
-					}
-					else{
-						forLogs=forLogs.concat(":)");
-					}
+		var xhr = new XMLHttpRequest();
+	  
+		xhr.open('POST', 'pcapAnalysisUpload', true);
+		xhr.onload = function () {
+			var continut = '';
+			if (xhr.status === 200) {
+				var raspuns = xhr.responseText;
+				lista_raspuns = raspuns.split('^')
+				lista_alerte = lista_raspuns[1].split('|')
+				for (let i=0; i<lista_alerte.length; i++){
+					var type = lista_alerte[i].split(',')[0];
+					var source = lista_alerte[i].split(',')[1];
+					var destination = lista_alerte[i].split(',')[2];
+					var payload = lista_alerte[i].split(',')[3];
+					var risk = lista_alerte[i].split(',')[4];
+					var message = lista_alerte[i].split(',')[5];
+					var timestamp = lista_alerte[i].split(',')[6];
+					var content = type+" alert "+payload+" as malicious";
+					continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+					continut = continut.concat(content);
+					continut = continut.concat("</div><br>");
+					continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+					continut = continut.concat("<div class='alerta_pcap_block_fields'>");
+					continut = continut.concat("Type: "+type+"<br>");
+					continut = continut.concat("Source: "+source+"<br>");
+					continut = continut.concat("Destination: "+destination+"<br>");
+					continut = continut.concat("Payload: "+payload+"<br>");
+					continut = continut.concat("Risk: "+risk+"<br>");
+					continut = continut.concat("Message: "+message+"<br>");
+					continut = continut.concat("Timestamp: "+timestamp+"<br>");
+					continut = continut.concat("</div><br>");
+					continut = continut.concat("</div><br>");
 				}
-				forLogs=forLogs.concat("\n");
+
+				document.getElementById('fileDragName').innerHTML = "Filename: "+files[0].name;
+				document.getElementById('fileDragSize').innerHTML = "File Size: "+files[0].size;
+				document.getElementById('fileDragType').innerHTML = "File Type: "+files[0].type;
+
+				document.getElementById('RequestsNumberDNS').innerHTML="Request-uri DNS: "+lista_raspuns[0].split('|')[0];
+				document.getElementById('DifferentRequestsDNS').innerHTML="Different Domains: "+lista_raspuns[0].split('|')[1];
+				document.getElementById('after_box_right').innerHTML=continut;
+
+			} else {
+				alert('Something went wrong uploading the file.');
 			}
-			an = new Date().getDate();
-			luna = new Date().getMonth();
-			zi = new Date().getFullYear();
-			timestamp = new Date().getTime();
-			name=zi+"/"+luna+"/"+an+"-"+timestamp+".txt";
-			var bb = new Blob([forLogs ], { type: 'text/plain' });
-			var a = document.createElement('a');
-			a.download = name;
-			a.href = window.URL.createObjectURL(bb);
-			a.click();
+		};  
+		xhr.send(formData);
+	}
+
+
+	var holder = document.getElementById('holder');
+	var third = document.getElementById('third');
+	holder.ondragover = function () { this.className = 'hover'; return false; };
+	holder.ondragend = function () { this.className = ''; return false; };
+	holder.ondrop = function (e) {
+		this.className = '';
+		e.preventDefault();
+		third.style.boxShadow = '';
+		holder.style.backgroundColor = 'white';
+		holder.style.border = 'none';
+		var x = document.getElementById('thirdbox_content');
+		x.style.backgroundColor = 'white';
+		x.innerHTML = 'Done';
+		holder.style.display='none';
+		var z = document.getElementById('after_box');
+		z.style.display='block';
+		readfiles(e.dataTransfer.files);
+
+
+	}
+
+
+	function changeDiv(){
+		var x = document.getElementById('thirdbox_content');
+		var y = document.getElementById('holder');
+		x.style.backgroundColor = 'lightblue';
+		y.style.backgroundColor = 'lightblue';
+		x.style.textAlign='center';
+		x.innerHTML = 'Drop it like it\'s hot<br>';
+		y.style.border='none';
+	}
+</script>
+
+<script>
+	function displayPcapInfo(variabila){
+		if (document.getElementById(variabila+'Block').style.display == 'none')
+		{
+			document.getElementById(variabila+'Block').style.display='block';
 		}
-	</script>
-
-
-
-<script>
-	function dragStart(event) {
-		event.dataTransfer.setData("Text", event.target.id);
-	}
-
-	function allowDrop(event) {
-		event.preventDefault();
-	}
-
-	function drop(event) {
-		event.preventDefault();
-		var data = event.dataTransfer.getData("Text");
-		event.target.appendChild(document.getElementById(data));
-	}
-</script>
-
-<script>
-
-	function checkValues(){
-		var x = document.getElementById('forth_left').innerHTML;
-		var z = x.split("<");
-		var forReturn = "";
-		for(let i=1; i<z.length; i++){
-			z[i] = z[i].split(",");
-			for(let j=0; j<z[i].length; j++){
-				var n = z[i][j].includes("dragtarget");
-				if (n == true){
-					var type = z[i][j].split(">")[1];
-					forReturn = forReturn.concat(type+", ");
-				}
-			}
+		else{
+			document.getElementById(variabila+'Block').style.display='none';
 		}
-		document.getElementById('hiddenID').value=forReturn;
-	}
-
-
-</script>
-
-
-<script>
-	function discover(){
-		document.getElementById('forthbox_after').style.display='block';
-		document.getElementById('forthbox_before').style.display='none';
-		document.getElementById('forth').style.paddingTop = "0px"; 
-	}
-
-	function question(){
-		document.getElementById('forthbox_after').style.display='none';
-		document.getElementById('forthbox_before').style.display='block';
-		document.getElementById('forth').style.paddingTop = "20px"; 
 	}
 </script>
+
 </html>

@@ -164,6 +164,79 @@ div.secondfloatbox{
 }
 
 
+.thirdbox_content{
+	text-align: center;
+	display: relative;
+	padding-top:20%;
+}
+
+.after_box{
+	background-color: #d3dbe3;
+	display: none;
+	height:100%;
+	width:100%;
+}
+
+.after_box_left{
+	width:40%;
+	background-color: white;
+	box-shadow: 0 0 3px #000000;
+	float: left;
+
+}
+
+.after_box_left_down{
+	width:40%;
+	background-color: white;
+	box-shadow: 0 0 3px #000000;
+	float: left;
+
+}
+
+.after_box_right{
+    margin-left: 2%;
+	width:58%;
+	float: left;
+	background-color: white;
+	box-shadow: 0 0 3px #000000;
+	padding-bottom: 10px;
+}
+
+
+.alerta_pcap{
+	padding-left:5px;
+	background-color: #40B5AD;
+	height: 30px;
+	color:white;
+	width:90%;
+	margin-left:5%;
+	margin-right: :5%;
+	margin-top: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 3px #000000;
+	margin-bottom: -20px;
+}
+
+
+.alerta_pcap_block{
+	padding-top:5px;
+	padding-left:5px;
+	font-size: 14px;
+	display: none;
+	background-color: #57c1bc;
+	color:white;
+	width:90%;
+	margin-left:5%;
+	margin-right: :5%;
+	box-shadow: 0 0 3px #000000;
+	box-shadow: none;
+}
+
+.alerta_pcap_block_fields{
+	padding-left:5px;
+	color:white;
+}
+
 
 input[type=text] {
 	height:30px;
@@ -174,6 +247,9 @@ input[type=text] {
 	color:red;
 	width: 200px;
 }
+
+
+
 
 input[type=button]{
 	height:30px;

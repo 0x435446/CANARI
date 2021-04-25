@@ -8,6 +8,7 @@ import _thread
 from flask import request,redirect,session
 from hashlib import sha256
 
+
 sys.path.append('./modules/')
 import VirusTotal
 import Network
@@ -18,6 +19,8 @@ import web
 import https
 import icmp
 
+sys.path.append('./Static/')
+import DNS_pcap_analis
 
 
 app = Flask(__name__)
@@ -843,19 +846,42 @@ def upload_file():
 	print (mesaj.replace("<td>\replace </td>",""))
 	return mesaj.replace("<td>\replace </td>","")
 
-
+ALLOWED_EXTENSIONS = {'pcap', 'pcapng'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/pcapAnalysis',methods=['GET'])
 def pacpanalyse():
 	try:
 		if session['loggedin'] == True:
-			
 			return render_template('pcaps.html')
 
 	except:
 		print ("NU ESTI LOGAT!")
 		pass
 	return redirect("/login")
+
+@app.route('/pcapAnalysisUpload',methods=['POST'])
+def pcapUpload():
+	#try:
+		if session['loggedin'] == True:
+			file = request.files['file']
+			print (file.filename)
+			if (allowed_file(file.filename)):
+				file.save(os.path.join('./Static/Temporary_Traffic/', file.filename))
+				domains, different_domains, pachete = DNS_pcap_analis.checkTrafficDNS('./Static/Temporary_Traffic/'+file.filename)
+				info_pachete = []
+				for i in pachete:
+					info_pachete.append(','.join(i.get_pachet()))
+
+				return str(domains)+"|"+str(different_domains)+"^"+'|'.join(info_pachete)
+			else:
+				return "NU" 
+	#except:
+		#print ("NU ESTI LOGAT!")
+		#pass
+	#return redirect("/login")
 
 
 if __name__ == '__main__':
