@@ -86,7 +86,7 @@ def checkTrafficDNS(Filename):
 
 	dest = []
 	for i in range(len(destination)):
-		dest.append(destination[i].replace(payload[i],''))
+		dest.append(destination[i].replace(payload[i]+'.',''))
 
 	#print ("Numar de request-uri DNS:",len(source))
 	#print ("Numar de domenii diferite:",len(list(set(dest))))
@@ -142,4 +142,4 @@ def checkTrafficDNS(Filename):
 							lista2.append(pachete[i].payload)
 							de_printat.append(pachete[i])
 
-	return len(source),len(list(set(dest))),de_printat
+	return len(source),list(set(dest)),len(list(set(dest))),de_printat

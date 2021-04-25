@@ -168,6 +168,7 @@ div.secondfloatbox{
 	text-align: center;
 	display: relative;
 	padding-top:20%;
+	font-size: 30px;
 }
 
 .after_box{
@@ -178,22 +179,39 @@ div.secondfloatbox{
 }
 
 .after_box_left{
+	display: none;
 	width:40%;
-	background-color: white;
-	box-shadow: 0 0 3px #000000;
 	float: left;
+
+}
+
+.after_box_left_up{
+	padding-left: 5px;
+	padding-top: 5px;
+	background-color: white;
+	width:100%;
+	box-shadow: 0 0 3px #000000;
 
 }
 
 .after_box_left_down{
-	width:40%;
+	padding-left: 5px;
+	padding-top: 5px;
+	background-color: white;
+	margin-top: 10px;
+	width:100%;
+	box-shadow: 0 0 3px #000000;
 	background-color: white;
 	box-shadow: 0 0 3px #000000;
 	float: left;
-
+	padding-bottom: 10px;
 }
 
+
+
+
 .after_box_right{
+	display: none;
     margin-left: 2%;
 	width:58%;
 	float: left;
@@ -205,7 +223,7 @@ div.secondfloatbox{
 
 .alerta_pcap{
 	padding-left:5px;
-	background-color: #40B5AD;
+	background-color: #008080;
 	height: 30px;
 	color:white;
 	width:90%;

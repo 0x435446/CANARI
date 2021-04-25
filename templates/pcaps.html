@@ -61,11 +61,17 @@
 	<div ondragover="changeDiv()" ondrop="dropHandler()"class="thirdbox" id="third">
 		<div id='after_box' class='after_box'>
 			<div id='after_box_left' class='after_box_left'>
-				<label id="fileDragName"></label><br>
-				<label id="fileDragSize"></label><br>
-				<label id="fileDragType"></label><br>
-				<label id="RequestsNumberDNS"></label><br>
-				<label id="DifferentRequestsDNS"></label><br>
+				<div id='after_box_left_up' class='after_box_left_up'>
+					<label id="fileDragName"></label><br>
+					<label id="fileDragSize"></label><br>
+					<label id="fileDragType"></label><br>
+					<label id="RequestsNumberDNS"></label><br>
+					<label id="DifferentRequestsDNS"></label><br>
+				</div>
+
+				<div id='after_box_left_down' class='after_box_left_down'>
+
+				</div>
 			</div>
 
 
@@ -95,6 +101,34 @@
 
 
 <script>
+	function displayPcapInfo(variabila){
+		if (document.getElementById(variabila+'Block').style.display == 'none')
+		{
+			document.getElementById(variabila+'Block').style.display='block';
+		}
+		else{
+			document.getElementById(variabila+'Block').style.display='none';
+		}
+	}
+
+</script>
+
+
+
+<script>
+	var objJson
+
+	function printExfil(div){
+		if (document.getElementById(div).style.display == 'none')
+		{
+			document.getElementById(div).style.overflow='auto';
+			document.getElementById(div).style.display='block';
+		}
+		else{
+			document.getElementById(div).style.display='none';
+		}
+
+	}
 	function readfiles(files) {
 		var last = '';
 		var formData = new FormData();
@@ -125,6 +159,7 @@
 					var message = lista_alerte[i].split(',')[5];
 					var timestamp = lista_alerte[i].split(',')[6];
 					var content = type+" alert "+payload+" as malicious";
+					//continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"alert('1')\">");
 					continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
 					continut = continut.concat(content);
 					continut = continut.concat("</div><br>");
@@ -140,7 +175,28 @@
 					continut = continut.concat("</div><br>");
 					continut = continut.concat("</div><br>");
 				}
-
+				objJson = JSON.parse(lista_raspuns[3])
+				var continut2 = '';
+				lista_domenii_unice= lista_raspuns[2].split('|');
+				for (let i=0; i<lista_domenii_unice.length; i++){
+					if (lista_domenii_unice=='.'){
+					continut2 = continut2.concat("<div class='alerta_pcap'>");
+					continut2 = continut2.concat(lista_domenii_unice[i]);
+					continut2 = continut2.concat("</div><br>");
+					}
+					else{
+						continut2 = continut2.concat("<div class='alerta_pcap' id='invizibil' onclick=\"printExfil('"+i.toString()+"_detaliiExfil')\">");
+						continut2 = continut2.concat(lista_domenii_unice[i]);
+						continut2 = continut2.concat("</div><br>");
+						continut2 = continut2.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_detaliiExfil'>");
+						continut2 = continut2.concat(objJson[lista_domenii_unice[i]]);
+						continut2 = continut2.concat("</div><br>");
+					}
+				}
+				document.getElementById('after_box_left_down').innerHTML=continut2;
+				document.getElementById('invizibil').style.display='block';
+				document.getElementById('after_box_left').style.display='block';
+				document.getElementById('after_box_right').style.display='block';
 				document.getElementById('fileDragName').innerHTML = "Filename: "+files[0].name;
 				document.getElementById('fileDragSize').innerHTML = "File Size: "+files[0].size;
 				document.getElementById('fileDragType').innerHTML = "File Type: "+files[0].type;
@@ -173,6 +229,7 @@
 		holder.style.display='none';
 		var z = document.getElementById('after_box');
 		z.style.display='block';
+		x.style.fontSize='15px';
 		readfiles(e.dataTransfer.files);
 
 
@@ -187,19 +244,9 @@
 		x.style.textAlign='center';
 		x.innerHTML = 'Drop it like it\'s hot<br>';
 		y.style.border='none';
+		x.style.fontSize='50px';
 	}
 </script>
 
-<script>
-	function displayPcapInfo(variabila){
-		if (document.getElementById(variabila+'Block').style.display == 'none')
-		{
-			document.getElementById(variabila+'Block').style.display='block';
-		}
-		else{
-			document.getElementById(variabila+'Block').style.display='none';
-		}
-	}
-</script>
 
 </html>

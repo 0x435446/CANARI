@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template,jsonify
+import json
 from flask_mysqldb import MySQL
 import MySQLdb 
 import os
@@ -870,12 +871,30 @@ def pcapUpload():
 			print (file.filename)
 			if (allowed_file(file.filename)):
 				file.save(os.path.join('./Static/Temporary_Traffic/', file.filename))
-				domains, different_domains, pachete = DNS_pcap_analis.checkTrafficDNS('./Static/Temporary_Traffic/'+file.filename)
+				domains, unique_domains, different_domains, pachete = DNS_pcap_analis.checkTrafficDNS('./Static/Temporary_Traffic/'+file.filename)
 				info_pachete = []
 				for i in pachete:
 					info_pachete.append(','.join(i.get_pachet()))
+				
+				payloads = {}
+				for i in unique_domains:
+					if i[0] =='.':
+						i = i[1:]
+					for j in pachete:
+						salata = j.destination.replace(j.payload,'')
+						if salata[0] == '.':
+							salata=salata[1:]
+						if i == salata:
+							if i in payloads.keys():
+								if j.tip == 'Machine Learning':
+									payloads[i] = payloads[i] + j.payload
+							else:
+								if j.tip == 'Machine Learning':
+									payloads[i] = j.payload
 
-				return str(domains)+"|"+str(different_domains)+"^"+'|'.join(info_pachete)
+				json_object = json.dumps(payloads)
+				print (json_object)
+				return str(domains)+"|"+str(different_domains)+"^"+'|'.join(info_pachete)+"^"+'|'.join(unique_domains)+"^"+json_object
 			else:
 				return "NU" 
 	#except:
