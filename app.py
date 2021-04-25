@@ -843,5 +843,20 @@ def upload_file():
 	print (mesaj.replace("<td>\replace </td>",""))
 	return mesaj.replace("<td>\replace </td>","")
 
+
+
+@app.route('/pcapAnalysis',methods=['GET'])
+def pacpanalyse():
+	try:
+		if session['loggedin'] == True:
+			
+			return render_template('pcaps.html')
+
+	except:
+		print ("NU ESTI LOGAT!")
+		pass
+	return redirect("/login")
+
+
 if __name__ == '__main__':
 	app.run(debug=True,host= '0.0.0.0')

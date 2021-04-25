@@ -1,14 +1,34 @@
 import subprocess
 import sys
-output = subprocess.check_output("tcpdump -r trafic_Catalina.pcapng port 53", shell=True)
+from verify_encoding import *
 sys.path.append('./MachineLearning')
+import verify_enc
 import predict
+sys.path.append('../modules')
+import Utility
 
 
+class Pachete():
+	def __init__(self, tip, source, destination, payload, risk, message, timestamp):
+		self.tip=tip
+		self.source=source
+		self.destination=destination
+		self.payload=payload
+		self.risk=risk
+		self.message=message
+		self.timestamp=timestamp
+
+	def get_pachet(self):
+		return self.tip, self.source,self.destination,self.payload,self.risk,self.message,self.timestamp
+
+output = subprocess.check_output("tcpdump -r Traffic/DoNotSpam.pcapng port 53", shell=True)
 source = []
 destination = []
 payload = []
 timestamp = []
+d={}
+d=verify_enc.initializare(d)
+
 f=output.strip().split("\n".encode())
 for i in f:
 	line = i.split(" ".encode())
@@ -35,38 +55,91 @@ for i in f:
 			source.append('.'.join(sursa.split('.')[:-1]))
 
 pachete = []
-print (len(source),len(destination),len(payload),len(timestamp))
+
 for i in range(len(destination)):
-	pachet = []
-	pachet.append(source[i])
+	tip=''
+	dest = ''
+	payl = ''
+	message = ''
+	risk = ''
+	tt = ''
 	if destination[i][0] == '.':
-		pachet.append(destination[i][1:])
+		dest = destination[i][1:]
 	else:
-		pachet.append(destination[i])
+		dest = destination[i]
 	if payload[i] == '':
-		pachet.append('None')
+		payl='None'
 	else:
-		pachet.append(payload[i])
-	pachet.append(timestamp[i])
-	pachete.append(pachet)
+		payl=payload[i]
+	if len(payload[i])<4:
+		message="Posibil ads"
+	else:
+		message="DNS Exfiltration"
+	risk = "Unknown"
+	tt = timestamp[i]
+	pack = Pachete(tip, source[i], dest, payl, risk, message, tt)
+	pachete.append(pack)
+
+
+
 
 dest = []
 for i in range(len(destination)):
 	dest.append(destination[i].replace(payload[i],''))
-print (len(list(set(dest))))
+
+print ("Numar de request-uri DNS:",len(source))
+print ("Numar de domenii diferite:",len(list(set(dest))))
 
 
 lista = []
-
 de_printat=[]
 lista = []
+lista2=[]
+
+
 for i in range(len(pachete)):
-	if pachete[i][2] != 'None':
-		if pachete[i][2] not in lista:
-			raspuns_ML = predict.check_model_3(pachete[i][2].replace('-',''))
+	if pachete[i].payload != 'None':
+		if pachete[i].payload not in lista:
+			raspuns_ML = predict.check_model_3(pachete[i].payload.replace('-',''),d)
 			if raspuns_ML == 0:
-					lista.append(pachete[i][2])
-					de_printat.append(pachete[i])
+				pachete[i].tip ='Machine Learning'
+
+				pachet = Pachete(pachete[i].tip, pachete[i].source, pachete[i].destination, pachete[i].payload, pachete[i].risk, pachete[i].message, pachete[i].timestamp)
+				lista.append(pachete[i].payload)
+				de_printat.append(pachet)
+
+				if pachete[i].payload not in lista2:
+					bucatele = pachete[i].payload.split('.')
+					for k in bucatele:
+						if len(k) > 2:
+							try:
+								if verify_encoding(pachete[i].payload) < 10:
+									pachete[i].tip ='DNS'
+									pachete[i].message = "UNKNOWN BASE FOUND"
+									pachete[i].risk = "HIGH" 
+									lista2.append(pachete[i].payload)
+									de_printat.append(pachete[i])
+							except:
+								pachete[i].tip ='DNS'
+								pachete[i].message = "UNKNOWN BASE FOUND"
+								pachete[i].risk = "HIGH" 
+								lista2.append(pachete[i].payload)
+								de_printat.append(pachete[i])
+								pass
+
+					if pachete[i].destination.count('.') < 2:
+						pachete[i].tip ='DNS'
+						pachete[i].message = "DIG EXFILTRATION"
+						pachete[i].risk = "HIGH" 
+						lista2.append(pachete[i].payload)
+						de_printat.append(pachete[i])
+
+					if len(pachete[i].payload) > 10:
+						pachete[i].tip ='DNS'
+						pachete[i].message = "DNS EXFILTRATION LEN"
+						pachete[i].risk = "HIGH" 
+						lista2.append(pachete[i].payload)
+						de_printat.append(pachete[i])
 
 for i in de_printat:
-	print (' '.join(i))
+	print (' '.join(i.get_pachet()))

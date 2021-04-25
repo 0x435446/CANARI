@@ -96,6 +96,46 @@ def read_file(fisier):
 def checkIPs(ip):
   f=open('/tmp/ips.txt',"r").read().strip().split(' ')
   if ip not in f:
-    print ("DJADJADJADJADJA")
+    print ("Nope")
   else:
     print ("ESTE IN LISTA")
+
+
+
+def check_chars(word):
+  for i in range(len(word)):
+    if ord(word[i])<=0x20 or ord(word[i]) >=ord('z'):
+      if ord(word[i])!=0xa or ord(word[i])!=0xd:
+        return 1
+  return 0
+
+
+def check_whitelist(word,path):
+  x=open(path,"r").read().strip().split('\n')
+  if path == "./modules/Filters/whitelist_sources.txt":
+    for i in x:
+      if i in word:
+        return 1
+  else:
+    for i in x:
+      if i in word.split('.'):
+        return 1;
+  return 0;
+
+
+def check_TLD_exfil(URL,tld,HOST):
+  nr = 0
+  DESTIONATION = []
+  for i in URL:
+    if i.upper() in tld or i.lower() in tld:
+      nr+=1
+    else:
+      DESTIONATION.append(i)
+  if nr > 3:
+    db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'TLD EXFILTRATION','HIGH','"+HOST+"','"+'.'.join(DESTIONATION)+"','"+'.'.join(URL)+"','"+str(datetime.now())+"')")
+    db.commit()
+    db.close()
+    return 1
+  return 0

@@ -72,11 +72,9 @@ def check_model_2(word):
     print (int(out[0][0]))
     print (encoding)
 
-def check_model_3(word):
+def check_model_3(word,d):
     model=load_model("./MachineLearning/models/model4.5.h5")
     crs=[]
-    d={}
-    d=verify_enc.initializare_extins()
     test = []
     encoding = verify_enc.verify_encoding(word,d)
     if (encoding == None):

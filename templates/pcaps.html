@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pcaps.css') }}">
     
 </head>
 
@@ -55,154 +55,19 @@
 	</div>
 
 
-	<div class="edit" id="edit">
-		<div class="edit_top" id="edit_top">
-			<button  onclick="hide()" class='edit_top_button'>X</button>
-		</div>
-		<div class="edit_left" id="edit_left">
-
-		</div>
-		<div class="edit_right" id="edit_right">
-
-		</div>
-	</div>
-
-		<div class='little_first_box' onclick="showFilters()" id='little_first_box'>
-			Filters
-		</div>
-		<div class="firstfloatbox" id="first">
-		
-			
-			<form action="/alerts" method="POST">
-
-				<div class="multiselect">
-					<div class="selectBox" onclick="showCheckboxes()">
-						<select>
-							<option>Exfiltration tehniques</option>
-						</select>
-					<div class="overSelect"></div>
-					</div>
-					<div id="checkboxes">
-						<label for="one">
-							<input type="checkbox" id="ICMP" name="ICMP" value="ICMP"/>ICMP</label>
-						<label for="two">
-							<input type="checkbox" iid="HTTP" name="HTTP" value="HTTP"/>HTTP</label>
-						<label for="three">
-							<input type="checkbox" id="HTTPS" name="HTTPS" value="HTTPS"/>HTTPS</label>
-						<label for="four">
-							<input type="checkbox" id="DNS" name="DNS" value="DNS"/>DNS</label>
-						<label for="five">
-							<input type="checkbox" id="Connections" name="Connections" value="Connections"/>Connections</label>
-						<label for="six">
-							<input type="checkbox" id="Listeners" name="Listening" value="Listening"/>Listeners</label>
-						<label for="seven">
-							<input type="checkbox" id="Anomalies" name="Anomalies" value="Anomalies"/>IPv4 Anomalies</label>
-						<label for="eight">
-							<input type="checkbox" id="VirusTotal" name="VirusTotal" value="VirusTotal"/>VirusTotal</label>
-						<label for="nine">
-							<input type="checkbox" id="Machine Learning" name="Machine Learning" value="Machine Learning"/>Machine Learning</label>
-					</div>
-				</div><br>
-					Timestamp: <input type="date" id="start" name='timestart'> <input type="date" id="stop" name='timestop'><br><br>
-					<label>Numar de request-uri:</label><input class='alerte' type='text' id='numar_alerte' name='numar_alerte' value='10' placeholder='Numar alerte'><br>
-					<label class='sortare'>Sortare descendenta:</label><input type="checkbox" id="descendent" name="descendent" value="descendent" class='sort' ><br><br>
-					<input type="hidden" id="hiddenID" name="hiddenID" value="QWERTY">
-					<input class='secondfloatbox_input' type="text" id="dest" name="dest" placeholder='Domain'>
-					<input type="submit" value="Search" onclick="checkValues()">
-				</form>
-				<button style="float: right;" onclick="hide2()">Close</button>
-		</div>
+	
 	<div class="content">
 		
-
-		
-		<div class="secondfloatbox" id="second">
-
-			<div class="secondfloatbox_import_export" id="second_box_imprt_export">
-
-
-				<form id='alerts_form' method="POST" action="/loadFile" enctype="multipart/form-data" >
-					<button onclick="exportData() ; return false;" class='secondfloatbox_import_export_button' >Export logs ↓</button>
-
-					
-					<input type='file' id="getFile" name="file" style="display:none">
-					<button class='secondfloatbox_import_export_button' onclick="document.getElementById('getFile').click(); return false;">Import logs ↑</button>
-					<button id='uploadGetFile' class="secondfloatbox_box_refresh">View &#x21bb;</button>
-					<input type="submit" style="display:none">
-
-				</form>
-
-
+	<div ondragover=alert(1) class="thirdbox" id="third">
 				
-			</div>
-
-			
-		</div>
+		<form action="/action_page.php">
+			<input type="file" id="myFile" name="filename">
+			<input type="submit">
+		</form>
 		
-		<div class="forthbox" id="forth" >
-			<div class='forthbox_after' id='forthbox_after'>
-				<div class = 'forthbox_left' ondrop="drop(event)" ondragover="allowDrop(event)" id='forth_left'>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget1">Index</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget2">Type</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget3">Message</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget4">Risk</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget5">Source</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget6">Destination</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget7">Payload</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget8">Timestamp</p>
-					<p class='drag' ondragstart="dragStart(event)" draggable="true" id="dragtarget9">Actions</p>
-				</div>
+	</div>
 
-				<div class = 'forthbox_right' ondrop="drop(event)" ondragover="allowDrop(event)">
-					<div class='forthbox_question' onclick="question()">?</div>
-				</div>
-			</div>
-
-			<div class='forthbox_before' id='forthbox_before' onclick="discover()">
-
-				<div class='forthbox_before_left'>
-					Remove fields from table →
-				</div>
-				<div class='forthbox_before_right'>
-					← Add fields to table 
-				</div>
-
-			</div>
-		</div>
-
-		<div class="thirdbox" id="third">
-			
-			<table id="tabel_alerte">
-					{%for i in range(header_len)%} 
-                    <tr>
-                        {%for j in header[i]%} 
-                            <td>{{j}}</td> 
-                        {%endfor%} 
-                    </tr>
-                    {%endfor%} 
-
-
-                   {%for i in range(len)%} 
-                    <tr>
-                        {%for j in data[i]%} 
-                            <td>{{j}}</td> 
-                        {%endfor%} 
-                        {% if editButton == 1 %}
-                  		  <td>
-							    <button style="background: url(static/images/detalii.png); 
-							    width:50px; height: 50px;background-size: cover; border:none;" onclick="reveal('{{data[i][0]}}')" id={{data[i][0]}}></button>
-                  		  </td>
-                  		 {%endif%}
-                    </tr>
-                    {%endfor%} 
-			</table>
-			
-		</div>
-
-
-		
-
-		
+	
 		
 	</div>
 
