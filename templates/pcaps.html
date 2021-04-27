@@ -64,9 +64,9 @@
 				<div id='after_box_left_up' class='after_box_left_up'>
 					<div class='after_box_left_up_hover'>
 						<div class='after_box_left_up_hover_content'>
-							<button class='button_DNS'>DNS</button>
+							<button class='button_DNS' onclick="loadDNS();">DNS</button>
 							<button class='button_HTTP' onclick="loadHTML();">HTTP</button>
-							<button class='button_ICMP'>ICMP</button>
+							<button class='button_ICMP' onclick="loadICMP();">ICMP</button>
 						</div>
 					</div>
 					<label id="fileDragName"></label><br>
@@ -123,11 +123,21 @@
 
 
 <script>
-	var objJson
+	var objJson;
+	var alerteDNS;
+	var domeniiUniceDNS;
+
+
+
+	var alerteICMP;
+	var destinatiiICMP;
+	var payloadsICMP;
+
 
 	var alerteHTTP;
 	var alerteHTTPFiles;
 	var HTTPFiles;
+	var destinatiiHTTP;
 	function printExfil(div){
 		if (document.getElementById(div).style.display == 'none')
 		{
@@ -161,6 +171,7 @@
 				var raspuns = xhr.responseText;
 				lista_raspuns = raspuns.split('^')
 				lista_alerte = lista_raspuns[1].split('|')
+				alerteDNS = lista_alerte;
 				for (let i=0; i<lista_alerte.length; i++){
 					var type = lista_alerte[i].split(',')[0];
 					var source = lista_alerte[i].split(',')[1];
@@ -169,26 +180,28 @@
 					var risk = lista_alerte[i].split(',')[4];
 					var message = lista_alerte[i].split(',')[5];
 					var timestamp = lista_alerte[i].split(',')[6];
-					var content = type+" alert "+payload+" as malicious";
-					//continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"alert('1')\">");
-					continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
-					continut = continut.concat(content);
-					continut = continut.concat("</div><br>");
-					continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
-					continut = continut.concat("<div class='alerta_pcap_block_fields'>");
-					continut = continut.concat("Type: "+type+"<br>");
-					continut = continut.concat("Source: "+source+"<br>");
-					continut = continut.concat("Destination: "+destination+"<br>");
-					continut = continut.concat("Payload: "+payload+"<br>");
-					continut = continut.concat("Risk: "+risk+"<br>");
-					continut = continut.concat("Message: "+message+"<br>");
-					continut = continut.concat("Timestamp: "+timestamp+"<br>");
-					continut = continut.concat("</div><br>");
-					continut = continut.concat("</div><br>");
+					if (typeof payload !== 'undefined'){
+						var content = type+" alert "+payload+" as malicious";
+						continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+						continut = continut.concat(content);
+						continut = continut.concat("</div><br>");
+						continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+						continut = continut.concat("<div class='alerta_pcap_block_fields'>");
+						continut = continut.concat("Type: "+type+"<br>");
+						continut = continut.concat("Source: "+source+"<br>");
+						continut = continut.concat("Destination: "+destination+"<br>");
+						continut = continut.concat("Payload: "+payload+"<br>");
+						continut = continut.concat("Risk: "+risk+"<br>");
+						continut = continut.concat("Message: "+message+"<br>");
+						continut = continut.concat("Timestamp: "+timestamp+"<br>");
+						continut = continut.concat("</div><br>");
+						continut = continut.concat("</div><br>");
+					}
 				}
-				objJson = JSON.parse(lista_raspuns[3])
+				objJson = JSON.parse(lista_raspuns[3]);
 				var continut2 = '';
 				lista_domenii_unice= lista_raspuns[2].split('|');
+				domeniiUniceDNS = lista_domenii_unice;
 				for (let i=0; i<lista_domenii_unice.length; i++){
 					if (lista_domenii_unice=='.'){
 					continut2 = continut2.concat("<div class='alerta_pcap'>");
@@ -209,8 +222,11 @@
 				alerteHTTP = lista_raspuns[4].split("|");
 				HTTPFiles = lista_raspuns[5].split("|");
 				alerteHTTPFiles = lista_raspuns[6].split("|");
+				destinatiiHTTP = lista_raspuns[7].split("|");
 
-
+				alerteICMP = lista_raspuns[8].split("|");
+				destinatiiICMP = lista_raspuns[9].split("|");
+				payloadsICMP = JSON.parse(lista_raspuns[10]);
 				document.getElementById('after_box_left_down').innerHTML=continut2;
 				document.getElementById('invizibil').style.display='block';
 				document.getElementById('after_box_left').style.display='block';
@@ -266,10 +282,202 @@
 	}
 
 
+	function loadICMP(){
+		lista_alerte = alerteICMP;
+		//var domeniiUniceDNS;
+		var continut='';
+		for (let i=0; i<lista_alerte.length; i++){
+			var type = lista_alerte[i].split('~')[0];
+			var source = lista_alerte[i].split('~')[1];
+			var destination = lista_alerte[i].split('~')[2];
+			var payload = lista_alerte[i].split('~')[3];
+			var message = lista_alerte[i].split(',')[4];
+			if (typeof payload !== 'undefined'){
+				var content = type+" alert "+payload+" as malicious";
+				continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+				continut = continut.concat(content);
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+				continut = continut.concat("<div class='alerta_pcap_block_fields'>");
+				continut = continut.concat("Type: "+type+"<br>");
+				continut = continut.concat("Source: "+source+"<br>");
+				continut = continut.concat("Destination: "+destination+"<br>");
+				continut = continut.concat("Payload: "+payload+"<br>");
+				continut = continut.concat("Message: "+message+"<br>");
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("</div><br>");
+			}
+		}
+
+		lista_domenii_unice=destinatiiICMP;
+		continut2='';
+		for (let i=0; i<lista_domenii_unice.length; i++){
+			if (lista_domenii_unice=='.'){
+			continut2 = continut2.concat("<div class='alerta_pcap'>");
+			continut2 = continut2.concat(lista_domenii_unice[i]);
+			continut2 = continut2.concat("</div><br>");
+			}
+			else{
+				continut2 = continut2.concat("<div class='alerta_pcap' id='invizibil' onclick=\"printExfil('"+i.toString()+"_detaliiExfil')\">");
+				continut2 = continut2.concat(lista_domenii_unice[i]);
+				continut2 = continut2.concat("</div><br>");
+				continut2 = continut2.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_detaliiExfil'>");
+				continut2 = continut2.concat(payloadsICMP[lista_domenii_unice[i]]);
+				continut2 = continut2.concat("</div><br>");
+			}
+		}
+
+		document.getElementById('after_box_right').innerHTML=continut;
+		document.getElementById('after_box_left_down').innerHTML=continut2;
+
+	}
+
+
+
+	function loadDNS(){
+		lista_alerte = alerteDNS;
+		//var domeniiUniceDNS;
+		var continut='';
+		for (let i=0; i<lista_alerte.length; i++){
+			var type = lista_alerte[i].split(',')[0];
+			var source = lista_alerte[i].split(',')[1];
+			var destination = lista_alerte[i].split(',')[2];
+			var payload = lista_alerte[i].split(',')[3];
+			var risk = lista_alerte[i].split(',')[4];
+			var message = lista_alerte[i].split(',')[5];
+			var timestamp = lista_alerte[i].split(',')[6];
+			if (typeof payload !== 'undefined'){
+				var content = type+" alert "+payload+" as malicious";
+				continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+				continut = continut.concat(content);
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+				continut = continut.concat("<div class='alerta_pcap_block_fields'>");
+				continut = continut.concat("Type: "+type+"<br>");
+				continut = continut.concat("Source: "+source+"<br>");
+				continut = continut.concat("Destination: "+destination+"<br>");
+				continut = continut.concat("Payload: "+payload+"<br>");
+				continut = continut.concat("Risk: "+risk+"<br>");
+				continut = continut.concat("Message: "+message+"<br>");
+				continut = continut.concat("Timestamp: "+timestamp+"<br>");
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("</div><br>");
+			}
+		}
+
+		lista_domenii_unice=domeniiUniceDNS;
+		continut2='';
+		for (let i=0; i<lista_domenii_unice.length; i++){
+			if (lista_domenii_unice=='.'){
+			continut2 = continut2.concat("<div class='alerta_pcap'>");
+			continut2 = continut2.concat(lista_domenii_unice[i]);
+			continut2 = continut2.concat("</div><br>");
+			}
+			else{
+				continut2 = continut2.concat("<div class='alerta_pcap' id='invizibil' onclick=\"printExfil('"+i.toString()+"_detaliiExfil')\">");
+				continut2 = continut2.concat(lista_domenii_unice[i]);
+				continut2 = continut2.concat("</div><br>");
+				continut2 = continut2.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_detaliiExfil'>");
+				continut2 = continut2.concat(objJson[lista_domenii_unice[i]]);
+				continut2 = continut2.concat("</div><br>");
+			}
+		}
+
+		document.getElementById('after_box_right').innerHTML=continut;
+		document.getElementById('after_box_left_down').innerHTML=continut2;
+	}
+
+
 	function loadHTML(){
-		 alert(alerteHTTP);
-		//var alerteHTTPFiles;
-		//var HTTPFiles;
+
+		var continut2 = '';
+		for (let i=0; i<destinatiiHTTP.length; i++){
+			continut2 = continut2.concat("<div class='alerta_pcap' id='invizibil' onclick=\"printExfil('"+i.toString()+"_detaliiExfil')\">");
+			continut2 = continut2.concat(destinatiiHTTP[i]);
+			continut2 = continut2.concat("</div><br>");
+		}
+
+		var continut = '';
+		let nr = 0;
+		for (let i=0; i<alerteHTTP.length; i++)
+		{
+			var typeHTTP = alerteHTTP[i].split('~')[0];
+			var sourceHTTP = alerteHTTP[i].split('~')[1];
+			var destinationHTTP = alerteHTTP[i].split('~')[2];
+			var UserAgentHTTP = alerteHTTP[i].split('~')[3];
+			var GETparamsHTTP = alerteHTTP[i].split('~')[4];
+			var CookieHTTP = alerteHTTP[i].split('~')[5];
+			var POSTHTTP = alerteHTTP[i].split('~')[6];
+			var payloadHTTP = alerteHTTP[i].split('~')[7];
+			var riskHTTP = alerteHTTP[i].split('~')[8];
+			var messageHTTP = alerteHTTP[i].split('~')[9];
+			var timestampHTTP = alerteHTTP[i].split('~')[10];
+			if (typeof payloadHTTP !== 'undefined'){
+				var content = typeHTTP+" alert "+payloadHTTP+" as malicious";
+				continut = continut.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+				continut = continut.concat(content);
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+				continut = continut.concat("<div class='alerta_pcap_block_fields'>");
+				continut = continut.concat("Type: "+typeHTTP+"<br>");
+				continut = continut.concat("Source: "+sourceHTTP+"<br>");
+				continut = continut.concat("Destination: "+sourceHTTP+"<br>");
+				continut = continut.concat("UserAgent: "+UserAgentHTTP+"<br>");
+				continut = continut.concat("GET: "+GETparamsHTTP+"<br>");
+				continut = continut.concat("Cookies: "+CookieHTTP+"<br>");
+				continut = continut.concat("POST: "+POSTHTTP+"<br>");
+				continut = continut.concat("Payload: "+payloadHTTP+"<br>");
+				continut = continut.concat("Risk: "+riskHTTP+"<br>");
+				continut = continut.concat("Message: "+messageHTTP+"<br>");
+				continut = continut.concat("Timestamp: "+timestampHTTP+"<br>");
+				continut = continut.concat("</div><br>");
+				continut = continut.concat("</div><br>");
+			}
+			nr = i+1;
+		}
+		var continut3 = '';
+		let nr2 = nr;
+		for (let i=nr; i<HTTPFiles.length+nr; i++)
+		{
+			var typeFilesHTTP = HTTPFiles[i-nr].split('~')[1];
+			var nameFilesHTTP = HTTPFiles[i-nr].split('~')[0];
+			if ( typeFilesHTTP.includes("cannot open") == false){
+				var content = "File found! - "+nameFilesHTTP;
+				continut3 = continut3.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+				continut3 = continut3.concat(content);
+				continut3 = continut3.concat("</div><br>");
+				continut3 = continut3.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+				continut3 = continut3.concat("<div class='alerta_pcap_block_fields'>");
+				continut3 = continut3.concat("Type: "+typeFilesHTTP+"<br>");
+				continut3 = continut3.concat("</div><br>");
+				continut3 = continut3.concat("</div><br>");
+			}
+			nr2 = i+1;
+		}
+
+		var continut4 = '';
+		for (let i=nr2; i<alerteHTTPFiles.length+nr2; i++)
+		{
+			var nameAlertaFiles = alerteHTTPFiles[i-nr2].split('~')[0];
+			var alertaAlertaFiles = alerteHTTPFiles[i-nr2].split('~')[1];
+			var payloadAlertaFiles = alerteHTTPFiles[i-nr2].split('~')[2];
+			if (typeof alertaAlertaFiles !== 'undefined')
+			{
+				var content = "File alert found! - "+nameAlertaFiles;
+				continut4 = continut4.concat("<div class='alerta_pcap' id='"+i.toString()+"_alertaPcap' onclick=\"displayPcapInfo('"+i.toString()+"_alertaPcap')\">");
+				continut4 = continut4.concat(content);
+				continut4 = continut4.concat("</div><br>");
+				continut4 = continut4.concat("<div class='alerta_pcap_block' id='"+i.toString()+"_alertaPcapBlock'>");
+				continut4 = continut4.concat("<div class='alerta_pcap_block_fields'>");
+				continut4 = continut4.concat("Alerta: "+alertaAlertaFiles+"<br>");
+				continut4 = continut4.concat("Payload: <br>"+payloadAlertaFiles+"<br>");
+				continut4 = continut4.concat("</div><br>");
+				continut4 = continut4.concat("</div><br>");
+			}
+		}
+
+		document.getElementById('after_box_right').innerHTML=continut3+continut4+continut;
+		document.getElementById('after_box_left_down').innerHTML=continut2;
 	}
 
 </script>

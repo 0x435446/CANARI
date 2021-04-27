@@ -23,6 +23,7 @@ import icmp
 sys.path.append('./Static/')
 import DNS_pcap_analyse
 import HTTP_pcap_analyse
+import ICMP_pcap_analyse
 
 
 app = Flask(__name__)
@@ -895,11 +896,10 @@ def pcapUpload():
 									payloads[i] = j.payload
 
 				json_object = json.dumps(payloads)
-				print (json_object)
 				#----------------------------HTTP------------------------------#
 
 
-				http_alerts, files, file_alerts = HTTP_pcap_analyse.checkHTTPTraffic('./Static/Temporary_Traffic/'+file.filename)
+				http_alerts, files, file_alerts, destinatii = HTTP_pcap_analyse.checkHTTPTraffic('./Static/Temporary_Traffic/'+file.filename)
 
 				http_alerts_return = []
 				http_files_return = []
@@ -915,8 +915,17 @@ def pcapUpload():
 				for i in file_alerts:
 					http_file_alerts.append('~'.join(i.get_alert()))
 
+				#----------------------------ICMP------------------------------#
 
-				return str(domains)+"|"+str(different_domains)+"^"+'|'.join(info_pachete)+"^"+'|'.join(unique_domains)+"^"+json_object + "^" + '|'.join(http_alerts_return) + "^" + '|'.join(http_files_return) + "^" + '|'.join(http_file_alerts)
+				alerteICMP, destinatiiICMP, payloadsICMP = ICMP_pcap_analyse.checkICMPTraffic('./Static/Temporary_Traffic/'+file.filename)
+
+				json_ICMP = json.dumps(payloadsICMP)
+				icmp_alerts_return =[]
+
+				for i in alerteICMP:
+					icmp_alerts_return.append('~'.join(i.getItems()))
+
+				return str(domains)+"|"+str(different_domains)+"^"+'|'.join(info_pachete)+"^"+'|'.join(unique_domains)+"^"+json_object + "^" + '|'.join(http_alerts_return) + "^" + '|'.join(http_files_return) + "^" + '|'.join(http_file_alerts)+"^"+'|'.join(destinatii)+"^"+'|'.join(icmp_alerts_return)+"^"+'|'.join(destinatiiICMP)+"^"+json_ICMP
 			else:
 				return "NU" 
 	#except:

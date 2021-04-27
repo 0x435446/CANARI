@@ -72,6 +72,7 @@ def icmp_start():
 			times[len(times)-1].header.append(values[7:][:10])
 			ICMP.check_header(times[len(times)-1])
 			get_header_ip(values)
+			print ("AICI SUNT VALUES",values)
 			if ckeck(values,16) ==  0:
 				if ckeck(values,97) ==  0:
 					print ('ICMP: PADDING FAILED')

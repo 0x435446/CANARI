@@ -79,6 +79,7 @@ def checkHTTPTraffic(filename):
 	output = subprocess.check_output("tcpdump -r "+filename+" 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -v", shell=True)
 	f=output.strip().split("\n\t\n".encode())
 	pachete = []
+	destinatii = []
 	for i in f:
 		pachet = i.decode().split('\n')
 		sursa = ''
@@ -103,6 +104,7 @@ def checkHTTPTraffic(filename):
 					UserAgent = pachet[j].split(': ')[1]
 				if "Host" in pachet[j]:
 					destinatie = pachet[j].split(': ')[1]
+					destinatii.append(pachet[j].split(': ')[1])
 				if "Cookie" in pachet[j]:
 					Cookie = pachet[j].split(': ')[1].split('; ')
 				if "POST" in pachet[j]:
@@ -178,4 +180,5 @@ def checkHTTPTraffic(filename):
 		output = subprocess.check_output("rm ExtractedFiles/Temporar/*", shell=True)
 	except:
 		pass
-	return de_printat, files, alerts
+	destinatii = list(set(destinatii))
+	return de_printat, files, alerts, destinatii
