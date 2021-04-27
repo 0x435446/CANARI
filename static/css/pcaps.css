@@ -186,13 +186,82 @@ div.secondfloatbox{
 }
 
 .after_box_left_up{
-	padding-left: 5px;
+	position: relative;
+	padding-left: 25px;
 	padding-top: 5px;
 	background-color: white;
 	width:100%;
 	box-shadow: 0 0 3px #000000;
 
 }
+
+.after_box_left_up_hover{
+	padding-top: 40px;
+	left:0;
+	top:0;
+	width:3%;
+	height: 100%;
+	position: absolute;
+	background-color: #459a96;
+	transition-duration: 2s;
+ 	border-radius: 0px 10px 10px 0px;
+ 	overflow:hidden;
+
+}
+.after_box_left_up_hover:hover{
+	width:100%;
+	transition-duration: 1s;
+ 	border-radius: 0px 0px 0px 0px;
+ 	background-color: #224d4b;
+}
+
+
+
+.button_DNS{
+	box-shadow: 0 0 3px #000000 inset;
+	position: absolute;
+	margin-left:100px;
+	color:white;
+	border:none;
+	color: black;
+	height: 50px;
+	width: 15%;
+	min-width: 20px;
+
+}
+.button_DNS:hover{
+	background-color: white!important;
+}
+
+.button_HTTP{
+	box-shadow: 0 0 3px #000000 inset;
+	position: absolute;
+	margin-left:250px;
+	color:white;
+	border:none;
+	color: black;
+	height: 50px;
+	width: 15%;
+	min-width: 20px;
+}
+
+.button_HTTP:hover{
+	background-color: white!important;
+}
+.button_ICMP{
+	box-shadow: 0 0 3px #000000 inset;
+	position: absolute;
+	margin-left:400px;
+	color:white;
+	border:none;
+	color: black;
+	height: 50px;
+	width: 15%;x
+}
+.button_ICMP:hover{
+	background-color: white!important;
+}
+
 
 .after_box_left_down{
 	padding-left: 5px;
@@ -294,25 +363,6 @@ legend{
 }
 
 
-table {
-	table-layout: fixed ;
-	width: 100% ;
-	text-align:center;
-	font-size: 13px;
-	box-shadow: 0 0 3px #000000;
-}
-
-td {
-	border: 1px solid rgb(211,211,211);
-	background-color: white;
-	overflow: hidden;
-	overflow-y: hidden;
-	border-right: none;
-	border-left: none;
-	padding-left: 10px;
-}
-
-tr:hover td {background:#F5F5F5}
 
 div.progressbar2 {
 	margin: 0 auto;

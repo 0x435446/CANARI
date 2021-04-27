@@ -62,6 +62,13 @@
 		<div id='after_box' class='after_box'>
 			<div id='after_box_left' class='after_box_left'>
 				<div id='after_box_left_up' class='after_box_left_up'>
+					<div class='after_box_left_up_hover'>
+						<div class='after_box_left_up_hover_content'>
+							<button class='button_DNS'>DNS</button>
+							<button class='button_HTTP' onclick="loadHTML();">HTTP</button>
+							<button class='button_ICMP'>ICMP</button>
+						</div>
+					</div>
 					<label id="fileDragName"></label><br>
 					<label id="fileDragSize"></label><br>
 					<label id="fileDragType"></label><br>
@@ -118,6 +125,9 @@
 <script>
 	var objJson
 
+	var alerteHTTP;
+	var alerteHTTPFiles;
+	var HTTPFiles;
 	function printExfil(div){
 		if (document.getElementById(div).style.display == 'none')
 		{
@@ -130,6 +140,7 @@
 
 	}
 	function readfiles(files) {
+
 		var last = '';
 		var formData = new FormData();
 		for (var i = 0; i < files.length; i++) {
@@ -193,6 +204,13 @@
 						continut2 = continut2.concat("</div><br>");
 					}
 				}
+
+
+				alerteHTTP = lista_raspuns[4].split("|");
+				HTTPFiles = lista_raspuns[5].split("|");
+				alerteHTTPFiles = lista_raspuns[6].split("|");
+
+
 				document.getElementById('after_box_left_down').innerHTML=continut2;
 				document.getElementById('invizibil').style.display='block';
 				document.getElementById('after_box_left').style.display='block';
@@ -246,6 +264,14 @@
 		y.style.border='none';
 		x.style.fontSize='50px';
 	}
+
+
+	function loadHTML(){
+		 alert(alerteHTTP);
+		//var alerteHTTPFiles;
+		//var HTTPFiles;
+	}
+
 </script>
 
 
