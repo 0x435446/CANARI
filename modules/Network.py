@@ -37,3 +37,12 @@ def checkIPsThread():
 		for i in lista:
 			f.write(i)
 		f.close()
+
+def checkIPsThreadAPI(base, waiting_time, temp_file):
+	while(True):
+		time.sleep(waiting_time)
+		lista = checkIP(base)
+		f = open(temp_file,'w')
+		for i in lista:
+			f.write(i)
+		f.close()

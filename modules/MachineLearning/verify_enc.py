@@ -148,3 +148,19 @@ def get_entropy(word):
     entropy = - sum([ p * math.log(p) / math.log(2.0) for p in prob ])
     return entropy
 
+
+
+
+
+
+
+def initializare_extins_API(filepath):
+    #data = open( './modules/MachineLearning/probabilitati_extins.txt' ).read().split('\n')
+    data = open( filepath ).read().split('\n')
+    for i in range(len(data)):
+        try:
+            data[i]=data[i].split(':')
+            d[data[i][0]]=data[i][1]
+        except:
+            pass
+    return d

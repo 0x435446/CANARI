@@ -93,12 +93,27 @@ def read_file(fisier):
   return x
 
 
-def checkIPs(ip):
+def read_file_API(filepath):
+  x=[]
+  with open(filepath) as fp:
+    line = fp.readline()
+    cnt = 1
+    while line:
+      x.append(line.strip())
+      line = fp.readline()
+      cnt += 1
+  return x
+
+
+
+
+
+def checkIPs(ip,message_false,message_true):
   f=open('/tmp/ips.txt',"r").read().strip().split(' ')
   if ip not in f:
-    print ("Nope")
+    return message_false
   else:
-    print ("ESTE IN LISTA")
+    return message_true
 
 
 
@@ -121,6 +136,15 @@ def check_whitelist(word,path):
       if i in word.split('.'):
         return 1;
   return 0;
+
+
+def check_whitelist_API(word,path):
+  x=open(path,"r").read().strip().split('\n')
+  for i in x:
+        if i == word:
+          return 1
+  return 0
+
 
 
 def check_TLD_exfil(URL,tld,HOST):
