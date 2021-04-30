@@ -8,7 +8,7 @@ import sys
 import _thread
 from flask import request,redirect,session
 from hashlib import sha256
-
+import importlib.util
 
 sys.path.append('./modules/')
 import VirusTotal
@@ -25,6 +25,17 @@ import DNS_pcap_analyse
 import HTTP_pcap_analyse
 import ICMP_pcap_analyse
 
+
+def importPlugins():
+	file = open('./API/plugins.txt','r')
+	content = file.read().strip().split('\n')
+	file.close()
+	if len(content)>0:
+		for i in content:
+			spec = importlib.util.spec_from_file_location(i.split(',')[0], i.split(',')[1])
+			foo = importlib.util.module_from_spec(spec)
+			spec.loader.exec_module(foo)
+			_thread.start_new_thread(foo.start,())
 
 app = Flask(__name__)
 
@@ -138,6 +149,8 @@ def index():
 				print ("NAHHHHHH")
 				pass
 			
+			importPlugins()
+
 			#load_blacklist()		
 			#_thread.start_new_thread(https.start,())
 			#print ("HTTPS_STARTED")

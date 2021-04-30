@@ -1,0 +1,2 @@
+demo,./API/plugins/demo.py
+demo2,./API/plugins/demo2.py

@@ -79,7 +79,6 @@ def dns_start():
 	global destinationAPI
 	global sourceAPI
 	global subdomainAPI
-	global pachetAPI
 	while(start_dns!=0):
 			cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
 			ok_txt = 0

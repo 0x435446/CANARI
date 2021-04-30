@@ -4,6 +4,9 @@ import os
 
 from APIfunctions import getDNSdatas
 from APIfunctions import getHTTPdatas
+from APIfunctions import getICMPdatas
+from APIfunctions import getHTTPSdatas
+from APIfunctions import insertIntoDatabase
 
 sys.path.append('../modules/')
 from verify_encoding import verify_encoding_API as checkEncoding
@@ -64,6 +67,9 @@ print (countLowerProbabilitiesChars('wwwceva'))
 print (getDNSdatas())
 
 print (getHTTPdatas())
+
+print (getICMPdatas())
 '''
 
 
+insertIntoDatabase('DNS','Sent by API','HIGH','192.168.150.131','hack-it','ASTAENOUA')

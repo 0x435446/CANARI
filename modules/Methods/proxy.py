@@ -8,10 +8,50 @@ import re
 import sys
 import base64
 import MySQLdb 
+import socket
+import _thread
 sys.path.append('./modules')
 from Utility import *
 from Methods import *
 from verify_encoding import *
+
+
+
+def getPacketDetails():
+	HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+	PORT = 9870        # Port to listen on (non-privileged ports are > 1023)
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	server_address = (HOST, PORT)
+	sock.bind(server_address)
+	sock.listen(1)
+
+	while True:
+		global destinationAPI
+		global sourceAPI
+		global cookieAPI
+		global agentAPI
+		global contentAPI
+		ceva = [sourceAPI, destinationAPI, subdomainAPI, agentAPI, contentAPI]
+		connection, client_address = sock.cookieAPI()
+		try:
+			while True:
+				connection.sendall('|'.join(ceva).encode())
+				break;
+
+		finally:
+			connection.close()
+
+global destinationAPI
+destinationAPI = ''
+global sourceAPI
+sourceAPI = ''
+global cookieAPI
+cookieAPI = ''
+global agentAPI
+agentAPI = ''
+global contentAPI
+contentAPI = ''
+
 
 def verify_content(content,url,Source):
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -91,6 +131,9 @@ def check_get(GET,url,Source):
 		db.close()
 
 
+
+
+
 def check_paste(content,Source,url):
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
@@ -99,6 +142,7 @@ def check_paste(content,Source,url):
 	db.close()
 	
 def request(flow: http.HTTPFlow):
+	contentAPI = ''
 	Source =''
 	for i in list(filter(None,flow.client_conn.address[0].split(":"))):
 		if i.count(".")>2:
@@ -108,6 +152,9 @@ def request(flow: http.HTTPFlow):
 		print("URL",flow.request.pretty_url)
 		x=check_whitelist(flow.request.pretty_url)
 		if x==0:
+			destinationAPI = flow.request.pretty_url
+			sourceAPI = Source
+			agentAPI = flow.request.headers['User-Agent']
 			if check_whitelist_ua(flow.request.headers['User-Agent']) == 0:
 				print ("ALERTA HTTPS! User-Agent!")
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -118,6 +165,7 @@ def request(flow: http.HTTPFlow):
 				print ("HTTPS UserAgent COMMITED")
 			print ("PATH:",flow.request.path)
 			GET=flow.request.path
+			contentAPI = GET
 			global signatures
 			signatures=read_file('signatures')
 			check_get(GET,flow.request.pretty_url,Source)
@@ -127,6 +175,7 @@ def request(flow: http.HTTPFlow):
 				pass
 			if flow.request.method == "POST" or flow.request.method == "PUT":
 				content=flow.request.content
+				contentAPI = content
 				if 'paste' in flow.request.pretty_url:
 					check_paste(content,Source,flow.request.pretty_url)
 				ctx.log.info("Sensitive pattern found")
