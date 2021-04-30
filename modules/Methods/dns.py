@@ -5,6 +5,9 @@ from Crypto.Util.number import long_to_bytes
 from urllib.parse import urlparse
 import MySQLdb 
 import re
+import socket
+import _thread
+
 sys.path.append('./modules')
 from Utility import *
 from Methods import *
@@ -15,25 +18,50 @@ import rules
 sys.path.append('./modules/MachineLearning')
 import predict
 
+
+
 def getPacketDetails():
-	global destinationAPI
-	global sourceAPI
-	global subdomainAPI
-	global pachetAPI
-	return destinationAPI, sourceAPI, subdomainAPI, pachetAPI
+	HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+	PORT = 9872        # Port to listen on (non-privileged ports are > 1023)
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	server_address = (HOST, PORT)
+	sock.bind(server_address)
+	sock.listen(1)
+
+	while True:
+		global continutPachetAPI
+		global continutHexAPI
+		global destinationAPI
+		global sourceAPI
+		global subdomainAPI
+		ceva = [sourceAPI, destinationAPI, subdomainAPI, continutPachetAPI, continutHexAPI]
+		connection, client_address = sock.accept()
+		try:
+			while True:
+				connection.sendall('|'.join(ceva).encode())
+				break;
+
+		finally:
+			connection.close()
 
 
 
+
+global continutPachetAPI
+continutPachetAPI = ''
+global continutHexAPI
+continutHexAPI = ''
 global destinationAPI
 destinationAPI = ''
 global sourceAPI
 sourceAPI = ''
 global subdomainAPI
 subdomainAPI = ''
-global pachetAPI
-pachetAPI = ''
+
+
 
 def dns_start():
+	_thread.start_new_thread(getPacketDetails,())
 	dns_time=[]
 	times=[]
 	SUBD=[]
@@ -46,24 +74,22 @@ def dns_start():
 	database=[]
 	global start_dns
 	start_dns=1
+	global continutPachetAPI
+	global continutHexAPI
 	global destinationAPI
 	global sourceAPI
 	global subdomainAPI
 	global pachetAPI
 	while(start_dns!=0):
 			cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
-
-
 			ok_txt = 0
 			puncte = 0
 			result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 			for_check=result
-			HOST = rules.check_rules('DNS',for_check)
-			
+			HOST, continutHexAPI= rules.check_rules('DNS',for_check)
+			continutPachetAPI = result.split('\n\t')[0]
 			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
-				
 				sourceAPI = HOST
-
 				result=result.split('\n\t')[0].replace('\t','')
 				try:
 					result=result.split('\n')
@@ -99,7 +125,7 @@ def dns_start():
 											print ("SUBDOMENIU MALITIOS",payload)
 											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS - DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 											db.commit()
-
+										subdomainAPI = payload
 										cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 										db.commit()
 										passed = 1
@@ -126,6 +152,7 @@ def dns_start():
 							if url[i]==None:
 								del url[i]
 						bd=url
+						destinationAPI = '.'.join(url)
 						exfil_check = 0
 						exfil_check = check_TLD_exfil(bd,tld,HOST)
 						if exfil_check == 0:
@@ -194,7 +221,7 @@ def dns_start():
 											for i in range(len(database)):
 												if(database[i].check(bd[len(bd)-2])==1):
 													for j in range(len(bd)-2):
-														
+														subdomainAPI = bd[j]
 														raspuns_ML = predict.check_model_3(bd[j])
 														if (raspuns_ML == 1):
 															print ("SUBDOMENIU OK",bd[j])
@@ -228,6 +255,7 @@ def dns_start():
 												#print ("Domain added! "+ bd[len(bd)-2])
 												kappa=DNS(bd[len(bd)-2])
 												for j in range(len(bd)-2):
+													subdomainAPI = bd[j]
 													kappa.add(bd[j],int(time.time()))
 
 													raspuns_ML = predict.check_model_3(bd[j])
@@ -299,11 +327,12 @@ def dns_start():
 										
 										for i in range(len(url)):
 											tld_ver=0
-											if verify_encoding(url[i]) != None:
-												if verify_encoding(url[i]) <= 10:
-													if url[i] not in tld:
+											if url[i] not in tld:
+												subdomainAPI = bd[j]
+												if verify_encoding(url[i]) != None:
+													if verify_encoding(url[i]) <= 10:
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
-														db.commit()
+														db.commit()	
 				except:
 					print ("PACHET MALFORMAT - DNS",result)
 					pass

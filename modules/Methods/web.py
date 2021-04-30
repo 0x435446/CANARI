@@ -6,6 +6,8 @@ import MySQLdb
 from Crypto.Util.number import long_to_bytes,bytes_to_long
 import base64
 import rules
+import socket
+import _thread
 
 sys.path.append('./modules')
 from Utility import *
@@ -31,7 +33,54 @@ def check_whitelist_user_agent(word):
 			return 1;
 	return 0;
 
+
+
+def getPacketDetails():
+	HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+	PORT = 9873        # Port to listen on (non-privileged ports are > 1023)
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	server_address = (HOST, PORT)
+	sock.bind(server_address)
+	sock.listen(1)
+
+	while True:
+		global continutPachetAPI
+		global continutHexAPI
+		global destinationAPI
+		global sourceAPI
+		global cookieAPI
+		global agentAPI
+		ceva = [sourceAPI, destinationAPI, agentAPI, cookieAPI, continutPachetAPI, continutHexAPI]
+		connection, client_address = sock.accept()
+		try:
+			while True:
+				connection.sendall('|'.join(ceva).encode())
+				break;
+
+		finally:
+			connection.close()
+
+
+
+
+global continutPachetAPI
+continutPachetAPI = ''
+global continutHexAPI
+continutHexAPI = ''
+global destinationAPI
+destinationAPI = ''
+global sourceAPI
+sourceAPI = ''
+global cookieAPI
+cookieAPI = ''
+global agentAPI
+agentAPI = ''
+
+
+
+
 def http_start():
+	_thread.start_new_thread(getPacketDetails,())
 	GETS=[]
 	#print("AM AJUNS AICI")
 	ip=get_ip_address('ens33')  
@@ -45,6 +94,12 @@ def http_start():
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
 	last_res=''
+	global continutPachetAPI
+	global continutHexAPI
+	global destinationAPI
+	global sourceAPI
+	global cookieAPI
+	global agentAPI
 	while(start_http!=0):
 		#print ("------------------DADADADADADADA")
 		added=0
@@ -56,14 +111,18 @@ def http_start():
 		host_found = 0
 		get_found = 0
 		founda = 0
+
 		cmdout = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		if "192.168.1.5" not in cmdout:
-			HOST = rules.check_rules('HTTP',cmdout)
+			HOST, continutHexAPI = rules.check_rules('HTTP',cmdout)
+			sourceAPI = HOST
 			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
 				result=cmdout.split("\n\t\n\t")[0].split('\n')
+				continutPachetAPI = cmdout.split("\n\t\n\t")[0]
 				for i in range(len(result)):
 					result[i]=result[i].split(': ')
 					if 'Agent' in result[i][0]:
+						agentAPI=result[i][1]
 						if agent_found == 0:
 							if check_whitelist_user_agent(result[i][1]) == 0:
 								agent_found = 1
@@ -73,11 +132,13 @@ def http_start():
 					if cookie_found == 0:
 						if 'Cookie' in result[i][0]:
 							Cookie=result[i][1]
+							cookieAPI = Cookie
 							cookie_found = 1
 					if host_found == 0:
 						if 'Host' in result[i][0]:
 							host_found = 1
 							URL=result[i][1]
+							destinationAPI = URL
 					if get_found == 0:
 						if 'GET' in result[i][0]:
 							GET=result[i][0]

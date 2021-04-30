@@ -79,7 +79,7 @@ def check_rules(TIP,pachet):
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED HTTP")
-			return HOST
+			return HOST, content
 
 		if TIP == "DNS":
 			new_pachet=[]
@@ -120,6 +120,6 @@ def check_rules(TIP,pachet):
 							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED DNS")
-			return HOST
+			return HOST,''.join(new_pachet)
 	except:
 		pass
