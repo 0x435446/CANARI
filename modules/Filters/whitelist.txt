@@ -11,3 +11,6 @@ amazonaws
 mozilla
 virustotal
 gstatic
+gvt1
+jsdelivr
+googleusercontent

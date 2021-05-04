@@ -33,9 +33,9 @@ def importPlugins():
 	if len(content)>0:
 		for i in content:
 			spec = importlib.util.spec_from_file_location(i.split(',')[0], i.split(',')[1])
-			foo = importlib.util.module_from_spec(spec)
-			spec.loader.exec_module(foo)
-			_thread.start_new_thread(foo.start,())
+			modul = importlib.util.module_from_spec(spec)
+			spec.loader.exec_module(modul)
+			_thread.start_new_thread(modul.start,())
 
 app = Flask(__name__)
 
