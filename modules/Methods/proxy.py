@@ -150,7 +150,7 @@ def request(flow: http.HTTPFlow):
 	print ("Source:",Source)
 	if check_whitelist(Source,"./modules/Filters/whitelist_sources.txt") == 0:
 		print("URL",flow.request.pretty_url)
-		x=check_whitelist(flow.request.pretty_url)
+		x=check_whitelist(flow.request.pretty_url, "./modules/Filters/whitelist.txt")
 		if x==0:
 			destinationAPI = flow.request.pretty_url
 			sourceAPI = Source
@@ -159,7 +159,7 @@ def request(flow: http.HTTPFlow):
 				print ("ALERTA HTTPS! User-Agent!")
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
-				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM', '"+Source+"' '-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
+				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('HTTPS', 'User-Agent!','MEDIUM', '"+Source+"', '-','"+flow.request.headers['User-Agent']+"','"+str(datetime.now())+"')")
 				db.commit()
 				db.close()
 				print ("HTTPS UserAgent COMMITED")

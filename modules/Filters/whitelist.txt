@@ -14,3 +14,5 @@ gstatic
 gvt1
 jsdelivr
 googleusercontent
+cloudfront
+_gateway

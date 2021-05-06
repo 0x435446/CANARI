@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import render_template,jsonify
 import json
-from flask_mysqldb import MySQL
 import MySQLdb 
 import os
 import sys
@@ -48,7 +47,6 @@ app.config['MYSQL_DB'] = 'BlockIT'
 app.config['UPLOAD_FOLDER']='/tmp/upload'
 app.config['UPLOAD_EXTENSIONS'] = ['.txt']
 
-mysql = MySQL(app)
 
 #FlagFlag123.
 
@@ -152,8 +150,8 @@ def index():
 			importPlugins()
 
 			#load_blacklist()		
-			#_thread.start_new_thread(https.start,())
-			#print ("HTTPS_STARTED")
+			_thread.start_new_thread(https.start,())
+			print ("HTTPS_STARTED")
 			whitelist_c1,whitelist_c2,whitelist_c3 = get_whitelist_details()
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 			cursor = db.cursor()

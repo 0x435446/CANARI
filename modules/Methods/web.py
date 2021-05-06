@@ -83,7 +83,8 @@ def http_start():
 	_thread.start_new_thread(getPacketDetails,())
 	GETS=[]
 	#print("AM AJUNS AICI")
-	ip=get_ip_address('ens33')  
+	configDetails = readConfig()
+	ip=get_ip_address(configDetails['interface'])
 	#ip='kali'
 	start_http=1
 	signatures=read_file('signatures')
@@ -104,7 +105,7 @@ def http_start():
 		#print ("------------------DADADADADADADA")
 		added=0
 		added_GET=0
-		cmd="sudo tcpdump -i ens33 -xxv -A -s 0 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -c 1 2>/dev/null"
+		cmd="sudo tcpdump -i "+configDetails['interface']+" -xxv -A -s 0 'tcp dst port http and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -c 1 2>/dev/null"
 		print ("HTTP REQUEST SENT")
 		agent_found = 0
 		cookie_found = 0

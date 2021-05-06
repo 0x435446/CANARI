@@ -163,3 +163,12 @@ def check_TLD_exfil(URL,tld,HOST):
     db.close()
     return 1
   return 0
+
+
+
+def readConfig():
+	d = {}
+	x=open("./modules/config/networkDetails.config","r").read().strip().split('\n')
+	for i in x:
+		d[i.split(":")[0]] = i.split(":")[1]
+	return d

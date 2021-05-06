@@ -68,7 +68,8 @@ def dns_start():
 	puncte = 0
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
-	ip=get_ip_address('ens33')  
+	configDetails = readConfig()
+	ip=get_ip_address(configDetails['interface'])
 	tld=read_file('TLD')
 	signatures=read_file('signatures')
 	database=[]
@@ -80,7 +81,7 @@ def dns_start():
 	global sourceAPI
 	global subdomainAPI
 	while(start_dns!=0):
-			cmd="sudo tcpdump -xxv -i ens33 -c1 -l -v -n -t port 53 2>/dev/null"
+			cmd="sudo tcpdump -xxv -i "+configDetails['interface']+" -c1 -l -v -n -t port 53 2>/dev/null"
 			ok_txt = 0
 			puncte = 0
 			result = subprocess.check_output(cmd, shell=True).decode('utf-8')

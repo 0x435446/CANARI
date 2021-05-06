@@ -59,7 +59,8 @@ paddingAPI = ''
 def icmp_start():
 	for_test=0
 	times=[]
-	ip=get_ip_address('ens33')  
+	configDetails = readConfig()
+	ip=get_ip_address(configDetails['interface'])
 	#ip='osboxes'
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
@@ -71,7 +72,7 @@ def icmp_start():
 	global paddingAPI
 	_thread.start_new_thread(getPacketDetails,())
 	while(start_icmp!=0):
-		cmd="sudo tcpdump -i ens33 -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply 2>/dev/null"
+		cmd="sudo tcpdump -i "+configDetails['interface']+" -xx -c1 -l -v icmp[icmptype] == icmp-echo and icmp[icmptype] != icmp-echoreply 2>/dev/null"
 		result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 		search= result.split(' ')
 		host=''
