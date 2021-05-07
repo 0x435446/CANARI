@@ -3,11 +3,14 @@ import json
 import time
 import MySQLdb 
 from datetime import datetime
-
+from Utility import *
 
 def init():
 	vt = VT()
-	vt.setkey('03b3cc1de70a217d05e42394628e25971dbff611301f5efdb1c5188523f3bd66')
+	d = readConfig()
+	print (d)
+	vt.setkey(d['VTAPI'])
+	print ("AICI E APIKEY",d['VTAPI'])
 	return vt
 
 def search_url(URL):
@@ -27,6 +30,7 @@ def search_url(URL):
 	except:
 		for_return=[]
 		pass
+		print ("AICI E URL",URL)
 	return for_return
 
 

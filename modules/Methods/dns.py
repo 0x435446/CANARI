@@ -81,17 +81,17 @@ def dns_start():
 	global sourceAPI
 	global subdomainAPI
 	while(start_dns!=0):
-			cmd="sudo tcpdump -xxv -i "+configDetails['interface']+" -c1 -l -v -n -t port 53 2>/dev/null"
-			ok_txt = 0
-			puncte = 0
-			result = subprocess.check_output(cmd, shell=True).decode('utf-8')
-			for_check=result
-			HOST, continutHexAPI= rules.check_rules('DNS',for_check)
-			continutPachetAPI = result.split('\n\t')[0]
-			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
-				sourceAPI = HOST
-				result=result.split('\n\t')[0].replace('\t','')
-				try:
+				cmd="sudo tcpdump -xxv -i "+configDetails['interface']+" -c1 -l -v -n -t port 53 2>/dev/null"
+				ok_txt = 0
+				puncte = 0
+				result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+				for_check=result
+				HOST, continutHexAPI= rules.check_rules('DNS',for_check)
+				continutPachetAPI = result.split('\n\t')[0]
+				if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
+					sourceAPI = HOST
+					result=result.split('\n\t')[0].replace('\t','')
+				#try:
 					result=result.split('\n')
 					flag=result[0].split('[')[1].split(']')[0]
 					for i in range(len(result)):
@@ -201,15 +201,17 @@ def dns_start():
 									sql = "INSERT INTO domains (Domains) VALUES('"+DNS_domain+"')"
 									cursor.execute(sql)
 									db.commit()
+								print ("AICI E DNSOK",DNS_ok)
 								if var == 0:
 									if DNS_ok == 0:
-										try:
+										#try:
 											vt=search_url("http://"+bd[len(bd)-2]+"."+'.'.join(domain))
 											for i in vt:
 												cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('VirusTotal', '" + i[0] + "','HIGH','"+HOST+"','"+ bd[len(bd)-2] +"."+'.'.join(domain)+ "','" + i[2] + "','"+str(datetime.now())+"')")
 												db.commit()
-										except:
-											pass
+										#except:
+											#print ("PASS BOSS")
+											#pass
 									stop = 0
 									for i in range(len(SUBD)):
 										if SUBD[i] == bd[0]:
@@ -333,9 +335,9 @@ def dns_start():
 													if verify_encoding(url[i]) <= 10:
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'UNKNOWN BASE FOUND','HIGH','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+url[i]+"','"+str(datetime.now())+"')")
 														db.commit()	
-				except:
-					print ("PACHET MALFORMAT - DNS",result)
-					pass
+				#except:
+					#print ("PACHET MALFORMAT - DNS",result)
+					#pass
 
 def stop_dns():
 	global start_dns
