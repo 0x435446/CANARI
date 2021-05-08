@@ -1,19 +1,24 @@
 package com.example.proiect.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proiect.Controller.Applications.ApplicationsHandler;
@@ -55,6 +60,8 @@ public class See_apps extends AppCompatActivity {
                     ListView g = (ListView) findViewById(R.id.listViewApps);
                     g.setVisibility(View.VISIBLE);
                     ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, forprint);
+                    //CustomAdapterGrid adapterList = new CustomAdapterGrid(getApplicationContext(),android.R.layout.simple_list_item_1,forret);
+
                     g.setAdapter(adapter);
                     g.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override

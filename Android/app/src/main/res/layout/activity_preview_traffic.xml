@@ -18,17 +18,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <GridView
         android:id="@+id/gridViewTraffic"
         android:layout_width="wrap_content"
-        android:layout_height="590dp"
+        android:layout_height="290dp"
+        android:maxLines="5"
         android:numColumns="7"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/printTraffic"
-        android:maxLines="5" />
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <ListView
+        android:id="@+id/listviewprocesoare"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
