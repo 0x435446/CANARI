@@ -79,6 +79,8 @@ def check_model_3(word):
     d=verify_enc.initializare_extins()
     test = []
     encoding = verify_enc.verify_encoding(word,d)
+    if (encoding == None):
+        encoding = 0
     litere_mari = verify_enc.count_litere_mari(word)
     litere_mici = verify_enc.count_litere_mici(word)
     litere_peste_f = verify_enc.count_litere_mai_mari_de_f(word)
