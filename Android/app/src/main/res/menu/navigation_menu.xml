@@ -27,4 +27,8 @@
         android:id="@+id/Domains"
         android:title="Domain Whitelist">
     </item>
+    <item
+        android:id="@+id/pie"
+        android:title="Chart">
+    </item>
 </menu>

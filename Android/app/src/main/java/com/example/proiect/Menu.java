@@ -31,6 +31,7 @@ import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
 import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.View.DomainWhiteListView;
+import com.example.proiect.View.PieChartActivity;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
 import com.example.proiect.View.See_apps;
@@ -147,6 +148,11 @@ public class Menu extends AppCompatActivity {
                 {
                     Intent it = new Intent(getApplicationContext(), DomainWhiteListView.class);
                     startActivityForResult(it,4);
+                }
+                if(id==R.id.pie)
+                {
+                    Intent it = new Intent(getApplicationContext(), PieChartActivity.class);
+                    startActivityForResult(it,5);
                 }
                 return true;
             }

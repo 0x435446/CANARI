@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme.FullScreen"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".View.PieChartActivity"></activity>
         <activity android:name=".View.DomainWhiteListView" />
         <activity android:name=".Menu">
             <intent-filter>
