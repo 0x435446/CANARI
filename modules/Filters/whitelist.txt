@@ -16,3 +16,4 @@ jsdelivr
 googleusercontent
 cloudfront
 _gateway
+googlehosted

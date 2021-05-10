@@ -81,7 +81,7 @@ def dns_start():
 	global sourceAPI
 	global subdomainAPI
 	while(start_dns!=0):
-			#try:
+			try:
 				#cmd="-xxv -i "+configDetails['interface']+" -c1 -l -v -n -t port 53 2>/dev/null"
 				ok_txt = 0
 				puncte = 0
@@ -90,6 +90,8 @@ def dns_start():
 				nr_magic = 0
 				last = 'a'
 				last_last=''
+				last_ML = 'a'
+				last_last_ML =''
 				p = subprocess.Popen(('sudo', 'tcpdump', '-l', '-xxv','port 53','-n','-v','-t'), stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
 				for row in iter(p.stdout.readline, b''):
 					if len(result) > 0:
@@ -133,11 +135,11 @@ def dns_start():
 															print ("SUBDOMENIU OK",payload)
 														else:
 															print ("SUBDOMENIU MALITIOS",payload)
-															if payload != last:
+															if payload != last_ML:
 																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS - DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 																db.commit()
-																last_last = last
-																last = payload
+																last_last_ML = last_ML
+																last_ML = payload
 														subdomainAPI = payload
 														cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'DIG EXFILTRATION','HIGH','"+HOST+"','"+url[:-4]+"','"+payload+"','"+str(datetime.now())+"')")
 														db.commit()
@@ -242,12 +244,12 @@ def dns_start():
 																		if (raspuns_ML == 1):
 																			print ("SUBDOMENIU OK",bd[j])
 																		else:
-																			if bd[j] != last:
+																			if bd[j] != last_ML:
 																				print ("SUBDOMENIU MALITIOS",bd[j])
 																				cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 																				db.commit()
-																				last_last = last
-																				last = bd[j]
+																				last_last_ML = last_ML
+																				last_ML = bd[j]
 																	
 
 																	if len(str(bd[j])) > 10:
@@ -291,11 +293,11 @@ def dns_start():
 																		print ("SUBDOMENIU OK",bd[j])
 																	else:
 																		print ("SUBDOMENIU MALITIOS",bd[j])
-																		if bd[j] != last:
+																		if bd[j] != last_ML:
 																			cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+bd[len(bd)-2]+"','"+bd[j]+"','"+str(datetime.now())+"')")
 																			db.commit()
-																			last_last = last
-																			last = bd[j]
+																			last_last_ML = last_ML
+																			last_ML = bd[j]
 
 																if len(str(bd[j])) > 10:
 																	print ("ALERT! DNS EXFILTRATION LEN - "+ str(len(str(bd[j]))))
@@ -354,11 +356,11 @@ def dns_start():
 															print ("SUBDOMENIU OK",'.'.join(url[:-2]))
 														else:
 															print ("SUBDOMENIU MALITIOS",'.'.join(url[:-2]))
-															if '.'.join(url[:-2]) != last:
+															if '.'.join(url[:-2]) != last_ML:
 																cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('Machine Learning', 'DNS EXFILTRATION','UNKNOWN','"+HOST+"','"+''.join(bd[len(bd)-2])+"','"+'.'.join(url[:-2])+"','"+str(datetime.now())+"')")
 																db.commit()
-																last_last = last
-																last = '.'.join(url[:-2])
+																last_last_ML = last_ML
+																last_ML = '.'.join(url[:-2])
 															ok_signature = 1
 
 													z=DNS_time(bd[len(bd)-2],HOST)
@@ -397,9 +399,9 @@ def dns_start():
 						result.append(row.strip().decode())
 
 
-			#except:
-				#print ("PACHET MALFORMAT - DNS",result)
-				#pass
+			except:
+				print ("PACHET MALFORMAT - DNS",result)
+				pass
 
 def stop_dns():
 	global start_dns
