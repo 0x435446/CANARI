@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.DomainWhiteListView">
+    tools:context=".View.DomainWhiteListView"
+    android:background="@color/backgroundColor">
 
     <ListView
         android:id="@+id/DomainView"
@@ -13,8 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colors" />
     <EditText
 
         android:id="@+id/editTextDomains"
@@ -27,9 +28,11 @@
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colors"
         app:layout_constraintTop_toTopOf="parent" />
-
     <Button
+        android:background="@color/buttonColors"
+        android:textColor="@color/colors"
         android:id="@+id/buttonDomains"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

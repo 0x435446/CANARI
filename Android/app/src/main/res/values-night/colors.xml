@@ -9,9 +9,14 @@
     <color name="white">#FFFFFFFF</color>
 
 
-    <color name= "backgroundColor">#FCFCFC</color>
+    <color name= "backgroundColor">#212121</color>
 
-    <color name="colors">#000000</color>
+    <color name="colors">#FFFFFF</color>
+
+
+    <color name="buttonColors">#000000</color>
+    <color name="buttonTextColors">#FFFFFF</color>
+
 
     <color name="colorPrimary">#024265</color>
 
@@ -19,8 +24,6 @@
 
     <color name="colorAccent">#05af9b</color>
 
-    <color name="buttonColors">#FFFFFF</color>
-    <color name="buttonTextColors">#FFFFFF</color>
 
 
     <color name="color_one">#fb7268</color>

@@ -7,35 +7,41 @@
 
 
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
     <TextView
+        android:textColor="@color/colors"
         android:id="@+id/traffic6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

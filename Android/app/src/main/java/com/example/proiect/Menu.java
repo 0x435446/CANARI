@@ -3,20 +3,23 @@ package com.example.proiect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-
+import android.widget.ToggleButton;
 
 
 import com.example.proiect.Controller.Applications.ApplicationsHandler;
@@ -55,10 +58,91 @@ public class Menu extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
 
+    boolean okk = true;
     @Override
+    @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Button btnToggle;
+        btnToggle = findViewById(R.id.toggleButton);
+
+        SharedPreferences sharedPreferences
+                = getSharedPreferences(
+                "sharedPrefs", MODE_PRIVATE);
+        final SharedPreferences.Editor editor
+                = sharedPreferences.edit();
+        final boolean isDarkModeOn
+                = sharedPreferences
+                .getBoolean(
+                        "isDarkModeOn", false);
+        if (isDarkModeOn) {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_YES);
+            btnToggle.setText(
+                    "Disable Dark Mode");
+        }
+        else {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_NO);
+            btnToggle
+                    .setText(
+                            "Enable Dark Mode");
+        }
+
+        btnToggle.setOnClickListener(
+                new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view)
+                    {
+                        // When user taps the enable/disable
+                        // dark mode button
+                        if (isDarkModeOn) {
+
+                            // if dark mode is on it
+                            // will turn it off
+                            AppCompatDelegate
+                                    .setDefaultNightMode(
+                                            AppCompatDelegate
+                                                    .MODE_NIGHT_NO);
+                            // it will set isDarkModeOn
+                            // boolean to false
+                            editor.putBoolean(
+                                    "isDarkModeOn", false);
+                            editor.apply();
+
+                            // change text of Button
+                            btnToggle.setText(
+                                    "Enable Dark Mode");
+                        }
+                        else {
+
+                            // if dark mode is off
+                            // it will turn it on
+                            AppCompatDelegate
+                                    .setDefaultNightMode(
+                                            AppCompatDelegate
+                                                    .MODE_NIGHT_YES);
+
+                            // it will set isDarkModeOn
+                            // boolean to true
+                            editor.putBoolean(
+                                    "isDarkModeOn", true);
+                            editor.apply();
+
+                            // change text of Button
+                            btnToggle.setText(
+                                    "Disable Dark Mode");
+                        }
+                    }
+                });
+
 
         Pipe x = Pipe.getInstance();
         x.setTraffic("Type");

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Proiect</string>
+    <string name="Start_button">Show connections</string>
+    <string name="Check_metasploit">Metasploit</string>
+    <string name="Check_apps">Check applications</string>
+    <string name="Print_apps">Print apps</string>
+    <string name="Print_traffic">Print traffic</string>
+    <string name="Conn">Connections</string>
+    <string name="Traffic">Traffic</string>
+    <string name="VulnApps">Get malware</string>
+    <string name="CheckBoxVulnApps">Only Malware</string>
+    <string name="Refresh">Refresh</string>
+    <string name="DeleteDB">ClearDB</string>
+    <string name="Statistics">Statistici Aplicatii</string>
+    <string name="Statistics2">ICMP</string>
+    <string name="Statistics3">HTTP</string>
+    <string name="Statistics4">DNS</string>
+    <string name="progressBar">0/0</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+</resources>
