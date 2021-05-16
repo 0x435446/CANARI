@@ -31,4 +31,8 @@
         android:id="@+id/pie"
         android:title="Chart">
     </item>
+    <item
+        android:id="@+id/maps"
+        android:title="Maps">
+    </item>
 </menu>

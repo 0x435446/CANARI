@@ -83,7 +83,7 @@ public class TrafficDNS implements Runnable{
 
     public List<String> loadSignatures() throws IOException {
         //URL url = new URL("http://hack-it.ro:8000/signatures.txt");
-        URL url = new URL("http://192.168.43.192:8080/Android/signatures.txt");
+        URL url = new URL("http://10.10.15.32:8080/Android/signatures.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -143,7 +143,7 @@ public class TrafficDNS implements Runnable{
     }
 
     public String getTLD() throws IOException {
-        URL url = new URL("http://192.168.43.192:8080/Android/IANA.txt");
+        URL url = new URL("http://10.10.15.32:8080/Android/IANA.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -160,7 +160,7 @@ public class TrafficDNS implements Runnable{
     }
 
     public Map getProbabilitati() throws IOException {
-        URL url = new URL("http://192.168.43.192:8080/Android/probabilitati.txt");
+        URL url = new URL("http://10.10.15.32:8080/Android/probabilitati.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -392,8 +392,8 @@ public class TrafficDNS implements Runnable{
             }
         }
         catch (Exception e) {
-            Pipe x= Pipe.getInstance();
-            x.setCheckStatus(2);
+            Pipe y= Pipe.getInstance();
+            y.setCheckStatus(2);
             System.out.println("Exception is caught");
         }
 

@@ -59,7 +59,7 @@ public class TrafficHTTP implements Runnable {
 
 
     public Map getProbabilitati() throws IOException {
-        URL url = new URL("http://172.16.29.43:8080/Android/probabilitati.txt");
+        URL url = new URL("http://10.10.15.32:8080/Android/probabilitati.txt");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());

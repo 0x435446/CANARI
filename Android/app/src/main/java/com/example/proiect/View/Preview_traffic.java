@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -19,13 +21,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proiect.Controller.Maps.MapsController;
 import com.example.proiect.Controller.Pachete.PacheteDB;
 import com.example.proiect.Controller.TrafficTypes.CustomAdapter;
 import com.example.proiect.Controller.TrafficTypes.Traffic;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Preview_traffic extends AppCompatActivity {
 
@@ -91,7 +100,37 @@ public class Preview_traffic extends AppCompatActivity {
             }
         };
         listView.setAdapter(adapter2);
-        }
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Traffic aux = (Traffic)parent.getItemAtPosition(position);
+                try {
+                    MapsController maps = new MapsController();
+                    String location = maps.findLocation("hack-it.ro");
+                    Toast.makeText(getApplicationContext(),location,Toast.LENGTH_LONG).show();
+                    JSONObject json = new JSONObject(location);
+                    String lat = json.getString("latitude");
+                    String lon = json.getString("longitude");
+                    String city = json.getString("city");
+
+                    Intent it = new Intent(getApplicationContext(), MapsActivity.class);
+                    it.putExtra("lat",lat);
+                    it.putExtra("lon",lon);
+                    it.putExtra("city",city);
+                    startActivityForResult(it,7);
+
+                    Toast.makeText(getApplicationContext(), lat, Toast.LENGTH_LONG).show();
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        });
+
+
+    }
 
 
 

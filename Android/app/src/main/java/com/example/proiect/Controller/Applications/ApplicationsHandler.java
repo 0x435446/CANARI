@@ -100,7 +100,7 @@ public class ApplicationsHandler {
 
 
     public void sendAPK(String forGET) throws IOException {
-        URL url = new URL("http://192.168.150.130:5000/checkAndroid?sha="+forGET);
+        URL url = new URL("http://192.168.150.135:5000/checkAndroid?sha="+forGET);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -117,7 +117,7 @@ public class ApplicationsHandler {
 
 
     public String getInfo()throws IOException {
-        URL url = new URL("http://192.168.150.130:5000/checkHashes");
+        URL url = new URL("http://192.168.150.135:5000/checkHashes");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());

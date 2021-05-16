@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 
 import com.example.proiect.Controller.Applications.ApplicationsHandler;
@@ -34,6 +33,7 @@ import com.example.proiect.Controller.TrafficTypes.TrafficICMP;
 import com.example.proiect.Model.PacheteDB.Pachete;
 import com.example.proiect.Model.Pipe;
 import com.example.proiect.View.DomainWhiteListView;
+import com.example.proiect.View.MapsActivity;
 import com.example.proiect.View.PieChartActivity;
 import com.example.proiect.View.Preview_Connections;
 import com.example.proiect.View.Preview_traffic;
@@ -237,6 +237,13 @@ public class Menu extends AppCompatActivity {
                 {
                     Intent it = new Intent(getApplicationContext(), PieChartActivity.class);
                     startActivityForResult(it,5);
+                }
+                if(id==R.id.maps)
+                {
+                    Intent it = new Intent(getApplicationContext(), MapsActivity.class);
+                    it.putExtra("lat","44.8565");
+                    it.putExtra("lon","24.8692");
+                    startActivityForResult(it,6);
                 }
                 return true;
             }
