@@ -25,7 +25,7 @@ def read_rules():
 	return x
 
 def check_rules(TIP,pachet):
-	try:
+	#try:
 		db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 		cursor = db.cursor()
 		if TIP == "HTTP":
@@ -76,7 +76,7 @@ def check_rules(TIP,pachet):
 						ok_user_agent = 1
 					if (ok_user_agent == 1) and (ok_destination == 1) and (ok_host == 1):
 						if content[int(rules[i][4]):][:len(rules[i][5].strip())] == rules[i][5].strip():
-							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('HTTP', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
+							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+HOST+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED HTTP")
 			return HOST, content
@@ -117,9 +117,10 @@ def check_rules(TIP,pachet):
 						ok_destination = 1
 					if (ok_destination == 1) and (ok_host == 1):
 						if ''.join(new_pachet)[int(rules[i][4]):][:len(rules[i][5].strip())] == rules[i][5].strip():
-							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
+							cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', '"+rules[i][7]+"','"+rules[i][6]+"','"+HOST+"','"+DESTINATION+"','"+rules[i][5].strip()+"','"+str(datetime.now())+"')")
 							db.commit()
 							print ("COMMITED DNS")
+
 			return HOST,''.join(new_pachet)
-	except:
-		pass
+	#except:
+		#pass
