@@ -101,18 +101,11 @@ public class Menu extends AppCompatActivity {
                     @Override
                     public void onClick(View view)
                     {
-                        // When user taps the enable/disable
-                        // dark mode button
                         if (isDarkModeOn) {
-
-                            // if dark mode is on it
-                            // will turn it off
                             AppCompatDelegate
                                     .setDefaultNightMode(
                                             AppCompatDelegate
                                                     .MODE_NIGHT_NO);
-                            // it will set isDarkModeOn
-                            // boolean to false
                             editor.putBoolean(
                                     "isDarkModeOn", false);
                             editor.apply();
@@ -122,21 +115,15 @@ public class Menu extends AppCompatActivity {
                                     "Enable Dark Mode");
                         }
                         else {
-
-                            // if dark mode is off
-                            // it will turn it on
                             AppCompatDelegate
                                     .setDefaultNightMode(
                                             AppCompatDelegate
                                                     .MODE_NIGHT_YES);
 
-                            // it will set isDarkModeOn
-                            // boolean to true
                             editor.putBoolean(
                                     "isDarkModeOn", true);
                             editor.apply();
 
-                            // change text of Button
                             btnToggle.setText(
                                     "Disable Dark Mode");
                         }

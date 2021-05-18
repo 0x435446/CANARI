@@ -105,9 +105,10 @@ public class Preview_traffic extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Traffic aux = (Traffic)parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),aux.getDestinatie(),Toast.LENGTH_LONG).show();
                 try {
                     MapsController maps = new MapsController();
-                    String location = maps.findLocation("hack-it.ro");
+                    String location = maps.findLocation((String)aux.getDestinatie());
                     Toast.makeText(getApplicationContext(),location,Toast.LENGTH_LONG).show();
                     JSONObject json = new JSONObject(location);
                     String lat = json.getString("latitude");
