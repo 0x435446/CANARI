@@ -61,27 +61,27 @@ subdomainAPI = ''
 
 
 def dns_start():
-	_thread.start_new_thread(getPacketDetails,())
-	dns_time=[]
-	times=[]
-	SUBD=[]
-	puncte = 0
-	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
-	cursor = db.cursor()
-	configDetails = readConfig()
-	ip=get_ip_address(configDetails['interface'])
-	tld=read_file('TLD')
-	signatures=read_file('signatures')
-	database=[]
-	global start_dns
-	start_dns=1
-	global continutPachetAPI
-	global continutHexAPI
-	global destinationAPI
-	global sourceAPI
-	global subdomainAPI
-	while(start_dns!=0):
-			try:
+			_thread.start_new_thread(getPacketDetails,())
+			dns_time=[]
+			times=[]
+			SUBD=[]
+			puncte = 0
+			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+			cursor = db.cursor()
+			configDetails = readConfig()
+			ip=get_ip_address(configDetails['interface'])
+			tld=read_file('TLD')
+			signatures=read_file('signatures')
+			database=[]
+			global start_dns
+			start_dns=1
+			global continutPachetAPI
+			global continutHexAPI
+			global destinationAPI
+			global sourceAPI
+			global subdomainAPI
+			while(start_dns!=0):
+			#try:
 				#cmd="-xxv -i "+configDetails['interface']+" -c1 -l -v -n -t port 53 2>/dev/null"
 				ok_txt = 0
 				puncte = 0
@@ -98,6 +98,7 @@ def dns_start():
 						if row.strip().decode()[0] == 'I' and row.strip().decode()[1] == 'P':
 							result = '\n'.join(result)
 							for_check=result
+							print ("AICI E FORCHECK",for_check)
 							HOST, continutHexAPI= rules.check_rules('DNS',for_check)
 							continutPachetAPI = result.split('\n\t')[0]
 							if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
@@ -399,9 +400,9 @@ def dns_start():
 						result.append(row.strip().decode())
 
 
-			except:
-				print ("PACHET MALFORMAT - DNS",result)
-				pass
+			#except:
+				#print ("PACHET MALFORMAT - DNS",result)
+				#pass
 
 def stop_dns():
 	global start_dns

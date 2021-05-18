@@ -1506,3 +1506,4 @@ ZM
 ZONE
 ZUERICH
 ZW
+localdomain
