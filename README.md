@@ -1,4 +1,4 @@
-# C.A.N.A.R.I
+# C.A.N.A.R.I.
 
 - ##### CANARI Actually Not Another Regular IDS
 
