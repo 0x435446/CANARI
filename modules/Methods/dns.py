@@ -98,7 +98,7 @@ def dns_start():
 						if row.strip().decode()[0] == 'I' and row.strip().decode()[1] == 'P':
 							result = '\n'.join(result)
 							for_check=result
-							print ("AICI E FORCHECK",for_check)
+							#print ("AICI E FORCHECK",for_check)
 							HOST, continutHexAPI= rules.check_rules('DNS',for_check)
 							continutPachetAPI = result.split('\n\t')[0]
 							if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:

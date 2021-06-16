@@ -99,13 +99,19 @@ def checkHTTPTraffic(filename):
 						sursa = '.'.join(splited[k-1].split('.')[:-1])
 			if j > 1:
 				if "GET" in pachet[j]:
-					GET = pachet[j].split(' ')[1]
+					try:
+						GET = pachet[j].split(' ')[1]
+					except:
+						pass
 				if "User-Agent" in pachet[j]:
-					UserAgent = pachet[j].split(': ')[1]
-				if "Host" in pachet[j]:
+					try:
+						UserAgent = pachet[j].split(': ')[1]
+					except:
+						pass
+				if "Host:" in pachet[j]:
 					destinatie = pachet[j].split(': ')[1]
 					destinatii.append(pachet[j].split(': ')[1])
-				if "Cookie" in pachet[j]:
+				if "Cookie:" in pachet[j]:
 					Cookie = pachet[j].split(': ')[1].split('; ')
 				if "POST" in pachet[j]:
 					POST = "FILE"
@@ -130,12 +136,15 @@ def checkHTTPTraffic(filename):
 				pachet_nou.payload = param[0]
 				de_printat.append(pachet_nou)
 			else:
-				if verify_encoding(param[1]) < 10:
-					pachet_nou2 = PacheteHTTP(i.tip, i.source, i.destination, i.UserAgent,i.GET,i.GETparams,i.POST, i.Cookie,i.payload,i.risk,i.message,i.timestamp)
-					pachet_nou2.message = "GET UNKNOWN BASE FOUND"
-					pachet_nou2.risk = "MEDIUM"
-					pachet_nou2.payload = param[1]
-					de_printat.append(pachet_nou2)
+				try:
+					if verify_encoding(param[1]) < 10:
+						pachet_nou2 = PacheteHTTP(i.tip, i.source, i.destination, i.UserAgent,i.GET,i.GETparams,i.POST, i.Cookie,i.payload,i.risk,i.message,i.timestamp)
+						pachet_nou2.message = "GET UNKNOWN BASE FOUND"
+						pachet_nou2.risk = "MEDIUM"
+						pachet_nou2.payload = param[1]
+						de_printat.append(pachet_nou2)
+				except:
+					pass
 		if len(i.GET) > 15:
 			pachet_nou3 = PacheteHTTP(i.tip, i.source, i.destination, i.UserAgent,i.GET,i.GETparams,i.POST, i.Cookie,i.payload,i.risk,i.message,i.timestamp)
 			pachet_nou3.message = "GET LENGTH "

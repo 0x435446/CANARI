@@ -72,4 +72,4 @@ print (getICMPdatas())
 '''
 
 
-#insertIntoDatabase('DNS','Sent by API','HIGH','192.168.150.131','hack-it','ASTAENOUA')
+#insertIntoDatabase('DNS','Sent by API','HIGH','192.168.150.131','hack-it','{{9*9}}')

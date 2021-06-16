@@ -17,3 +17,5 @@ googleusercontent
 cloudfront
 _gateway
 googlehosted
+mozgcp
+mozaws

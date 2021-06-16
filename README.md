@@ -68,7 +68,7 @@ pip3 install pycryptodome
 We need these for our Machine Learning:
 
 ```
-pip3 install tensorflow
+pip3 install tensorflow==2.4
 pip3 install keras
 pip3 install sklearn
 ```

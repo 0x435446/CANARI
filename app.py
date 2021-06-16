@@ -918,7 +918,12 @@ def pcapUpload():
 				http_file_alerts = []
 
 				for i in http_alerts:
-					http_alerts_return.append('~'.join(i.get_pachet()))
+					print (i.get_pachet())
+					try:
+						http_alerts_return.append('~'.join(i.get_pachet()))
+					except:
+						values = ','.join(map(str, i.get_pachet()))
+						http_alerts_return.append('~'.join(values))
 
 				for i in files:
 					http_files_return.append('~'.join(i.get_file()))
