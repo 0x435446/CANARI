@@ -5,7 +5,7 @@ import MySQLdb
 import os
 import sys
 import _thread
-from flask import request,redirect,session
+from flask import request,redirect,session,send_file
 from hashlib import sha256
 import importlib.util
 
@@ -950,6 +950,17 @@ def pcapUpload():
 		#pass
 	#return redirect("/login")
 
+
+@app.route('/AndroidFiles/signatures.txt')
+def getSignatures():
+	return send_file('AndroidFiles/signatures.txt')
+
+@app.route('/AndroidFiles/probabilitati.txt')
+def getProb():
+	return send_file('AndroidFiles/probabilitati.txt')
+@app.route('/AndroidFiles/IANA.txt')
+def getIANA():
+	return send_file('AndroidFiles/IANA.txt')
 
 if __name__ == '__main__':
 	app.run(debug=True,host= '0.0.0.0')
