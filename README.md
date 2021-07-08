@@ -24,7 +24,7 @@ sudo apt-get install libmysqlclient-dev
 sudo apt-get install libmariadbclient-dev
 ```
 
-Now we have to link the MySQL server with the Python code so we have to install the mysqlclient library:
+Now we have to link the MySQL server with the Python3 code so we have to install the mysqlclient library:
 
 ```
 pip3 install mysqlclient

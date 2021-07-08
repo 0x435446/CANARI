@@ -1,0 +1,40 @@
+In directorul Android se gaseste proiectul pentru aplicatia destinata terminalelor bazate pe Android. Calea pentru codul sursa al aplicatiei este: ./Android/app/src/main/java/com/example/proiect/ . La aceasta cale se gasesc 3 foldere, Controller, Model, View, in care se gasesc componentele aplicatiei sortate pe functionalitati, in functie de pattern-ul de programare MVC.
+
+In directorul AndroidFiles se gasesc fisierele de care are nevoie aplicatia Android pentru a-si initializa modulele de analiza, respectiv un fisier de probabilitati, de semnaturi ale fisierelor si unul pentru TLD.
+
+In directorul API se gaseste modulul aplicatiei server ce are rolul de a oferi utilizatorului posibilitatea de a integra module scris in Python3 cu arhitectura existenta a aplicatiei. 
+
+In directorul Client se gasesc scripturile ce pot fi puse pe statiile din retea pentru a monitoriza activitatea utilizatorilor, precum conexiunile deschise sau porturile pe care se asculta de pe fiecare statie in parte.
+
+In directorul databases sunt vesiuni ale bazei de date salvate pe parcursul dezvoltarii solutiei, iar arhitectura bazei de date actualizata se gaseste in fisierul licenta.sql
+
+Directorul ExtractedFiles este folosit de catre modulul de analiza al PCAP-urilor pentru salvearea temporara a fisierelor extrase
+
+Directorul modules reprezinta nucleul aplicatiei server, in acesta se regasesc toate functionalitatile analizei live a pachetelor. Structura acestui director este:
+	- directorul config: in acest director se gaseste fisierul de configuratie pentru interfata de retea si API-ul VirusTotal
+	- directorul Data_encoding: in acest director se gaseste modulul de verificare folosit in cadrul analizei subdomeniilor si al parametrilor HTTP, resprectiv fisierul de probabilitati folosit
+	- directorul Filters: in acest director se gasesc fisierele de whitelist si blacklist folosite in cadrul aplicatiei
+	- directorul MachineLearning: acest director contine codul sursa pentru prezicerea facuta de catre modulul de Machine Learning, modelele salvate pe parcursul dezvoltarii aplicatiei si codul sursa pentru antrenare
+	- directorul Magic_Numbers: in acest folder se regaseste fisierul pentru semnaturile formatelor aplicatiilor
+	- directorul Methods: in acest director se regaseste codul sursa al analizatoarelor de trafic pentru fiecare protocol in parte
+	- directorul Rules: contine fisierul de configurare pentru regulile setate de utilizatori
+	- directorul TLD: contine fisierul cu Top Level Domains
+	- pe langa directoare, in acest folder se regasesc si codurile sursa pentru scheletul fiecarei metode de analiza in parte, respectiv functiile comune folosite de catre analizatoare
+	- codul sursa al conexiunii cu VirusTotal
+	- codul sursa al verificarii reteleli
+
+Directorul static:
+	- reprezinta un director din structura Flask, ce are ca scop pastrarea elementelor statice de interfata
+	- are in componenta alte 3 subfoldere, respectiv js, images si css
+
+Directorul Static:
+	- reprezinta partea serverului de analiza a fisierelor PCAP/PCAPNG
+	- are in componenta sa un director pentru analiza fisierelor folosind Machine Learning (MachineLearning) si codul sursa pentru modulele de analiza a protocoalelor DNS, HTTP si ICMP din cadrul fisierelor
+
+Directorul templates: reprezinta un director din structura Flask, ce are in componenta sa fisierele template pentru paginile web
+
+Fisierul app.py: Reprezinta codul sursa al serverului, in cadrul caruia s-au trecut toate rutele pentru fiecare pagina in parte, respectiv codul pe partea de server a aplicatiei web (backend)
+
+Fisierul README.md: Reprezinta o explicatie a modului de instalare al solutiei
+
+Fisierul start.sh: Are in componenta sa comenzile pentru functionalitatea de router virtual al alicatiei server
