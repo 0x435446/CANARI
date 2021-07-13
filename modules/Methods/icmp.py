@@ -90,7 +90,7 @@ def icmp_start():
 				for k in range(len(times)):
 					if(times[k].ip==get_stranger_ip(result[1])):
 						times[k].add(int(timp.time()))
-					ok=1
+						ok=1
 			response=get_stranger_ip(result[1])
 			destinationAPI = response
 			if ok==0 :
