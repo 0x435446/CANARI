@@ -4,8 +4,8 @@ Created on Tue Apr 20 00:15:25 2021
 
 @author: mihai
 """
-
-from keras import models, layers
+from tensorflow import keras 
+from tensorflow.keras import models, layers
 
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import MinMaxScaler

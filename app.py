@@ -14,7 +14,7 @@ import VirusTotal
 import Network
 
 sys.path.append('./modules/Methods')
-import dns
+import DNS
 import web
 import https
 import icmp
@@ -134,7 +134,8 @@ def load():
 def index():
 	try:
 		if session['loggedin'] == True: 
-			_thread.start_new_thread(dns.dns_start,())
+			print ("AICI")
+			_thread.start_new_thread(DNS.dns_start,())
 			print ("DNS_STARTED")
 			_thread.start_new_thread(icmp.icmp_start,())
 			print ("ICMP_STARTED")
@@ -229,7 +230,7 @@ def index():
 
 @app.route('/alerts', methods=['GET', 'POST'])
 def alerts():
-	#try:
+	try:
 		if session['loggedin'] == True: 
 			whitelist_c1,whitelist_c2,whitelist_c3 = get_whitelist_details()
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -365,9 +366,9 @@ def alerts():
 		else:
 			print ("LOGIN 1")
 			return redirect("/login")
-	#except:
-		#print ("LOGIN 2")
-		#return redirect("/login")
+	except:
+		print ("LOGIN 2")
+		return redirect("/login")
 
 
 
@@ -378,7 +379,7 @@ def alerts():
 def stop():
 	try:
 		if session['loggedin'] == True:
-			dns.stop_dns()
+			DNS.stop_dns()
 			print ("DNS_STOPPED")
 			icmp.stop_icmp()
 			print ("ICMP_STOPPED")
@@ -961,6 +962,17 @@ def getProb():
 @app.route('/AndroidFiles/IANA.txt')
 def getIANA():
 	return send_file('AndroidFiles/IANA.txt')
+
+@app.route('/getRemoteData')
+def getRemoteData():
+	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
+	cursor = db.cursor()
+	limit = MySQLdb.escape_string(request.args.get('limit'))
+	cursor.execute("SELECT * FROM alerte order by id DESC LIMIT "+limit.decode())
+	data = (cursor.fetchall())
+	db.close()
+	return jsonify(data)
+
 
 if __name__ == '__main__':
 	app.run(debug=True,host= '0.0.0.0')
