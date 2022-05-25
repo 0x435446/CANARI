@@ -101,7 +101,7 @@ def dns_start():
 							#print ("AICI E FORCHECK",for_check)
 							HOST, continutHexAPI= rules.check_rules('DNS',for_check)
 							continutPachetAPI = result.split('\n\t')[0]
-							if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
+							if (check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0):
 								sourceAPI = HOST
 								result=result.split('\n\t')[0].replace('\t','')
 							#try:
@@ -189,7 +189,7 @@ def dns_start():
 										if ok_txt == 1:
 											cursor.execute("INSERT INTO alerte (Type,Message,Risk,Source,Destination,Payload,Timestamp) VALUES('DNS', 'TXT RECORDS','MEDIUM','"+HOST+"','"+bd[len(bd)-2]+"','-','"+str(datetime.now())+"')")
 											db.commit()
-										if nope == 0 :
+										if (nope == 0) and (check_whitelist(bd[len(bd)-2],"./modules/Filters/whitelist.txt") == 0):
 											z=DNS_time(bd[len(bd)-2],HOST)
 											dns_ok=0
 											if len(dns_time)>0:

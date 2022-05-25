@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template,jsonify
 import json
 import MySQLdb 
+import pymysql
+from pymysql.converters import escape_string
 import os
 import sys
 import _thread
@@ -178,7 +180,7 @@ def index():
 				timestop = Data['timestop']
 				if len(conditie)>2:
 					for i in range(len(conditie)):
-						conditie[i]=MySQLdb.escape_string(conditie[i]).decode()
+						conditie[i]=escape_string(conditie[i])
 						conditie[i]="'"+conditie[i]+"'"
 						print (type(conditie[i]))
 					if len(timestart)>0 and len(timestop)>0:
@@ -283,7 +285,7 @@ def alerts():
 					timestop = Data['timestop']
 					if len(conditie)>2:
 						for i in range(len(conditie)):
-							conditie[i]=MySQLdb.escape_string(conditie[i]).decode()
+							conditie[i]=escape_string(conditie[i])
 							conditie[i]="'"+conditie[i]+"'"
 							print (type(conditie[i]))
 						if len(timestart)>0 and len(timestop)>0:
@@ -448,8 +450,8 @@ def process_register():
 	try:
 		if session['loggedin'] == True:
 			if request.method == 'POST':
-				username = MySQLdb.escape_string(request.form['username']).decode()
-				password = MySQLdb.escape_string(request.form['password']).decode()
+				username = escape_string(request.form['username'])
+				password = escape_string(request.form['password'])
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
 				cursor.execute("INSERT INTO users (username,password) VALUES('"+ username +"','"+ sha256(password.encode()).hexdigest() +"')")
@@ -466,8 +468,8 @@ def process_register():
 def process_login():
 	if request.method == 'POST':
 		print (request.form)
-		username = MySQLdb.escape_string(request.form['username']).decode()
-		password = MySQLdb.escape_string(request.form['password']).decode()
+		username = escape_string(request.form['username'])
+		password = escape_string(request.form['password'])
 		x = 1
 		if x == 1:
 			db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
@@ -525,7 +527,7 @@ def processUpdate():
 			if request.method == 'POST':
 				print ("AICI E ID",request.form['button_id'])
 
-				id_alert = MySQLdb.escape_string(request.form['button_id']).decode()
+				id_alert = escape_string(request.form['button_id'])
 				db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 				cursor = db.cursor()
 				cursor.execute("SELECT * FROM alerte WHERE ID='"+id_alert+"'")
@@ -621,7 +623,7 @@ def edit_destionation():
 		if session['loggedin'] == True:
 			if request.method == 'POST':
 				print ("AICI E ID",request.form['button_id'])
-				destinatie = MySQLdb.escape_string(request.form['button_id']).decode()
+				destinatie = escape_string(request.form['button_id'])
 				if (destinatie!="-"):
 					print ("dada")
 					print ("AICI VEDEM DACA E SAU NU",add_delete_destination(destinatie))
@@ -660,7 +662,7 @@ def edit_payload():
 	try:
 		if session['loggedin'] == True:
 			if request.method == 'POST':
-				payload = MySQLdb.escape_string(request.form['button_id']).decode()
+				payload = escape_string(request.form['button_id'])
 				if (payload!="-"):
 					print ("dada")
 					print ("AICI VEDEM DACA E SAU NU",add_delete_payload(payload))
@@ -967,7 +969,7 @@ def getIANA():
 def getRemoteData():
 	db=MySQLdb.connect(host="localhost",user="root",passwd="FlagFlag123.",db="licenta" )
 	cursor = db.cursor()
-	limit = MySQLdb.escape_string(request.args.get('limit'))
+	limit = escape_string(request.args.get('limit'))
 	cursor.execute("SELECT * FROM alerte order by id DESC LIMIT "+limit.decode())
 	data = (cursor.fetchall())
 	db.close()

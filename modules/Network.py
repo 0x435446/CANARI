@@ -5,7 +5,7 @@ import time
 def checkIP(base):
 	ips=[]
 	for i in range(0,254):
-		output = subprocess.check_output("ping "+base+"."+str(i)+" -c1 -W 0.005  &2>/dev/null", shell=True)
+		output = subprocess.check_output("ping "+base+"."+str(i)+" -c1 -W 1  &2>/dev/null", shell=True)
 		if "100% packet loss" not in output.decode():
 			ips.append(base+"."+str(i))
 	return ' '.join(ips)

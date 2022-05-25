@@ -117,6 +117,7 @@ def http_start():
 		if "192.168.1.5" not in cmdout:
 			HOST, continutHexAPI = rules.check_rules('HTTP',cmdout)
 			sourceAPI = HOST
+			print (HOST)
 			if check_whitelist(HOST,"./modules/Filters/whitelist_sources.txt") == 0:
 				result=cmdout.split("\n\t\n\t")[0].split('\n')
 				continutPachetAPI = cmdout.split("\n\t\n\t")[0]
